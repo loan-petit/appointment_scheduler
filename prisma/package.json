@@ -1,0 +1,67 @@
+{
+  "name": "prisma",
+  "version": "1.0.0",
+  "description": "LifeTools project GraphQL API",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node dist/server",
+    "clean": "rm -rf dist",
+    "build": "npm -s run clean && npm -s run generate && tsc",
+    "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
+    "generate:prisma": "prisma generate",
+    "generate:nexus": "ts-node --transpile-only src/schema",
+    "postinstall": "npm -s run generate",
+    "dev": "(export $(grep '^POSTGRES_URL' .env | xargs) && ts-node-dev --no-notify --respawn --transpileOnly src/server)",
+    "format": "prettier --write '**/*.ts' '**/*.json' && standardx '**/*.ts' --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loan-petit/lifetools.git"
+  },
+  "author": "Loan PETIT",
+  "bugs": {
+    "url": "https://github.com/loan-petit/lifetools/issues"
+  },
+  "homepage": "https://loanpetit.com/",
+  "dependencies": {
+    "@prisma/cli": "^2.0.0-beta.4",
+    "@prisma/client": "2.0.0-beta.4",
+    "@types/bcryptjs": "2.4.2",
+    "@types/ws": "7.2.4",
+    "@types/jsonwebtoken": "8.3.9",
+    "bcryptjs": "2.4.3",
+    "graphql": "14.6.0",
+    "graphql-shield": "5.7.3",
+    "graphql-yoga": "1.18.3",
+    "jsonwebtoken": "8.5.1",
+    "nexus": "0.12.0",
+    "nexus-prisma": "0.11.1",
+    "ts-node": "8.9.0",
+    "typescript": "3.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "13.13.5",
+    "prettier-standard": "^16.3.0",
+    "ts-node-dev": "1.0.0-pre.44"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semi": false,
+    "trailingComma": "all"
+  },
+  "eslintConfig": {
+    "rules": {
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": "error"
+    }
+  },
+  "standardx": {
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint/eslint-plugin"
+    ]
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  }
+}
