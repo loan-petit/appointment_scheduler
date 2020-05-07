@@ -1,0 +1,45 @@
+/* purgecss start ignore */
+@import "tailwindcss/base";
+/* purgecss end ignore */
+
+@import "tailwindcss/components";
+
+@import "tailwindcss/utilities";
+
+/* Custom base styles */
+h6 {
+  @apply text-sm font-bold text-gray-600;
+}
+
+label {
+  @apply text-xs font-bold text-gray-700 uppercase;
+}
+
+input {
+  @apply text-sm text-gray-700 bg-white rounded shadow;
+
+  &:focus {
+    @apply shadow-outline outline-none;
+  }
+}
+
+button {
+  @apply text-sm font-bold text-white uppercase bg-gray-900 rounded shadow outline-none;
+
+  &:active {
+    @apply bg-gray-700;
+  }
+
+  &:hover {
+    @apply shadow-lg;
+  }
+
+  &:focus {
+    @apply outline-none;
+  }
+}
+
+/* Extract CSS components */
+.form-error {
+  @apply pt-2 text-xs italic text-red-500;
+}
