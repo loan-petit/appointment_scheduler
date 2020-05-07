@@ -7,15 +7,11 @@ import { JWT_SECRET } from '../../utils/getUserId'
 export const signup = mutationField('signup', {
   type: 'AuthPayload',
   args: {
-    username: stringArg({ nullable: false }),
+    email: stringArg({ nullable: false }),
     password: stringArg({ nullable: false }),
-    passwordConfirmation: stringArg({ nullable: false })
+    passwordConfirmation: stringArg({ nullable: false }),
   },
-  resolve: async (
-    _parent,
-    { username, password, passwordConfirmation },
-    ctx
-  ) => {
+  resolve: async (_parent, { email, password, passwordConfirmation }, ctx) => {
     if (password !== passwordConfirmation) {
       throw new Error("'password' must match 'passwordConfirmation'")
     }
@@ -23,36 +19,36 @@ export const signup = mutationField('signup', {
     const hashedPassword = await hash(password, 10)
     const user = await ctx.prisma.user.create({
       data: {
-        username,
-        password: hashedPassword
-      }
+        email,
+        password: hashedPassword,
+      },
     })
 
     return {
       token: sign({ userId: user.id }, JWT_SECRET, {
-        expiresIn: 86400 * 7
+        expiresIn: 86400 * 7,
       }),
       expiresIn: 86400 * 7,
-      user
+      user,
     }
-  }
+  },
 })
 
 export const signin = mutationField('signin', {
   type: 'AuthPayload',
   args: {
-    username: stringArg({ nullable: false }),
-    password: stringArg({ nullable: false })
+    email: stringArg({ nullable: false }),
+    password: stringArg({ nullable: false }),
   },
-  resolve: async (_parent, { username, password }, ctx) => {
+  resolve: async (_parent, { email, password }, ctx) => {
     const user = await ctx.prisma.user.findOne({
       where: {
-        username
-      }
+        email,
+      },
     })
 
     if (!user) {
-      throw new Error(`No user found for username: ${username}`)
+      throw new Error(`No user found for email: ${email}`)
     }
 
     const passwordValid = await compare(password, user.password)
@@ -62,10 +58,10 @@ export const signin = mutationField('signin', {
 
     return {
       token: sign({ userId: user.id }, JWT_SECRET, {
-        expiresIn: 86400 * 7
+        expiresIn: 86400 * 7,
       }),
       expiresIn: 86400 * 7,
-      user
+      user,
     }
-  }
+  },
 })
