@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres:12-alpine
+    secrets:
+      - POSTGRES_PASSWORD
+    environment:
+      POSTGRES_DB: appointment_scheduler
+      POSTGRES_USER: prisma
+      POSTGRES_PASSWORD_FILE: /run/secrets/POSTGRES_PASSWORD
+    volumes:
+      - "db_data:/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+secrets:
+  POSTGRES_PASSWORD:
+    external: true
+
+volumes:
+  db_data:
