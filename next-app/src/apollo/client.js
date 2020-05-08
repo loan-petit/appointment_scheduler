@@ -5,7 +5,7 @@ import { ApolloProvider } from '@apollo/react-hooks'
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 
-import fetch from 'isomorphic-unfetch';
+import fetch from 'isomorphic-unfetch'
 
 let apolloClient = null
 
@@ -17,7 +17,7 @@ let apolloClient = null
  * @param {Object} [config]
  * @param {Boolean} [config.ssr=true]
  */
-export function withApollo(PageComponent, { ssr = true } = {}) {
+export function withApollo (PageComponent, { ssr = true } = {}) {
   const WithApollo = ({ apolloClient, apolloState, ...pageProps }) => {
     const client = apolloClient || initApolloClient(apolloState)
     return (
@@ -72,7 +72,7 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
                   ...pageProps,
                   apolloClient,
                 }}
-              />
+              />,
             )
           } catch (error) {
             // Prevent Apollo Client GraphQL errors from crashing SSR.
@@ -104,7 +104,7 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
  * Creates or reuses apollo client in the browser.
  * @param  {Object} initialState
  */
-function initApolloClient(initialState) {
+function initApolloClient (initialState) {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (typeof window === 'undefined') {
@@ -123,7 +123,7 @@ function initApolloClient(initialState) {
  * Creates and configures the ApolloClient
  * @param  {Object} [initialState={}]
  */
-function createApolloClient(initialState = {}) {
+function createApolloClient (initialState = {}) {
   const ssrMode = typeof window === 'undefined'
   const cache = new InMemoryCache().restore(initialState)
 
@@ -134,9 +134,9 @@ function createApolloClient(initialState = {}) {
   })
 }
 
-function createIsomorphLink() {
+function createIsomorphLink () {
   const { HttpLink } = require('apollo-link-http')
   return new HttpLink({
-    uri: 'http://localhost:4000/',
+    uri: process.env.API_URL,
   })
 }

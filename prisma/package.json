@@ -1,7 +1,7 @@
 {
   "name": "prisma",
   "version": "1.0.0",
-  "description": "LifeTools project GraphQL API",
+  "description": "Appointment scheduler project GraphQL API",
   "main": "src/server.js",
   "scripts": {
     "start": "node dist/server",
@@ -12,17 +12,8 @@
     "generate:nexus": "ts-node --transpile-only src/schema",
     "postinstall": "npm -s run generate",
     "dev": "(export $(grep '^POSTGRES_URL' .env | xargs) && ts-node-dev --no-notify --respawn --transpileOnly src/server)",
-    "format": "prettier --write '**/*.ts' '**/*.json' && standardx '**/*.ts' --fix"
+    "format": "prettier-standard --format"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/loan-petit/lifetools.git"
-  },
-  "author": "Loan PETIT",
-  "bugs": {
-    "url": "https://github.com/loan-petit/lifetools/issues"
-  },
-  "homepage": "https://loanpetit.com/",
   "dependencies": {
     "@prisma/cli": "^2.0.0-beta.4",
     "@prisma/client": "2.0.0-beta.4",

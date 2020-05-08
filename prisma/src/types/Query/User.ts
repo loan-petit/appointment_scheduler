@@ -10,8 +10,8 @@ export const me = queryField('me', {
     const userId = getUserId(ctx)
     const user = await ctx.prisma.user.findOne({
       where: {
-        id: userId
-      }
+        id: userId,
+      },
     })
 
     if (!user) {
@@ -20,10 +20,10 @@ export const me = queryField('me', {
 
     return {
       token: sign({ userId: user.id }, JWT_SECRET, {
-        expiresIn: 86400 * 7
+        expiresIn: 86400 * 7,
       }),
       expiresIn: 86400 * 7,
-      user
+      user,
     }
-  }
+  },
 })

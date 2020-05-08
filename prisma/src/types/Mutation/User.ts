@@ -8,10 +8,16 @@ export const signup = mutationField('signup', {
   type: 'AuthPayload',
   args: {
     email: stringArg({ nullable: false }),
+    firstName: stringArg({ nullable: false }),
+    lastName: stringArg({ nullable: false }),
     password: stringArg({ nullable: false }),
     passwordConfirmation: stringArg({ nullable: false }),
   },
-  resolve: async (_parent, { email, password, passwordConfirmation }, ctx) => {
+  resolve: async (
+    _parent,
+    { email, firstName, lastName, password, passwordConfirmation },
+    ctx,
+  ) => {
     if (password !== passwordConfirmation) {
       throw new Error("'password' must match 'passwordConfirmation'")
     }
@@ -20,6 +26,8 @@ export const signup = mutationField('signup', {
     const user = await ctx.prisma.user.create({
       data: {
         email,
+        firstName,
+        lastName,
         password: hashedPassword,
       },
     })

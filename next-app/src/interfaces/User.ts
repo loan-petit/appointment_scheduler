@@ -2,4 +2,4 @@ type User = {
   id: number
 }
 
-export default User;
+export default User

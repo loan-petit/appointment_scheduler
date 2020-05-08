@@ -1,5 +1,5 @@
-import "../styles/app.css";
+import '../styles/app.css'
 
-export default function MyApp({ Component, pageProps }) {
+export default function MyApp ({ Component, pageProps }) {
   return <Component {...pageProps} />
 }

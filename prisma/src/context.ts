@@ -11,6 +11,6 @@ export interface Context {
 export function createContext (request: ContextParameters) {
   return {
     ...request,
-    prisma
+    prisma,
   }
 }

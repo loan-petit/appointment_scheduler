@@ -36,7 +36,7 @@ COPY . .
 ARG POSTGRES_HOST
 RUN --mount=type=secret,id=POSTGRES_PASSWORD \
     --mount=type=secret,id=JWT_SECRET \
-    POSTGRES_URL=postgresql://prisma:$(cat /run/secrets/POSTGRES_PASSWORD)@${POSTGRES_HOST}:5432/lifetools?schema=public \
+    POSTGRES_URL=postgresql://prisma:$(cat /run/secrets/POSTGRES_PASSWORD)@${POSTGRES_HOST}:5432/appointment_scheduler?schema=public \
     npm run generate
 
 # Build API for production

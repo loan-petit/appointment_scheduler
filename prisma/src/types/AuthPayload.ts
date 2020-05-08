@@ -6,5 +6,5 @@ export const AuthPayload = objectType({
     t.string('token')
     t.int('expiresIn')
     t.field('user', { type: 'User' })
-  }
+  },
 })

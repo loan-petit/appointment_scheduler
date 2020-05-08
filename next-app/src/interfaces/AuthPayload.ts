@@ -1,4 +1,4 @@
-import User from "./User"
+import User from './User'
 
 type AuthPayload = {
   token: string
@@ -6,4 +6,4 @@ type AuthPayload = {
   user: User
 }
 
-export default AuthPayload;
+export default AuthPayload

@@ -1,10 +1,10 @@
 /* purgecss start ignore */
-@import "tailwindcss/base";
+@import 'tailwindcss/base';
 /* purgecss end ignore */
 
-@import "tailwindcss/components";
+@import 'tailwindcss/components';
 
-@import "tailwindcss/utilities";
+@import 'tailwindcss/utilities';
 
 /* Custom base styles */
 h6 {
@@ -42,4 +42,8 @@ button {
 /* Extract CSS components */
 .form-error {
   @apply pt-2 text-xs italic text-red-500;
+}
+
+.error-message {
+  @apply text-sm italic text-red-500;
 }
