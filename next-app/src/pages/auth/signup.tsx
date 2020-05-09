@@ -108,7 +108,7 @@ const Signup = () => {
 
     if (validateForm()) {
       try {
-        await signup({
+        const { data } = await signup({
           variables: {
             firstName: formFields.firstName.value,
             lastName: formFields.lastName.value,
@@ -117,6 +117,7 @@ const Signup = () => {
             passwordConfirmation: formFields.passwordConfirmation.value,
           },
         })
+        localStorage.setItem('token', data.signup.token)
         Router.push('/')
       } catch (err) {
         if (err.graphQLErrors && err.graphQLErrors.length) {
@@ -234,7 +235,7 @@ const Signup = () => {
             {submitError.length ? (
               <p className='pt-0 pb-4 error-message'>{submitError}</p>
             ) : null}
-            <button className='px-6 py-3' type='button' onClick={handleSubmit}>
+            <button className='px-6 py-3 submit-button' onClick={handleSubmit}>
               Créer mon compte
             </button>
           </div>

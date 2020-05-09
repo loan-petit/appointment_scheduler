@@ -88,12 +88,13 @@ const Signin = () => {
 
     if (validateForm()) {
       try {
-        await signin({
+        const { data } = await signin({
           variables: {
             email: formFields.email.value,
             password: formFields.password.value,
           },
         })
+        localStorage.setItem('token', data.signin.token)
         Router.push('/')
       } catch (err) {
         if (err.graphQLErrors && err.graphQLErrors.length) {
@@ -171,7 +172,7 @@ const Signin = () => {
             {submitError.length ? (
               <p className='pt-0 pb-4 error-message'>{submitError}</p>
             ) : null}
-            <button className='px-6 py-3' type='button' onClick={handleSubmit}>
+            <button className='px-6 py-3 submit-button' onClick={handleSubmit}>
               Se connecter
             </button>
           </div>

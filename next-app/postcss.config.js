@@ -8,11 +8,25 @@ const purgecss = [
     defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
   },
 ]
+
 module.exports = {
   plugins: [
+    'postcss-flexbugs-fixes',
     'postcss-import',
     'tailwindcss',
-    'autoprefixer',
+    [
+      'postcss-preset-env',
+      {
+        autoprefixer: {
+          flexbox: 'no-2009',
+        },
+        stage: 3,
+        features: {
+          'nesting-rules': true,
+          'custom-properties': false,
+        },
+      },
+    ],
     ...(process.env.NODE_ENV === 'production' ? [purgecss] : []),
   ],
 }

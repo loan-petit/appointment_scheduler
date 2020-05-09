@@ -23,7 +23,8 @@ input {
   }
 }
 
-button {
+/* Extract CSS components */
+.submit-button {
   @apply text-sm font-bold text-white uppercase bg-gray-900 rounded shadow outline-none;
 
   &:active {
@@ -39,11 +40,22 @@ button {
   }
 }
 
-/* Extract CSS components */
 .form-error {
   @apply pt-2 text-xs italic text-red-500;
 }
 
 .error-message {
   @apply text-sm italic text-red-500;
+}
+
+.nav-item {
+  @apply block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 bg-transparent rounded-lg;
+
+  &:hover {
+    @apply text-gray-900 bg-gray-200;
+  }
+
+  &:focus {
+    @apply text-gray-900 bg-gray-200 shadow-outline outline-none;
+  }
 }

@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import Layout from '../components/Layout'
 
-const IndexPage = () => (
-  <Layout title='Home | Next.js + TypeScript Example'>
+const IndexPage = ({ props }: any) => (
+  <Layout {...props}>
     <h1>Hello Next.js 👋</h1>
     <p>
       <Link href='/about'>

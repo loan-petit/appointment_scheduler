@@ -10,7 +10,7 @@ export const me = queryField('me', {
     const userId = getUserId(ctx)
     const user = await ctx.prisma.user.findOne({
       where: {
-        id: userId,
+        id: Number(userId),
       },
     })
 

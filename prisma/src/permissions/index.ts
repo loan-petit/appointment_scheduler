@@ -13,7 +13,7 @@ const rules = {
         id: args.where.id,
       },
     })
-    return userId === user.id
+    return Number(userId) === user.id
   }),
 }
 
