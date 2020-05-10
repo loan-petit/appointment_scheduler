@@ -45,7 +45,10 @@ export function withApollo (PageComponent, { ssr = true } = {}) {
 
       // Initialize ApolloClient, add it to the ctx object so
       // we can use it in `PageComponent.getInitialProp`.
-      const apolloClient = (ctx.apolloClient = initApolloClient())
+      const apolloClient = (ctx.apolloClient = initApolloClient(
+        {},
+        ctx.req?.headers.cookie,
+      ))
 
       // Run wrapped getInitialProps methods
       let pageProps = {}
@@ -104,16 +107,16 @@ export function withApollo (PageComponent, { ssr = true } = {}) {
  * Creates or reuses apollo client in the browser.
  * @param  {Object} initialState
  */
-function initApolloClient (initialState) {
+function initApolloClient (initialState, cookie = '') {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (typeof window === 'undefined') {
-    return createApolloClient(initialState)
+    return createApolloClient(initialState, cookie)
   }
 
   // Reuse client on the client-side
   if (!apolloClient) {
-    apolloClient = createApolloClient(initialState)
+    apolloClient = createApolloClient(initialState, cookie)
   }
 
   return apolloClient
@@ -123,24 +126,29 @@ function initApolloClient (initialState) {
  * Creates and configures the ApolloClient
  * @param  {Object} [initialState={}]
  */
-function createApolloClient (initialState = {}) {
+function createApolloClient (initialState = {}, cookie = '') {
   const ssrMode = typeof window === 'undefined'
   const cache = new InMemoryCache().restore(initialState)
 
   return new ApolloClient({
     ssrMode,
-    link: createIsomorphLink(),
+    link: createIsomorphLink(cookie),
     cache,
   })
 }
 
-function createIsomorphLink () {
+function createIsomorphLink (cookie = '') {
   const httpLink = new createHttpLink({
     uri: 'http://localhost:4000/',
   })
 
   const authLink = setContext((_, { headers }) => {
-    const token = localStorage.getItem('token')
+    cookie = cookie.length ? cookie : document.cookie
+    var token = cookie.replace(
+      /(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/,
+      '$1',
+    )
+
     return {
       headers: {
         ...headers,

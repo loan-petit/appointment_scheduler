@@ -24,7 +24,7 @@ export const permissions = shield({
     me: rules.isAuthenticatedUser,
   },
   Mutation: {
-    updateOneUser: rules.isCurrentUser,
+    updateCurrentUser: rules.isAuthenticatedUser,
     deleteOneUser: rules.isCurrentUser,
   },
 })

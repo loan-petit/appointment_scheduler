@@ -9,7 +9,6 @@ import { useQuery } from '@apollo/react-hooks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
 
-import { withApollo } from '../apollo/client'
 import User from '../interfaces/User'
 import LoadingOverlay from './LoadingOverlay'
 
@@ -48,11 +47,12 @@ const Layout: React.FunctionComponent<Props> = ({
   const [isOpen, setIsOpen] = React.useState(false)
 
   const { loading, error, data } = useQuery(CurrentUserQuery)
+  if (loading) return <LoadingOverlay />
   if (error) {
-    router.push('/auth/signin')
+    console.log(error)
+    // router.push('/auth/signin')
     return <div />
   }
-  if (loading) return <LoadingOverlay />
   var currentUser: User = data.me.user
 
   return (
@@ -89,7 +89,7 @@ const Layout: React.FunctionComponent<Props> = ({
             }
           >
             {routes.map((route, i) => (
-              <Link key={i} href={route.path}>
+              <Link key={i} href={route.path} replace>
                 <a
                   className={
                     'nav-item' +
@@ -110,4 +110,4 @@ const Layout: React.FunctionComponent<Props> = ({
   )
 }
 
-export default withApollo(Layout)
+export default Layout

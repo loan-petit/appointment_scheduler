@@ -3,6 +3,7 @@ import Router from 'next/router'
 import Link from 'next/link'
 import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
+import Cookies from 'js-cookie'
 
 import { withApollo } from '../../apollo/client'
 
@@ -94,20 +95,22 @@ const Signin = () => {
             password: formFields.password.value,
           },
         })
-        localStorage.setItem('token', data.signin.token)
+        Cookies.set('token', data.signin.token, {
+          expires: Math.floor(data.signin.expiresIn / (3600 * 24)),
+        })
         Router.push('/')
       } catch (err) {
         if (err.graphQLErrors && err.graphQLErrors.length) {
           let message = err.graphQLErrors[0].message
           if (message.includes('No user found for email')) {
-            setSubmitError("Aucun compte n'est associé à cette adresse e-mail.")
+            return setSubmitError(
+              "Aucun compte n'est associé à cette adresse e-mail.",
+            )
           } else if (message == 'Invalid password') {
-            setSubmitError('Le mot de passe est invalide.')
+            return setSubmitError('Le mot de passe est invalide.')
           }
         }
-        if (err.networkError) {
-          setSubmitError('Une erreur est survenue. Veuillez-réessayer.')
-        }
+        setSubmitError('Une erreur est survenue. Veuillez-réessayer.')
       }
     }
   }
@@ -115,7 +118,7 @@ const Signin = () => {
   return (
     <section className='absolute flex flex-col justify-center w-full h-full p-4 bg-gray-100'>
       <div className='container flex flex-col w-full min-w-0 p-4 mx-auto break-words bg-gray-300 rounded-lg shadow-lg lg:w-5/12'>
-        {/* Connection with Google */}
+        {/* Signin with Google */}
         <div className='px-6 py-6 mb-0 rounded-t'>
           <div className='mb-3 text-center'>
             <h6>Se connecter avec</h6>
@@ -129,13 +132,13 @@ const Signin = () => {
               Google
             </button>
           </div>
-          <hr className='mt-6 border-gray-400 border-b-1' />
+          <hr className='mt-6 border-gray-500 border-b-1' />
         </div>
 
-        {/* Connection with credentials */}
+        {/* Signin with credentials */}
         <div className='flex-auto px-4 py-10 pt-0 lg:px-10'>
-          <div className='mb-3 font-bold text-center text-gray-500'>
-            <small>Ou avec des identifiants</small>
+          <div className='mb-3 text-center'>
+            <h6>Ou avec des identifiants</h6>
           </div>
 
           {/* Email */}
@@ -144,7 +147,7 @@ const Signin = () => {
             <input
               type='email'
               className='w-full px-3 py-3 placeholder-gray-400'
-              placeholder='E-mail'
+              placeholder='Votre e-mail'
               onChange={handleInputChange}
               name='email'
               value={formFields.email.value}
@@ -159,7 +162,7 @@ const Signin = () => {
             <input
               type='password'
               className='w-full px-3 py-3 placeholder-gray-400'
-              placeholder='Mot de passe'
+              placeholder='Votre mot de passe'
               name='password'
               onChange={handleInputChange}
               value={formFields.password.value}

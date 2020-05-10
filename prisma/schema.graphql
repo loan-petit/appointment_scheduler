@@ -7,8 +7,6 @@ type AuthPayload {
   user: User!
 }
 
-scalar DateTime
-
 type Mutation {
   deleteOneUser(where: UserWhereUniqueInput!): User
   signin(email: String!, password: String!): AuthPayload!
@@ -19,7 +17,14 @@ type Mutation {
     password: String!
     passwordConfirmation: String!
   ): AuthPayload!
-  updateOneUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateCurrentUser(
+    email: String
+    firstName: String
+    lastName: String
+    newPassword: String
+    newPasswordConfirmation: String
+    oldPassword: String
+  ): User!
 }
 
 type Query {
@@ -39,15 +44,6 @@ type User {
   firstName: String!
   id: Int!
   lastName: String!
-}
-
-input UserUpdateInput {
-  createdAt: DateTime
-  email: String
-  firstName: String
-  id: Int
-  lastName: String
-  password: String
 }
 
 input UserWhereUniqueInput {
