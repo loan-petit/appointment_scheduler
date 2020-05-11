@@ -157,199 +157,185 @@ const Settings = () => {
 
   return (
     <Layout>
-      <section className="absolute flex flex-col justify-center w-full h-full p-4 bg-gray-100">
-        <div className="container flex flex-col w-full min-w-0 p-4 mx-auto break-words bg-gray-300 rounded-lg shadow-lg lg:w-5/12">
-          <div className="flex-auto px-4 py-10 pt-0 lg:px-10">
-            <div className="mb-6 text-center">
-              <h6>Vos informations</h6>
-            </div>
+      <div className="md:w-1/2">
+        <div className="mb-6">
+          <h5>Vos informations</h5>
+        </div>
 
-            {/* Full Name */}
-            <div className="relative flex flex-row justify-between mb-3">
-              <div className="w-full mr-2">
-                <label className="block mb-2">Prénom</label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-3 placeholder-gray-400"
-                  placeholder="Votre prénom"
-                  onChange={informationFormHelper.handleInputChange.bind(
-                    informationFormHelper,
-                  )}
-                  name="firstName"
-                  value={
-                    informationFormHelper.fieldsInformation.firstName.value
-                  }
-                  autoFocus
-                />
-                <p className="form-error">
-                  {informationFormHelper.fieldsInformation.firstName.error}
-                </p>
-              </div>
-              <div className="w-full ml-2">
-                <label className="block mb-2">Nom</label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-3 placeholder-gray-400"
-                  placeholder="Votre nom"
-                  onChange={informationFormHelper.handleInputChange.bind(
-                    informationFormHelper,
-                  )}
-                  name="lastName"
-                  value={informationFormHelper.fieldsInformation.lastName.value}
-                />
-                <p className="form-error">
-                  {informationFormHelper.fieldsInformation.lastName.error}
-                </p>
-              </div>
-            </div>
-
-            {/* Email */}
-            <div className="relative w-full mb-3">
-              <label className="block mb-2">E-mail</label>
-              <input
-                type="email"
-                className="w-full px-3 py-3 placeholder-gray-400"
-                placeholder="Votre e-mail"
-                onChange={informationFormHelper.handleInputChange.bind(
-                  informationFormHelper,
-                )}
-                name="email"
-                value={informationFormHelper.fieldsInformation.email.value}
-              />
-              <p className="form-error">
-                {informationFormHelper.fieldsInformation.email.error}
-              </p>
-            </div>
-
-            {/* Submit to change information */}
-            <div className="mt-6 text-center">
-              {(() => {
-                if (informationFormHelper.submitStatus.response) {
-                  return (
-                    <p className="pt-0 pb-4 text-sm italic text-green-500">
-                      Les informations de votre compte ont bien été mises à
-                      jour.
-                    </p>
-                  )
-                } else if (
-                  informationFormHelper.submitStatus.userFriendlyError.length
-                ) {
-                  return (
-                    <p className="pt-0 pb-4 error-message">
-                      {informationFormHelper.submitStatus.userFriendlyError}
-                    </p>
-                  )
-                } else return null
-              })()}
-              <button
-                className="px-6 py-3 submit-button"
-                onClick={informationFormHelper.handleSubmit.bind(
-                  informationFormHelper,
-                )}
-              >
-                Sauvegarder
-              </button>
-            </div>
-
-            <hr className="my-10 border-gray-500 border-b-1" />
-            <div className="mb-6 text-center">
-              <h6>Changer votre mot de passe</h6>
-            </div>
-
-            {/* Current password */}
-            <div className="relative w-full mb-3">
-              <label className="block mb-2">Mot de passe actuel</label>
-              <input
-                type="password"
-                className="w-full px-3 py-3 placeholder-gray-400"
-                placeholder="Votre mot de passe"
-                name="oldPassword"
-                onChange={passwordFormHelper.handleInputChange.bind(
-                  passwordFormHelper,
-                )}
-                value={passwordFormHelper.fieldsInformation.oldPassword.value}
-              />
-              <p className="form-error">
-                {passwordFormHelper.fieldsInformation.oldPassword.error}
-              </p>
-            </div>
-
-            {/* New password */}
-            <div className="relative w-full mb-3">
-              <label className="block mb-2">Nouveau mot de passe</label>
-              <input
-                type="password"
-                className="w-full px-3 py-3 placeholder-gray-400"
-                placeholder="Votre nouveau mot de passe"
-                name="newPassword"
-                onChange={passwordFormHelper.handleInputChange.bind(
-                  passwordFormHelper,
-                )}
-                value={passwordFormHelper.fieldsInformation.newPassword.value}
-              />
-              <p className="form-error">
-                {passwordFormHelper.fieldsInformation.newPassword.error}
-              </p>
-            </div>
-
-            {/* New password confirmation */}
-            <div className="relative w-full mb-3">
-              <label className="block mb-2">
-                Confirmez votre nouveau mot de passe
-              </label>
-              <input
-                type="password"
-                className="w-full px-3 py-3 placeholder-gray-400"
-                placeholder="Confirmez votre nouveau mot de passe"
-                name="newPasswordConfirmation"
-                onChange={passwordFormHelper.handleInputChange.bind(
-                  passwordFormHelper,
-                )}
-                value={
-                  passwordFormHelper.fieldsInformation.newPasswordConfirmation
-                    .value
-                }
-              />
-              <p className="form-error">
-                {
-                  passwordFormHelper.fieldsInformation.newPasswordConfirmation
-                    .error
-                }
-              </p>
-            </div>
-
-            {/* Submit to change password */}
-            <div className="mt-6 text-center">
-              {(() => {
-                if (passwordFormHelper.submitStatus.response) {
-                  return (
-                    <p className="pt-0 pb-4 text-sm italic text-green-500">
-                      Les informations de votre compte ont bien été mises à
-                      jour.
-                    </p>
-                  )
-                } else if (
-                  passwordFormHelper.submitStatus.userFriendlyError.length
-                ) {
-                  return (
-                    <p className="pt-0 pb-4 error-message">
-                      {passwordFormHelper.submitStatus.userFriendlyError}
-                    </p>
-                  )
-                } else return null
-              })()}
-              <button
-                className="px-6 py-3 submit-button"
-                onClick={passwordFormHelper.handleSubmit.bind(
-                  passwordFormHelper,
-                )}
-              >
-                Valider
-              </button>
-            </div>
+        {/* Full Name */}
+        <div className="flex flex-row justify-between mb-3">
+          <div className="w-full mr-2">
+            <label className="block mb-2">Prénom</label>
+            <input
+              type="text"
+              className="w-full px-3 py-3 placeholder-gray-400"
+              placeholder="Votre prénom"
+              onChange={informationFormHelper.handleInputChange.bind(
+                informationFormHelper,
+              )}
+              name="firstName"
+              value={informationFormHelper.fieldsInformation.firstName.value}
+              autoFocus
+            />
+            <p className="form-error">
+              {informationFormHelper.fieldsInformation.firstName.error}
+            </p>
+          </div>
+          <div className="w-full ml-2">
+            <label className="block mb-2">Nom</label>
+            <input
+              type="text"
+              className="w-full px-3 py-3 placeholder-gray-400"
+              placeholder="Votre nom"
+              onChange={informationFormHelper.handleInputChange.bind(
+                informationFormHelper,
+              )}
+              name="lastName"
+              value={informationFormHelper.fieldsInformation.lastName.value}
+            />
+            <p className="form-error">
+              {informationFormHelper.fieldsInformation.lastName.error}
+            </p>
           </div>
         </div>
-      </section>
+
+        {/* Email */}
+        <div className="w-full mb-3">
+          <label className="block mb-2">E-mail</label>
+          <input
+            type="email"
+            className="w-full px-3 py-3 placeholder-gray-400"
+            placeholder="Votre e-mail"
+            onChange={informationFormHelper.handleInputChange.bind(
+              informationFormHelper,
+            )}
+            name="email"
+            value={informationFormHelper.fieldsInformation.email.value}
+          />
+          <p className="form-error">
+            {informationFormHelper.fieldsInformation.email.error}
+          </p>
+        </div>
+
+        {/* Submit to change information */}
+        <div className="mt-6">
+          {(() => {
+            if (informationFormHelper.submitStatus.response) {
+              return (
+                <p className="pt-0 pb-4 text-sm italic text-green-500">
+                  Les informations de votre compte ont bien été mises à jour.
+                </p>
+              )
+            } else if (
+              informationFormHelper.submitStatus.userFriendlyError.length
+            ) {
+              return (
+                <p className="pt-0 pb-4 error-message">
+                  {informationFormHelper.submitStatus.userFriendlyError}
+                </p>
+              )
+            } else return null
+          })()}
+          <button
+            className="px-6 py-3 submit-button"
+            onClick={informationFormHelper.handleSubmit.bind(
+              informationFormHelper,
+            )}
+          >
+            Sauvegarder
+          </button>
+        </div>
+
+        <hr className="my-12 border-gr border-b-1" />
+        <div className="mb-6">
+          <h5>Changer votre mot de passe</h5>
+        </div>
+
+        {/* Current password */}
+        <div className="w-full mb-3">
+          <label className="block mb-2">Mot de passe actuel</label>
+          <input
+            type="password"
+            className="w-full px-3 py-3 placeholder-gray-400"
+            placeholder="Votre mot de passe"
+            name="oldPassword"
+            onChange={passwordFormHelper.handleInputChange.bind(
+              passwordFormHelper,
+            )}
+            value={passwordFormHelper.fieldsInformation.oldPassword.value}
+          />
+          <p className="form-error">
+            {passwordFormHelper.fieldsInformation.oldPassword.error}
+          </p>
+        </div>
+
+        {/* New password */}
+        <div className="w-full mb-3">
+          <label className="block mb-2">Nouveau mot de passe</label>
+          <input
+            type="password"
+            className="w-full px-3 py-3 placeholder-gray-400"
+            placeholder="Votre nouveau mot de passe"
+            name="newPassword"
+            onChange={passwordFormHelper.handleInputChange.bind(
+              passwordFormHelper,
+            )}
+            value={passwordFormHelper.fieldsInformation.newPassword.value}
+          />
+          <p className="form-error">
+            {passwordFormHelper.fieldsInformation.newPassword.error}
+          </p>
+        </div>
+
+        {/* New password confirmation */}
+        <div className="w-full mb-3">
+          <label className="block mb-2">
+            Confirmez votre nouveau mot de passe
+          </label>
+          <input
+            type="password"
+            className="w-full px-3 py-3 placeholder-gray-400"
+            placeholder="Confirmez votre nouveau mot de passe"
+            name="newPasswordConfirmation"
+            onChange={passwordFormHelper.handleInputChange.bind(
+              passwordFormHelper,
+            )}
+            value={
+              passwordFormHelper.fieldsInformation.newPasswordConfirmation.value
+            }
+          />
+          <p className="form-error">
+            {passwordFormHelper.fieldsInformation.newPasswordConfirmation.error}
+          </p>
+        </div>
+
+        {/* Submit to change password */}
+        <div className="mt-6">
+          {(() => {
+            if (passwordFormHelper.submitStatus.response) {
+              return (
+                <p className="pt-0 pb-4 text-sm italic text-green-500">
+                  Les informations de votre compte ont bien été mises à jour.
+                </p>
+              )
+            } else if (
+              passwordFormHelper.submitStatus.userFriendlyError.length
+            ) {
+              return (
+                <p className="pt-0 pb-4 error-message">
+                  {passwordFormHelper.submitStatus.userFriendlyError}
+                </p>
+              )
+            } else return null
+          })()}
+          <button
+            className="px-6 py-3 submit-button"
+            onClick={passwordFormHelper.handleSubmit.bind(passwordFormHelper)}
+          >
+            Valider
+          </button>
+        </div>
+      </div>
     </Layout>
   )
 }
