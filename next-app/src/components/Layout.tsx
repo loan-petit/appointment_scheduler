@@ -67,9 +67,11 @@ const Layout: React.FunctionComponent<Props> = ({
       <div className="flex-col w-full md:flex md:flex-row md:min-h-screen">
         <div className="flex flex-col flex-shrink-0 w-full text-gray-700 bg-white md:w-64">
           <div className="flex flex-row items-center justify-between flex-shrink-0 px-8 py-6">
-            <h1 className="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg focus:outline-none focus:shadow-outline">
-              {`${currentUser?.firstName} ${currentUser?.lastName}`}
-            </h1>
+            <Link href="/">
+              <h1 className="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg cursor-pointer focus:outline-none focus:shadow-outline">
+                {`${currentUser?.firstName} ${currentUser?.lastName}`}
+              </h1>
+            </Link>
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="p-1 text-gray-800 rounded-lg md:hidden focus:outline-none focus:shadow-outline"
@@ -89,7 +91,7 @@ const Layout: React.FunctionComponent<Props> = ({
             }
           >
             {routes.map((route, i) => (
-              <Link key={i} href={route.path} replace>
+              <Link key={i} href={route.path}>
                 <a
                   className={
                     'nav-item ' +

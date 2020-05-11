@@ -1,17 +1,19 @@
-import Link from 'next/link'
+import * as React from 'react'
+import { useRouter } from 'next/router'
+import Cookies from 'js-cookie'
 
-import { withApollo } from '../apollo/client'
-import Layout from '../components/Layout'
+const IndexPage = () => {
+  const router = useRouter()
 
-const IndexPage = () => (
-  <Layout>
-    <h1>Hello Next.js 👋</h1>
-    <p>
-      <Link href='/about'>
-        <a>About</a>
-      </Link>
-    </p>
-  </Layout>
-)
+  React.useEffect(() => {
+    const token = Cookies.get('token')
+    if (token) {
+      router.replace('/settings')
+    } else {
+      router.replace('/auth/signin')
+    }
+  })
+  return <div />
+}
 
-export default withApollo(IndexPage)
+export default IndexPage
