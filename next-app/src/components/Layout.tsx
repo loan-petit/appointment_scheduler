@@ -9,7 +9,7 @@ import { useQuery } from '@apollo/react-hooks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
 
-import User from '../interfaces/User'
+import User from '../models/User'
 import LoadingOverlay from './LoadingOverlay'
 
 const CurrentUserQuery = gql`
