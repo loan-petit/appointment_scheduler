@@ -177,7 +177,7 @@ const Settings = () => {
               value={informationFormHelper.fieldsInformation.firstName.value}
               autoFocus
             />
-            <p className="form-error">
+            <p className="form-field-error">
               {informationFormHelper.fieldsInformation.firstName.error}
             </p>
           </div>
@@ -193,7 +193,7 @@ const Settings = () => {
               name="lastName"
               value={informationFormHelper.fieldsInformation.lastName.value}
             />
-            <p className="form-error">
+            <p className="form-field-error">
               {informationFormHelper.fieldsInformation.lastName.error}
             </p>
           </div>
@@ -212,7 +212,7 @@ const Settings = () => {
             name="email"
             value={informationFormHelper.fieldsInformation.email.value}
           />
-          <p className="form-error">
+          <p className="form-field-error">
             {informationFormHelper.fieldsInformation.email.error}
           </p>
         </div>
@@ -230,7 +230,7 @@ const Settings = () => {
               informationFormHelper.submitStatus.userFriendlyError.length
             ) {
               return (
-                <p className="pt-0 pb-4 error-message">
+                <p className="pt-0 pb-4 form-submit-error">
                   {informationFormHelper.submitStatus.userFriendlyError}
                 </p>
               )
@@ -264,7 +264,7 @@ const Settings = () => {
             )}
             value={passwordFormHelper.fieldsInformation.oldPassword.value}
           />
-          <p className="form-error">
+          <p className="form-field-error">
             {passwordFormHelper.fieldsInformation.oldPassword.error}
           </p>
         </div>
@@ -282,7 +282,7 @@ const Settings = () => {
             )}
             value={passwordFormHelper.fieldsInformation.newPassword.value}
           />
-          <p className="form-error">
+          <p className="form-field-error">
             {passwordFormHelper.fieldsInformation.newPassword.error}
           </p>
         </div>
@@ -304,7 +304,7 @@ const Settings = () => {
               passwordFormHelper.fieldsInformation.newPasswordConfirmation.value
             }
           />
-          <p className="form-error">
+          <p className="form-field-error">
             {passwordFormHelper.fieldsInformation.newPasswordConfirmation.error}
           </p>
         </div>
@@ -322,7 +322,7 @@ const Settings = () => {
               passwordFormHelper.submitStatus.userFriendlyError.length
             ) {
               return (
-                <p className="pt-0 pb-4 error-message">
+                <p className="pt-0 pb-4 form-submit-error">
                   {passwordFormHelper.submitStatus.userFriendlyError}
                 </p>
               )

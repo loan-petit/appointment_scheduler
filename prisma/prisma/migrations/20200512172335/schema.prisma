@@ -1,0 +1,29 @@
+datasource db {
+  provider = "postgresql"
+  url = "***"
+  default  = true
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @default(autoincrement()) @id
+  email     String   @unique
+  firstName String
+  lastName  String
+  password  String
+  events    Event[]
+}
+
+model Event {
+  id                  Int      @default(autoincrement()) @id
+  name                String   @unique
+  description         String
+  duration            Int
+  cost                Float
+  generateClientSheet Boolean
+  owner               User?    @relation(fields: [ownerId], references: [id])
+  ownerId             Int?
+}

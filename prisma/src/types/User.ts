@@ -7,5 +7,6 @@ export const User = objectType({
     t.model.email()
     t.model.firstName()
     t.model.lastName()
+    t.model.events({ pagination: false })
   },
 })

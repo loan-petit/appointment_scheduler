@@ -122,7 +122,7 @@ const Signin = () => {
               value={formHelper.fieldsInformation.email.value}
               autoFocus
             />
-            <p className="form-error">
+            <p className="form-field-error">
               {formHelper.fieldsInformation.email.error}
             </p>
           </div>
@@ -138,7 +138,7 @@ const Signin = () => {
               onChange={formHelper.handleInputChange.bind(formHelper)}
               value={formHelper.fieldsInformation.password.value}
             />
-            <p className="form-error">
+            <p className="form-field-error">
               {formHelper.fieldsInformation.password.error}
             </p>
           </div>
@@ -146,7 +146,7 @@ const Signin = () => {
           {/* Submit */}
           <div className="mt-6 text-center">
             {formHelper.submitStatus.userFriendlyError.length ? (
-              <p className="pt-0 pb-4 error-message">
+              <p className="pt-0 pb-4 form-submit-error">
                 {formHelper.submitStatus.userFriendlyError}
               </p>
             ) : null}

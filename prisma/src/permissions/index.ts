@@ -15,6 +15,17 @@ const rules = {
     })
     return Number(userId) === user.id
   }),
+  isEventOwner: rule()(async (_parent, args, ctx) => {
+    const userId = getUserId(ctx)
+    const owner = await ctx.prisma.event
+      .findOne({
+        where: {
+          id: args.where.id,
+        },
+      })
+      .owner()
+    return userId === owner.id
+  }),
 }
 
 export const permissions = shield({
@@ -26,5 +37,9 @@ export const permissions = shield({
   Mutation: {
     updateCurrentUser: rules.isAuthenticatedUser,
     deleteOneUser: rules.isCurrentUser,
+    createOneEvent: rules.isEventOwner,
+    updateOneEvent: rules.isEventOwner,
+    upsertOneEvent: rules.isEventOwner,
+    deleteOneEvent: rules.isEventOwner,
   },
 })

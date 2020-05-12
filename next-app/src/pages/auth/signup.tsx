@@ -146,7 +146,7 @@ const Signup = () => {
                 value={formHelper.fieldsInformation.firstName.value}
                 autoFocus
               />
-              <p className="form-error">
+              <p className="form-field-error">
                 {formHelper.fieldsInformation.firstName.error}
               </p>
             </div>
@@ -160,7 +160,7 @@ const Signup = () => {
                 name="lastName"
                 value={formHelper.fieldsInformation.lastName.value}
               />
-              <p className="form-error">
+              <p className="form-field-error">
                 {formHelper.fieldsInformation.lastName.error}
               </p>
             </div>
@@ -177,7 +177,7 @@ const Signup = () => {
               name="email"
               value={formHelper.fieldsInformation.email.value}
             />
-            <p className="form-error">
+            <p className="form-field-error">
               {formHelper.fieldsInformation.email.error}
             </p>
           </div>
@@ -193,7 +193,7 @@ const Signup = () => {
               onChange={formHelper.handleInputChange.bind(formHelper)}
               value={formHelper.fieldsInformation.password.value}
             />
-            <p className="form-error">
+            <p className="form-field-error">
               {formHelper.fieldsInformation.password.error}
             </p>
           </div>
@@ -209,7 +209,7 @@ const Signup = () => {
               onChange={formHelper.handleInputChange.bind(formHelper)}
               value={formHelper.fieldsInformation.passwordConfirmation.value}
             />
-            <p className="form-error">
+            <p className="form-field-error">
               {formHelper.fieldsInformation.passwordConfirmation.error}
             </p>
           </div>
@@ -217,7 +217,7 @@ const Signup = () => {
           {/* Submit */}
           <div className="mt-6 text-center">
             {formHelper.submitStatus.userFriendlyError.length ? (
-              <p className="pt-0 pb-4 error-message">
+              <p className="pt-0 pb-4 form-submit-error">
                 {formHelper.submitStatus.userFriendlyError}
               </p>
             ) : null}

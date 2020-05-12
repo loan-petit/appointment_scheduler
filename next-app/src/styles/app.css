@@ -44,12 +44,16 @@ input {
   }
 }
 
-.form-error {
+.form-field-error {
   @apply pt-2 text-xs italic text-red-500;
 }
 
-.error-message {
+.form-submit-error {
   @apply text-sm italic text-red-500;
+}
+
+.error-message {
+  @apply text-lg text-center text-red-500;
 }
 
 .nav-item {

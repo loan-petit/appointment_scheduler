@@ -8,14 +8,54 @@ type AuthPayload {
   user: User!
 }
 
+type Event {
+  cost: Float!
+  description: String!
+  duration: Int!
+  generateClientSheet: Boolean!
+  id: Int!
+  name: String!
+  owner: User
+}
+
+input EventCreateInput {
+  cost: Float!
+  description: String!
+  duration: Int!
+  generateClientSheet: Boolean!
+  name: String!
+  owner: UserCreateOneWithoutEventsInput
+}
+
+input EventUpdateInput {
+  cost: Float
+  description: String
+  duration: Int
+  generateClientSheet: Boolean
+  id: Int
+  name: String
+  owner: UserUpdateOneWithoutEventsInput
+}
+
+input EventWhereUniqueInput {
+  id: Int
+  name: String
+}
+
 type Mutation {
+  createOneEvent(data: EventCreateInput!): Event!
+  deleteOneEvent(where: EventWhereUniqueInput!): Event
   deleteOneUser(where: UserWhereUniqueInput!): User
   signin(email: String!, password: String!): AuthPayload!
   signup(email: String!, firstName: String!, lastName: String!, password: String!, passwordConfirmation: String!): AuthPayload!
   updateCurrentUser(email: String, firstName: String, lastName: String, newPassword: String, newPasswordConfirmation: String, oldPassword: String): User!
+  updateOneEvent(data: EventUpdateInput!, where: EventWhereUniqueInput!): Event
+  upsertOneEvent(create: EventCreateInput!, update: EventUpdateInput!, where: EventWhereUniqueInput!): Event!
 }
 
 type Query {
+  event(where: EventWhereUniqueInput!): Event
+  events(after: EventWhereUniqueInput, before: EventWhereUniqueInput, first: Int, last: Int, skip: Int): [Event!]!
   me: AuthPayload!
   user(where: UserWhereUniqueInput!): User
   users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int, skip: Int): [User!]!
@@ -23,9 +63,44 @@ type Query {
 
 type User {
   email: String!
+  events: [Event!]!
   firstName: String!
   id: Int!
   lastName: String!
+}
+
+input UserCreateOneWithoutEventsInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutEventsInput
+}
+
+input UserCreateWithoutEventsInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+}
+
+input UserUpdateOneWithoutEventsInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutEventsInput
+  delete: Boolean
+  disconnect: Boolean
+  update: UserUpdateWithoutEventsDataInput
+  upsert: UserUpsertWithoutEventsInput
+}
+
+input UserUpdateWithoutEventsDataInput {
+  email: String
+  firstName: String
+  id: Int
+  lastName: String
+  password: String
+}
+
+input UserUpsertWithoutEventsInput {
+  create: UserCreateWithoutEventsInput!
+  update: UserUpdateWithoutEventsDataInput!
 }
 
 input UserWhereUniqueInput {
