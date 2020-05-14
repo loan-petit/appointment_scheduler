@@ -9,37 +9,36 @@ type AuthPayload {
 }
 
 type Event {
-  cost: Float!
-  description: String!
+  description: String
   duration: Int!
   generateClientSheet: Boolean!
   id: Int!
   name: String!
   owner: User
+  price: Float
 }
 
 input EventCreateInput {
-  cost: Float!
-  description: String!
+  description: String
   duration: Int!
-  generateClientSheet: Boolean!
+  generateClientSheet: Boolean
   name: String!
   owner: UserCreateOneWithoutEventsInput
+  price: Float
 }
 
 input EventUpdateInput {
-  cost: Float
   description: String
   duration: Int
   generateClientSheet: Boolean
   id: Int
   name: String
   owner: UserUpdateOneWithoutEventsInput
+  price: Float
 }
 
 input EventWhereUniqueInput {
   id: Int
-  name: String
 }
 
 type Mutation {

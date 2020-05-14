@@ -7,7 +7,7 @@ export const Event = objectType({
     t.model.name()
     t.model.description()
     t.model.duration()
-    t.model.cost()
+    t.model.price()
     t.model.generateClientSheet()
     t.model.owner()
   },

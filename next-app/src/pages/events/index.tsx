@@ -1,25 +1,22 @@
 import * as React from 'react'
-
 import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import Link from 'next/link'
+import Router from 'next/router'
 
 import LoadingOverlay from '../../components/LoadingOverlay'
 import User from '../../models/User'
 import Event from '../../models/Event'
 import { withApollo } from '../../apollo/client'
 import Layout from '../../components/Layout'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import Link from 'next/link'
 
 const CurrentUserQuery = gql`
   query CurrentUserQuery {
     me {
       user {
         id
-        email
-        firstName
-        lastName
       }
     }
   }
@@ -33,7 +30,7 @@ const EventsQuery = gql`
         name
         description
         duration
-        cost
+        price
         generateClientSheet
       }
     }
@@ -41,25 +38,41 @@ const EventsQuery = gql`
 `
 
 const Events = () => {
-  var { loading, error, data } = useQuery(CurrentUserQuery)
-  if (loading) return <LoadingOverlay />
-  if (error) {
-    return <p className="error-message" />
-  }
-  var currentUser: User = data.me.user
+  const [currentUser, setCurrentUser] = React.useState<User>()
 
-  var { loading, error, data } = useQuery(EventsQuery, {
-    variables: { ownerId: currentUser.id },
+  const currentUserQueryResult = useQuery(CurrentUserQuery)
+  const eventsQueryResult = useQuery(EventsQuery, {
+    variables: { ownerId: currentUser?.id },
+    skip: !currentUser,
   })
-  if (loading) return <LoadingOverlay />
-  if (error) {
-    return <p className="error-message" />
+
+  // Verify CurrentUserQuery result
+  if (currentUserQueryResult.loading) return <LoadingOverlay />
+  if (currentUserQueryResult.error) {
+    Router.push('/auth/signin')
+    return <div />
   }
-  var events: Event[] = data.user.events
+  if (!currentUser) {
+    setCurrentUser(currentUserQueryResult.data.me.user)
+  }
+
+  // Verify EventsQuery result
+  if (eventsQueryResult.loading) return <LoadingOverlay />
+  if (eventsQueryResult.error) {
+    return (
+      <p className="error-message">
+        Une erreur est survenue. Veuillez-réessayer.
+      </p>
+    )
+  }
+  if (!eventsQueryResult.data) {
+    return <div />
+  }
+  var events: Event[] = eventsQueryResult.data.user.events
 
   return (
     <Layout>
-      <Link href="/events/create">
+      <Link href="/events/upsertOne">
         <div className="flex flex-row items-center justify-center">
           <FontAwesomeIcon icon={faPlus} />
           <p className="pl-4">Créer un nouvel événement</p>

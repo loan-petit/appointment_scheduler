@@ -18,7 +18,10 @@ type Props = {
   fields: string[]
   refreshComponent: () => void
   fieldsValidator: (name: string, value: string) => string
-  onSubmit: (fieldsInformation: FieldsInformation) => void
+  onSubmit: (
+    fieldsInformation: FieldsInformation,
+    additionalVariables?: Object,
+  ) => void
   onSubmitResult: (submitStatus: SubmitStatus) => string
 }
 
@@ -26,7 +29,10 @@ class FormHelper {
   fieldsInformation: FieldsInformation
   refreshComponent: () => void
   fieldsValidator: (name: string, value: string) => string
-  onSubmit: (fieldsInformation: FieldsInformation) => void
+  onSubmit: (
+    fieldsInformation: FieldsInformation,
+    additionalVariables?: Object,
+  ) => void
   onSubmitResult: (submitStatus: SubmitStatus) => string
   submitStatus: SubmitStatus
 
@@ -76,7 +82,9 @@ class FormHelper {
     return isValid
   }
 
-  handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+  handleInputChange(
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) {
     const name = event.target.name
     const value = event.target.value
     const error = this.fieldsValidator(name, value)
@@ -86,17 +94,25 @@ class FormHelper {
     this.refreshComponent()
   }
 
-  async handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
+  async handleSubmit(
+    event: React.MouseEvent<HTMLButtonElement>,
+    additionalVariables?: Object,
+  ) {
     event.preventDefault()
 
     if (this.validateForm()) {
+      this.submitStatus.error = null
+      this.submitStatus.response = null
+
       try {
-        this.submitStatus.response = await this.onSubmit(this.fieldsInformation)
-        this.submitStatus.error = null
+        this.submitStatus.response = await this.onSubmit(
+          this.fieldsInformation,
+          additionalVariables,
+        )
       } catch (err) {
         this.submitStatus.error = err
-        this.submitStatus.response = null
       }
+
       this.submitStatus.isSubmitted = true
       this.submitStatus.userFriendlyError = this.onSubmitResult(
         this.submitStatus,

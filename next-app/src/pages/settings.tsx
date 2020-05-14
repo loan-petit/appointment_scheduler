@@ -143,7 +143,7 @@ const Settings = () => {
     }),
   )
 
-  const [currentUser, setCurrentUser] = React.useState<User | null>(null)
+  const [currentUser, setCurrentUser] = React.useState<User>()
   const { loading, error, data } = useQuery(CurrentUserQuery)
   if (loading) return <LoadingOverlay />
   if (error) {

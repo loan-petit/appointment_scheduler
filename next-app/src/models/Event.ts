@@ -5,7 +5,7 @@ type Event = {
   name: string
   description?: string
   duration: number
-  cost?: number
+  price?: number
   generateClientSheet?: boolean
   owner?: User
 }
