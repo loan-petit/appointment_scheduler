@@ -72,25 +72,24 @@ const Events = () => {
 
   return (
     <Layout>
-      <Link href="/events/upsertOne">
-        <div className="flex flex-row items-center justify-center">
-          <FontAwesomeIcon icon={faPlus} />
-          <p className="pl-4">Créer un nouvel événement</p>
-        </div>
-      </Link>
+      <div className="flex justify-center pb-2">
+        <Link href="/events/upsertOne">
+          <a className="flex flex-row items-center justify-center py-4 text-gray-800 rounded-lg lg:w-1/2 hover:bg-gray-300">
+            <FontAwesomeIcon icon={faPlus} />
+            <p className="pl-4">Créer un nouvel événement</p>
+          </a>
+        </Link>
+      </div>
       {/* Events */}
       <div className="flex flex-wrap">
         {events.map((event, i) => (
-          <div
-            key={i}
-            className="w-full px-4 pt-6 text-center lg:pt-12 md:w-4/12"
-          >
-            <div className="relative flex flex-col w-full min-w-0 mb-8 break-words bg-white rounded-lg shadow-lg">
-              <div className="flex-auto px-4 py-5">
+          <div key={i} className="w-full p-4 text-center md:w-4/12">
+            <Link href={`/events/upsertOne?id=${event.id}`}>
+              <a className="flex flex-col p-4 break-words bg-white rounded-lg shadow-lg">
                 <h6 className="text-xl font-semibold">{event.name}</h6>
-                <p className="mt-2 mb-4 text-gray-600">{event.description}</p>
-              </div>
-            </div>
+                <p className="m-2 text-gray-600">{event.description}</p>
+              </a>
+            </Link>
           </div>
         ))}
       </div>

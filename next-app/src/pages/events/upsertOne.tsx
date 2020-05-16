@@ -70,7 +70,7 @@ const UpdateOneEventMutation = gql`
     $price: Float
     $generateClientSheet: Boolean
   ) {
-    upsertOneEvent(
+    updateOneEvent(
       where: { id: $eventId }
       data: {
         name: $name
@@ -102,7 +102,7 @@ const UpsertOneEvent = () => {
 
   const currentUserQueryResult = useQuery(CurrentUserQuery)
   const eventQueryResult = useQuery(EventQuery, {
-    variables: { eventId: router.query.id },
+    variables: { eventId: Number(router.query.id) },
     skip: !router.query.id,
   })
   const [createOneEvent] = useMutation(CreateOneEventMutation)
@@ -113,13 +113,7 @@ const UpsertOneEvent = () => {
       case 'name':
         return !value.length ? 'Ce champ est obligatoire.' : ''
       case 'duration':
-        if (!value.length) {
-          return 'Ce champ est obligatoire.'
-        } else if (isNaN(value)) {
-          return 'Ce champ doit contenir une durée.'
-        } else {
-          return ''
-        }
+        return isNaN(value) ? 'Ce champ doit contenir une durée.' : ''
       case 'price':
         return isNaN(value) ? 'Ce champ doit contenir un prix.' : ''
       default:
@@ -153,7 +147,6 @@ const UpsertOneEvent = () => {
 
   const onSubmitResult = ({ error }: any) => {
     if (error) {
-      console.log(error)
       return 'Une erreur est survenue. Veuillez-réessayer.'
     }
     return ''
@@ -312,7 +305,7 @@ const UpsertOneEvent = () => {
               formHelper.handleSubmit.bind(formHelper)(
                 e,
                 router.query.id
-                  ? { eventId: router.query.id }
+                  ? { eventId: Number(router.query.id) }
                   : { ownerId: currentUser?.id },
               )
             }
