@@ -58,7 +58,7 @@ class FormHelper {
     }
   }
 
-  updateFieldValues(fieldValues: { [key: string]: string }) {
+  updateFieldValues(fieldValues: { [key: string]: any }) {
     Object.entries(fieldValues).forEach(([key, value]) => {
       if (this.fieldsInformation[key]) {
         this.fieldsInformation[key].value = value
@@ -86,7 +86,17 @@ class FormHelper {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) {
     const name = event.target.name
-    const value = event.target.value
+
+    let value: any
+    if (
+      event.target instanceof HTMLInputElement &&
+      event.target.type === 'checkbox'
+    ) {
+      value = event.target.checked
+    } else {
+      value = event.target.value
+    }
+
     const error = this.fieldsValidator(name, value)
 
     this.fieldsInformation[name].value = value

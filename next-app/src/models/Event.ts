@@ -7,7 +7,7 @@ type Event = {
   duration: number
   price?: number
   generateClientSheet?: boolean
-  owner?: User
+  user?: User
 }
 
 export default Event

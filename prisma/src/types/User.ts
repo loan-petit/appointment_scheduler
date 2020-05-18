@@ -7,6 +7,11 @@ export const User = objectType({
     t.model.email()
     t.model.firstName()
     t.model.lastName()
+    t.model.websiteUrl()
+    t.model.address()
+    t.model.minScheduleNotice()
     t.model.events({ pagination: false })
+    t.model.recurrentAvailabilities({ pagination: false })
+    t.model.availabilities({ pagination: false })
   },
 })

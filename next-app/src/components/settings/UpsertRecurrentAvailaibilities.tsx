@@ -1,13 +1,14 @@
 import React from 'react'
 import gql from 'graphql-tag'
 import { useMutation, useQuery } from '@apollo/react-hooks'
-import { useRouter } from 'next/router'
+import Router, { useRouter } from 'next/router'
 
 import { withApollo } from '../../apollo/client'
-import Layout from '../../components/Layout'
+import Layout from '../Layout'
 import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
-import LoadingOverlay from '../../components/LoadingOverlay'
+import LoadingOverlay from '../LoadingOverlay'
 import User from '../../models/User'
+import RecurrentAvailabilitySlot from '../../models/RecurrentAvailabilitySlot'
 
 const CurrentUserQuery = gql`
   query CurrentUserQuery {
@@ -19,35 +20,31 @@ const CurrentUserQuery = gql`
   }
 `
 
-const EventQuery = gql`
-  query EventQuery($eventId: Int!) {
-    event(where: { id: $eventId }) {
-      id
-      name
-      description
-      duration
-      price
-      generateClientSheet
+const RecurrentAvailabilitiesQuery = gql`
+  query RecurrentAvailabilitiesQuery($userId: Int!) {
+    user(where: { id: $userId }) {
+      recurrentAvailabilities {
+        id
+        day
+        startTime
+        endTime
+      }
     }
   }
 `
 
-const CreateOneEventMutation = gql`
-  mutation CreateOneEventMutation(
-    $name: String!
-    $description: String
-    $duration: Int!
-    $price: Float
-    $generateClientSheet: Boolean
+const CreateOneRecurrentAvailabilitySlotMutation = gql`
+  mutation CreateOneRecurentAvailabilitySlotMutation(
+    $day: String!
+    $startTime: Int!
+    $endTime: Int!
     $userId: Int!
   ) {
-    createOneEvent(
+    createOneRecurentAvailabilitySlot(
       data: {
-        name: $name
-        description: $description
-        duration: $duration
-        price: $price
-        generateClientSheet: $generateClientSheet
+        day: $day
+        startTime: $startTime
+        endTime: $endTime
         user: { connect: { id: $userId } }
       }
     ) {
@@ -56,47 +53,51 @@ const CreateOneEventMutation = gql`
   }
 `
 
-const UpdateOneEventMutation = gql`
-  mutation UpdateOneEventMutation(
-    $eventId: Int!
-    $name: String!
-    $description: String
-    $duration: Int!
-    $price: Float
-    $generateClientSheet: Boolean
+const UpdateOneRecurrentAvailabilitySlotMutation = gql`
+  mutation UpdateOneRecurentAvailabilitySlotMutation(
+    $recurrentAvailabilitySlotId: Int!
+    $day: String
+    $startTime: Int
+    $endTime: Int
   ) {
-    updateOneEvent(
-      where: { id: $eventId }
-      data: {
-        name: $name
-        description: $description
-        duration: $duration
-        price: $price
-        generateClientSheet: $generateClientSheet
-      }
+    updateOneRecurentAvailabilitySlot(
+      where: { id: $recurrentAvailabilitySlotId }
+      data: { day: $day, startTime: $startTime, endTime: $endTime }
     ) {
       id
     }
   }
 `
 
-const UpsertOneEvent = () => {
-  const router = useRouter()
+type Props = {
+  user: User
+}
 
+const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
+  user,
+}) => {
   // Hook to force component rerender
   const [, updateState] = React.useState()
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
   const [currentUser, setCurrentUser] = React.useState<User>()
-  const [event, setEvent] = React.useState<Event>()
+  if (!currentUser) {
+    setCurrentUser(user)
+  }
 
-  const currentUserQueryResult = useQuery(CurrentUserQuery)
-  const eventQueryResult = useQuery(EventQuery, {
-    variables: { eventId: Number(router.query.id) },
-    skip: !router.query.id,
+  const [recurrentAvailabilities, setRecurrentAvailabilities] = React.useState<
+    RecurrentAvailabilitySlot[]
+  >()
+
+  const recurrentAvailabilitiesQuery = useQuery(RecurrentAvailabilitiesQuery, {
+    variables: { userId: currentUser?.id },
   })
-  const [createOneEvent] = useMutation(CreateOneEventMutation)
-  const [updateOneEvent] = useMutation(UpdateOneEventMutation)
+  const [createOneRecurrentAvailabilitySlotMutation] = useMutation(
+    CreateOneRecurrentAvailabilitySlotMutation,
+  )
+  const [updateOneRecurrentAvailabilitySlotMutation] = useMutation(
+    UpdateOneRecurrentAvailabilitySlotMutation,
+  )
 
   const fieldsValidator = (name: String, value: any) => {
     switch (name) {
@@ -161,7 +162,7 @@ const UpsertOneEvent = () => {
   // Verify CurrentUserQuery result
   if (currentUserQueryResult.loading) return <LoadingOverlay />
   if (currentUserQueryResult.error) {
-    router.push('/auth/signin')
+    Router.push('/auth/signin')
     return <div />
   }
   if (!currentUser) {

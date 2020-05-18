@@ -8,14 +8,123 @@ type AuthPayload {
   user: User!
 }
 
+type AvailabilitySlot {
+  date: DateTime!
+  endTime: Int!
+  id: Int!
+  startTime: Int!
+  user: User
+}
+
+input AvailabilitySlotCreateInput {
+  date: DateTime!
+  endTime: Int!
+  startTime: Int!
+  user: UserCreateOneWithoutAvailabilitiesInput
+}
+
+input AvailabilitySlotCreateManyWithoutUserInput {
+  connect: [AvailabilitySlotWhereUniqueInput!]
+  create: [AvailabilitySlotCreateWithoutUserInput!]
+}
+
+input AvailabilitySlotCreateWithoutUserInput {
+  date: DateTime!
+  endTime: Int!
+  startTime: Int!
+}
+
+input AvailabilitySlotScalarWhereInput {
+  AND: [AvailabilitySlotScalarWhereInput!]
+  date: DateTimeFilter
+  endTime: IntFilter
+  id: IntFilter
+  NOT: [AvailabilitySlotScalarWhereInput!]
+  OR: [AvailabilitySlotScalarWhereInput!]
+  startTime: IntFilter
+  userId: NullableIntFilter
+}
+
+input AvailabilitySlotUpdateInput {
+  date: DateTime
+  endTime: Int
+  id: Int
+  startTime: Int
+  user: UserUpdateOneWithoutAvailabilitiesInput
+}
+
+input AvailabilitySlotUpdateManyDataInput {
+  date: DateTime
+  endTime: Int
+  id: Int
+  startTime: Int
+}
+
+input AvailabilitySlotUpdateManyWithoutUserInput {
+  connect: [AvailabilitySlotWhereUniqueInput!]
+  create: [AvailabilitySlotCreateWithoutUserInput!]
+  delete: [AvailabilitySlotWhereUniqueInput!]
+  deleteMany: [AvailabilitySlotScalarWhereInput!]
+  disconnect: [AvailabilitySlotWhereUniqueInput!]
+  set: [AvailabilitySlotWhereUniqueInput!]
+  update: [AvailabilitySlotUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [AvailabilitySlotUpdateManyWithWhereNestedInput!]
+  upsert: [AvailabilitySlotUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input AvailabilitySlotUpdateManyWithWhereNestedInput {
+  data: AvailabilitySlotUpdateManyDataInput!
+  where: AvailabilitySlotScalarWhereInput!
+}
+
+input AvailabilitySlotUpdateWithoutUserDataInput {
+  date: DateTime
+  endTime: Int
+  id: Int
+  startTime: Int
+}
+
+input AvailabilitySlotUpdateWithWhereUniqueWithoutUserInput {
+  data: AvailabilitySlotUpdateWithoutUserDataInput!
+  where: AvailabilitySlotWhereUniqueInput!
+}
+
+input AvailabilitySlotUpsertWithWhereUniqueWithoutUserInput {
+  create: AvailabilitySlotCreateWithoutUserInput!
+  update: AvailabilitySlotUpdateWithoutUserDataInput!
+  where: AvailabilitySlotWhereUniqueInput!
+}
+
+input AvailabilitySlotWhereUniqueInput {
+  id: Int
+}
+
+input BooleanFilter {
+  equals: Boolean
+  not: Boolean
+}
+
+scalar DateTime
+
+input DateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: DateTime
+  notIn: [DateTime!]
+}
+
 type Event {
   description: String
   duration: Int!
   generateClientSheet: Boolean!
   id: Int!
   name: String!
-  owner: User
   price: Float
+  user: User
 }
 
 input EventCreateInput {
@@ -23,8 +132,34 @@ input EventCreateInput {
   duration: Int!
   generateClientSheet: Boolean
   name: String!
-  owner: UserCreateOneWithoutEventsInput
   price: Float
+  user: UserCreateOneWithoutEventsInput
+}
+
+input EventCreateManyWithoutUserInput {
+  connect: [EventWhereUniqueInput!]
+  create: [EventCreateWithoutUserInput!]
+}
+
+input EventCreateWithoutUserInput {
+  description: String
+  duration: Int!
+  generateClientSheet: Boolean
+  name: String!
+  price: Float
+}
+
+input EventScalarWhereInput {
+  AND: [EventScalarWhereInput!]
+  description: NullableStringFilter
+  duration: IntFilter
+  generateClientSheet: BooleanFilter
+  id: IntFilter
+  name: StringFilter
+  NOT: [EventScalarWhereInput!]
+  OR: [EventScalarWhereInput!]
+  price: NullableFloatFilter
+  userId: NullableIntFilter
 }
 
 input EventUpdateInput {
@@ -33,39 +168,258 @@ input EventUpdateInput {
   generateClientSheet: Boolean
   id: Int
   name: String
-  owner: UserUpdateOneWithoutEventsInput
   price: Float
+  user: UserUpdateOneWithoutEventsInput
+}
+
+input EventUpdateManyDataInput {
+  description: String
+  duration: Int
+  generateClientSheet: Boolean
+  id: Int
+  name: String
+  price: Float
+}
+
+input EventUpdateManyWithoutUserInput {
+  connect: [EventWhereUniqueInput!]
+  create: [EventCreateWithoutUserInput!]
+  delete: [EventWhereUniqueInput!]
+  deleteMany: [EventScalarWhereInput!]
+  disconnect: [EventWhereUniqueInput!]
+  set: [EventWhereUniqueInput!]
+  update: [EventUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [EventUpdateManyWithWhereNestedInput!]
+  upsert: [EventUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input EventUpdateManyWithWhereNestedInput {
+  data: EventUpdateManyDataInput!
+  where: EventScalarWhereInput!
+}
+
+input EventUpdateWithoutUserDataInput {
+  description: String
+  duration: Int
+  generateClientSheet: Boolean
+  id: Int
+  name: String
+  price: Float
+}
+
+input EventUpdateWithWhereUniqueWithoutUserInput {
+  data: EventUpdateWithoutUserDataInput!
+  where: EventWhereUniqueInput!
+}
+
+input EventUpsertWithWhereUniqueWithoutUserInput {
+  create: EventCreateWithoutUserInput!
+  update: EventUpdateWithoutUserDataInput!
+  where: EventWhereUniqueInput!
 }
 
 input EventWhereUniqueInput {
   id: Int
 }
 
+input IntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: Int
+  notIn: [Int!]
+}
+
 type Mutation {
+  createOneAvailabilitySlot(data: AvailabilitySlotCreateInput!): AvailabilitySlot!
   createOneEvent(data: EventCreateInput!): Event!
+  createOneRecurrentAvailabilitySlot(data: RecurrentAvailabilitySlotCreateInput!): RecurrentAvailabilitySlot!
+  deleteOneAvailabilitySlot(where: AvailabilitySlotWhereUniqueInput!): AvailabilitySlot
   deleteOneEvent(where: EventWhereUniqueInput!): Event
+  deleteOneRecurrentAvailabilitySlot(where: RecurrentAvailabilitySlotWhereUniqueInput!): RecurrentAvailabilitySlot
   deleteOneUser(where: UserWhereUniqueInput!): User
   signin(email: String!, password: String!): AuthPayload!
   signup(email: String!, firstName: String!, lastName: String!, password: String!, passwordConfirmation: String!): AuthPayload!
   updateCurrentUser(email: String, firstName: String, lastName: String, newPassword: String, newPasswordConfirmation: String, oldPassword: String): User!
+  updateOneAvailabilitySlot(data: AvailabilitySlotUpdateInput!, where: AvailabilitySlotWhereUniqueInput!): AvailabilitySlot
   updateOneEvent(data: EventUpdateInput!, where: EventWhereUniqueInput!): Event
+  updateOneRecurrentAvailabilitySlot(data: RecurrentAvailabilitySlotUpdateInput!, where: RecurrentAvailabilitySlotWhereUniqueInput!): RecurrentAvailabilitySlot
+  upsertOneAvailabilitySlot(create: AvailabilitySlotCreateInput!, update: AvailabilitySlotUpdateInput!, where: AvailabilitySlotWhereUniqueInput!): AvailabilitySlot!
   upsertOneEvent(create: EventCreateInput!, update: EventUpdateInput!, where: EventWhereUniqueInput!): Event!
+  upsertOneRecurrentAvailabilitySlot(create: RecurrentAvailabilitySlotCreateInput!, update: RecurrentAvailabilitySlotUpdateInput!, where: RecurrentAvailabilitySlotWhereUniqueInput!): RecurrentAvailabilitySlot!
+}
+
+input NullableFloatFilter {
+  equals: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  not: Float
+  notIn: [Float!]
+}
+
+input NullableIntFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: Int
+  notIn: [Int!]
+}
+
+input NullableStringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: String
+  notIn: [String!]
+  startsWith: String
 }
 
 type Query {
+  availabilitySlot(where: AvailabilitySlotWhereUniqueInput!): AvailabilitySlot
+  availabilitySlots(after: AvailabilitySlotWhereUniqueInput, before: AvailabilitySlotWhereUniqueInput, first: Int, last: Int, skip: Int): [AvailabilitySlot!]!
   event(where: EventWhereUniqueInput!): Event
   events(after: EventWhereUniqueInput, before: EventWhereUniqueInput, first: Int, last: Int, skip: Int): [Event!]!
   me: AuthPayload!
+  recurrentAvailabilitySlot(where: RecurrentAvailabilitySlotWhereUniqueInput!): RecurrentAvailabilitySlot
   user(where: UserWhereUniqueInput!): User
   users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int, skip: Int): [User!]!
 }
 
+type RecurrentAvailabilitySlot {
+  day: String!
+  endTime: Int!
+  id: Int!
+  startTime: Int!
+  user: User
+}
+
+input RecurrentAvailabilitySlotCreateInput {
+  day: String!
+  endTime: Int!
+  startTime: Int!
+  user: UserCreateOneWithoutRecurrentAvailabilitiesInput
+}
+
+input RecurrentAvailabilitySlotCreateManyWithoutUserInput {
+  connect: [RecurrentAvailabilitySlotWhereUniqueInput!]
+  create: [RecurrentAvailabilitySlotCreateWithoutUserInput!]
+}
+
+input RecurrentAvailabilitySlotCreateWithoutUserInput {
+  day: String!
+  endTime: Int!
+  startTime: Int!
+}
+
+input RecurrentAvailabilitySlotScalarWhereInput {
+  AND: [RecurrentAvailabilitySlotScalarWhereInput!]
+  day: StringFilter
+  endTime: IntFilter
+  id: IntFilter
+  NOT: [RecurrentAvailabilitySlotScalarWhereInput!]
+  OR: [RecurrentAvailabilitySlotScalarWhereInput!]
+  startTime: IntFilter
+  userId: NullableIntFilter
+}
+
+input RecurrentAvailabilitySlotUpdateInput {
+  day: String
+  endTime: Int
+  id: Int
+  startTime: Int
+  user: UserUpdateOneWithoutRecurrentAvailabilitiesInput
+}
+
+input RecurrentAvailabilitySlotUpdateManyDataInput {
+  day: String
+  endTime: Int
+  id: Int
+  startTime: Int
+}
+
+input RecurrentAvailabilitySlotUpdateManyWithoutUserInput {
+  connect: [RecurrentAvailabilitySlotWhereUniqueInput!]
+  create: [RecurrentAvailabilitySlotCreateWithoutUserInput!]
+  delete: [RecurrentAvailabilitySlotWhereUniqueInput!]
+  deleteMany: [RecurrentAvailabilitySlotScalarWhereInput!]
+  disconnect: [RecurrentAvailabilitySlotWhereUniqueInput!]
+  set: [RecurrentAvailabilitySlotWhereUniqueInput!]
+  update: [RecurrentAvailabilitySlotUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [RecurrentAvailabilitySlotUpdateManyWithWhereNestedInput!]
+  upsert: [RecurrentAvailabilitySlotUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input RecurrentAvailabilitySlotUpdateManyWithWhereNestedInput {
+  data: RecurrentAvailabilitySlotUpdateManyDataInput!
+  where: RecurrentAvailabilitySlotScalarWhereInput!
+}
+
+input RecurrentAvailabilitySlotUpdateWithoutUserDataInput {
+  day: String
+  endTime: Int
+  id: Int
+  startTime: Int
+}
+
+input RecurrentAvailabilitySlotUpdateWithWhereUniqueWithoutUserInput {
+  data: RecurrentAvailabilitySlotUpdateWithoutUserDataInput!
+  where: RecurrentAvailabilitySlotWhereUniqueInput!
+}
+
+input RecurrentAvailabilitySlotUpsertWithWhereUniqueWithoutUserInput {
+  create: RecurrentAvailabilitySlotCreateWithoutUserInput!
+  update: RecurrentAvailabilitySlotUpdateWithoutUserDataInput!
+  where: RecurrentAvailabilitySlotWhereUniqueInput!
+}
+
+input RecurrentAvailabilitySlotWhereUniqueInput {
+  id: Int
+}
+
+input StringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: String
+  notIn: [String!]
+  startsWith: String
+}
+
 type User {
+  address: String
+  availabilities: [AvailabilitySlot!]!
   email: String!
   events: [Event!]!
   firstName: String!
   id: Int!
   lastName: String!
+  minScheduleNotice: Int!
+  recurrentAvailabilities: [RecurrentAvailabilitySlot!]!
+  websiteUrl: String
+}
+
+input UserCreateOneWithoutAvailabilitiesInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutAvailabilitiesInput
 }
 
 input UserCreateOneWithoutEventsInput {
@@ -73,11 +427,54 @@ input UserCreateOneWithoutEventsInput {
   create: UserCreateWithoutEventsInput
 }
 
+input UserCreateOneWithoutRecurrentAvailabilitiesInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutRecurrentAvailabilitiesInput
+}
+
+input UserCreateWithoutAvailabilitiesInput {
+  address: String
+  email: String!
+  events: EventCreateManyWithoutUserInput
+  firstName: String!
+  lastName: String!
+  minScheduleNotice: Int
+  password: String!
+  recurrentAvailabilities: RecurrentAvailabilitySlotCreateManyWithoutUserInput
+  websiteUrl: String
+}
+
 input UserCreateWithoutEventsInput {
+  address: String
+  availabilities: AvailabilitySlotCreateManyWithoutUserInput
   email: String!
   firstName: String!
   lastName: String!
+  minScheduleNotice: Int
   password: String!
+  recurrentAvailabilities: RecurrentAvailabilitySlotCreateManyWithoutUserInput
+  websiteUrl: String
+}
+
+input UserCreateWithoutRecurrentAvailabilitiesInput {
+  address: String
+  availabilities: AvailabilitySlotCreateManyWithoutUserInput
+  email: String!
+  events: EventCreateManyWithoutUserInput
+  firstName: String!
+  lastName: String!
+  minScheduleNotice: Int
+  password: String!
+  websiteUrl: String
+}
+
+input UserUpdateOneWithoutAvailabilitiesInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutAvailabilitiesInput
+  delete: Boolean
+  disconnect: Boolean
+  update: UserUpdateWithoutAvailabilitiesDataInput
+  upsert: UserUpsertWithoutAvailabilitiesInput
 }
 
 input UserUpdateOneWithoutEventsInput {
@@ -89,17 +486,67 @@ input UserUpdateOneWithoutEventsInput {
   upsert: UserUpsertWithoutEventsInput
 }
 
+input UserUpdateOneWithoutRecurrentAvailabilitiesInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutRecurrentAvailabilitiesInput
+  delete: Boolean
+  disconnect: Boolean
+  update: UserUpdateWithoutRecurrentAvailabilitiesDataInput
+  upsert: UserUpsertWithoutRecurrentAvailabilitiesInput
+}
+
+input UserUpdateWithoutAvailabilitiesDataInput {
+  address: String
+  email: String
+  events: EventUpdateManyWithoutUserInput
+  firstName: String
+  id: Int
+  lastName: String
+  minScheduleNotice: Int
+  password: String
+  recurrentAvailabilities: RecurrentAvailabilitySlotUpdateManyWithoutUserInput
+  websiteUrl: String
+}
+
 input UserUpdateWithoutEventsDataInput {
+  address: String
+  availabilities: AvailabilitySlotUpdateManyWithoutUserInput
   email: String
   firstName: String
   id: Int
   lastName: String
+  minScheduleNotice: Int
   password: String
+  recurrentAvailabilities: RecurrentAvailabilitySlotUpdateManyWithoutUserInput
+  websiteUrl: String
+}
+
+input UserUpdateWithoutRecurrentAvailabilitiesDataInput {
+  address: String
+  availabilities: AvailabilitySlotUpdateManyWithoutUserInput
+  email: String
+  events: EventUpdateManyWithoutUserInput
+  firstName: String
+  id: Int
+  lastName: String
+  minScheduleNotice: Int
+  password: String
+  websiteUrl: String
+}
+
+input UserUpsertWithoutAvailabilitiesInput {
+  create: UserCreateWithoutAvailabilitiesInput!
+  update: UserUpdateWithoutAvailabilitiesDataInput!
 }
 
 input UserUpsertWithoutEventsInput {
   create: UserCreateWithoutEventsInput!
   update: UserUpdateWithoutEventsDataInput!
+}
+
+input UserUpsertWithoutRecurrentAvailabilitiesInput {
+  create: UserCreateWithoutRecurrentAvailabilitiesInput!
+  update: UserUpdateWithoutRecurrentAvailabilitiesDataInput!
 }
 
 input UserWhereUniqueInput {
