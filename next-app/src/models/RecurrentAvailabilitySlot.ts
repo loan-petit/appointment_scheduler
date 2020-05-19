@@ -7,17 +7,17 @@ type RecurrentAvailabilitySlot = {
   day: string
   startTime: number
   endTime: number
-  user?: User
+  user: User
 }
 
 export const RecurrentAvailabilitySlotFragments = {
   fields: gql`
     fragment RecurrentAvailabilitySlotFields on RecurrentAvailabilitySlot {
+      __typename
       id
       day
       startTime
       endTime
-      user
     }
   `,
 }

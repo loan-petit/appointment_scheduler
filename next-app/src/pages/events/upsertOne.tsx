@@ -8,7 +8,7 @@ import Layout from '../../components/Layout'
 import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
 import LoadingOverlay from '../../components/LoadingOverlay'
 import User from '../../models/User'
-import { EventFragments } from '../../models/Event'
+import { EventFragments, EventOperations } from '../../models/Event'
 
 const CurrentUserQuery = gql`
   query CurrentUserQuery {
@@ -71,14 +71,33 @@ const UpsertOneEvent = () => {
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
   const [currentUser, setCurrentUser] = React.useState<User>()
-  const [event, setEvent] = React.useState<Event>()
 
   const currentUserQueryResult = useQuery(CurrentUserQuery)
   const eventQueryResult = useQuery(EventQuery, {
     variables: { eventId: Number(router.query.id) },
     skip: !router.query.id,
   })
-  const [upsertOneEvent] = useMutation(UpsertOneEventMutation)
+  const [upsertOneEvent] = useMutation(UpsertOneEventMutation, {
+    update(cache, { data: { upsertOneEvent } }) {
+      const { user }: any = cache.readQuery({
+        query: EventOperations.events,
+        variables: { userId: currentUser?.id },
+      })
+      cache.writeQuery({
+        query: EventOperations.events,
+        variables: { userId: currentUser?.id },
+        data: {
+          __typename: 'User',
+          user: {
+            ...user,
+            events: user.events.concat([upsertOneEvent]),
+          },
+        },
+      })
+    },
+  })
+
+  const [event, setEvent] = React.useState<Event>()
 
   const fieldsValidator = (name: String, value: any) => {
     switch (name) {

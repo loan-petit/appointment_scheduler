@@ -18,6 +18,7 @@ type User = {
 export const UserFragments = {
   fields: gql`
     fragment UserFields on User {
+      __typename
       id
       email
       firstName
@@ -25,8 +26,6 @@ export const UserFragments = {
       websiteUrl
       address
       minScheduleNotice
-      events
-      recurrentAvailabilities
     }
   `,
 }

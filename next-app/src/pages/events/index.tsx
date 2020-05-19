@@ -8,7 +8,7 @@ import Router from 'next/router'
 
 import LoadingOverlay from '../../components/LoadingOverlay'
 import User from '../../models/User'
-import Event, { EventFragments } from '../../models/Event'
+import Event, { EventFragments, EventOperations } from '../../models/Event'
 import { withApollo } from '../../apollo/client'
 import Layout from '../../components/Layout'
 import WarningModal from '../../components/WarningModal'
@@ -22,18 +22,6 @@ const CurrentUserQuery = gql`
     }
   }
 `
-
-const EventsQuery = gql`
-  query EventsQuery($ownerId: Int!) {
-    user(where: { id: $ownerId }) {
-      events {
-        ...EventFields
-      }
-    }
-  }
-  ${EventFragments.fields}
-`
-
 const DeleteOneEventMutation = gql`
   mutation DeleteOneEventMutation($eventId: Int!) {
     deleteOneEvent(where: { id: $eventId }) {
@@ -45,7 +33,6 @@ const DeleteOneEventMutation = gql`
 
 const Events = () => {
   const [currentUser, setCurrentUser] = React.useState<User>()
-  const [events, setEvents] = React.useState<Event[]>()
 
   const [isEventDetailsOpen, setIsEventDetailsOpen] = React.useState<
     boolean[]
@@ -53,11 +40,37 @@ const Events = () => {
   const [eventToDeleteId, setEventToDeleteId] = React.useState(-1)
 
   const currentUserQueryResult = useQuery(CurrentUserQuery)
-  const eventsQueryResult = useQuery(EventsQuery, {
-    variables: { ownerId: currentUser?.id },
+  const eventsQueryResult = useQuery(EventOperations.events, {
+    variables: { userId: currentUser?.id },
     skip: !currentUser,
   })
-  const [deleteOneEvent] = useMutation(DeleteOneEventMutation)
+  const [deleteOneEvent] = useMutation(DeleteOneEventMutation, {
+    update(cache, { data: { deleteOneEvent } }) {
+      const { user }: any = cache.readQuery({
+        query: EventOperations.events,
+        variables: { userId: currentUser?.id },
+      })
+
+      const eventRemovedIndex = user.events.findIndex(
+        (e: Event) => e.id == deleteOneEvent.id,
+      )
+      if (eventRemovedIndex > -1) {
+        user.events.splice(eventRemovedIndex, 1)
+      }
+
+      cache.writeQuery({
+        query: EventOperations.events,
+        variables: { userId: currentUser?.id },
+        data: {
+          __typename: 'User',
+          user: {
+            ...user,
+            events: user.events,
+          },
+        },
+      })
+    },
+  })
 
   // Verify CurrentUserQuery result
   if (currentUserQueryResult.loading) return <LoadingOverlay />
@@ -80,13 +93,7 @@ const Events = () => {
   } else if (!eventsQueryResult.data) {
     return <div />
   }
-
-  if (!events) {
-    setIsEventDetailsOpen(
-      new Array(eventsQueryResult.data.user.events.length).fill(false),
-    )
-    setEvents(eventsQueryResult.data.user.events)
-  }
+  const events: Event[] = eventsQueryResult.data.user.events
 
   return (
     <Layout>
@@ -115,7 +122,9 @@ const Events = () => {
                 icon={faEllipsisH}
                 onClick={() =>
                   setIsEventDetailsOpen(
-                    isEventDetailsOpen?.map((x, j) => (i == j ? !x : false)),
+                    (
+                      isEventDetailsOpen || new Array(events.length).fill(false)
+                    ).map((x, j) => (i == j ? !x : false)),
                   )
                 }
                 className="cursor-pointer"
@@ -149,9 +158,7 @@ const Events = () => {
             variables: { eventId: eventToDeleteId },
           })
           setEventToDeleteId(-1)
-          setIsEventDetailsOpen(
-            new Array(isEventDetailsOpen?.length).fill(false),
-          )
+          setIsEventDetailsOpen(new Array(events.length).fill(false))
         }}
         isShown={eventToDeleteId >= 0}
       />

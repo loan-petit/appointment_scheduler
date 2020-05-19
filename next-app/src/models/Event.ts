@@ -9,19 +9,34 @@ type Event = {
   duration: number
   price?: number
   generateClientSheet?: boolean
-  user?: User
+  user: User
 }
 
 export const EventFragments = {
   fields: gql`
     fragment EventFields on Event {
+      __typename
       id
       name
       description
+      duration
       price
       generateClientSheet
-      user
     }
+  `,
+}
+
+export const EventOperations = {
+  events: gql`
+    query EventsQuery($userId: Int!) {
+      user(where: { id: $userId }) {
+        __typename
+        events {
+          ...EventFields
+        }
+      }
+    }
+    ${EventFragments.fields}
   `,
 }
 
