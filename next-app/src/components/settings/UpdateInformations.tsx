@@ -17,6 +17,9 @@ const UpdateCurrentUserMutation = gql`
       lastName: $lastName
     ) {
       id
+      email
+      firstName
+      lastName
     }
   }
 `
@@ -29,8 +32,6 @@ const UpdateInformations: React.FunctionComponent<Props> = ({ user }) => {
   // Hook to force component rerender
   const [, updateState] = React.useState()
   const forceUpdate = React.useCallback(() => updateState({}), [])
-
-  const [currentUser, setCurrentUser] = React.useState<User>()
 
   const [updateCurrentUser] = useMutation(UpdateCurrentUserMutation)
 
@@ -68,17 +69,17 @@ const UpdateInformations: React.FunctionComponent<Props> = ({ user }) => {
 
   const [formHelper] = React.useState(
     new FormHelper({
-      fields: ['firstName', 'lastName', 'email'],
+      fields: [
+        { name: 'firstName', value: user.firstName },
+        { name: 'lastName', value: user.lastName },
+        { name: 'email', value: user.email },
+      ],
       refreshComponent: forceUpdate,
       fieldsValidator: fieldsValidator,
       onSubmit: onSubmit,
       onSubmitResult: onSubmitResult,
     }),
   )
-  if (!currentUser) {
-    formHelper.updateFieldValues(user)
-    setCurrentUser(user)
-  }
 
   return (
     <>

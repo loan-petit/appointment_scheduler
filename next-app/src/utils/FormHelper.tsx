@@ -14,8 +14,10 @@ export type SubmitStatus = {
   userFriendlyError: string
 }
 
+type FieldDescription = string | { name: string; value: any }
+
 type Props = {
-  fields: string[]
+  fields: FieldDescription[]
   refreshComponent: () => void
   fieldsValidator: (name: string, value: string) => string
   onSubmit: (
@@ -38,8 +40,12 @@ class FormHelper {
 
   constructor(props: Props) {
     this.fieldsInformation = props.fields.reduce(
-      (obj: FieldsInformation, v) => {
-        obj[v] = { value: '', error: '' }
+      (obj: FieldsInformation, v: FieldDescription) => {
+        if (typeof v === 'string') {
+          obj[v] = { value: '', error: '' }
+        } else {
+          obj[v.name] = { value: v.value, error: '' }
+        }
         return obj
       },
       {},

@@ -7,12 +7,28 @@
 @import 'tailwindcss/utilities';
 
 /* Custom base styles */
+h4 {
+  @apply font-bold text-gray-800;
+}
+
 h5 {
   @apply font-bold text-gray-600;
 }
 
 h6 {
   @apply text-sm font-bold text-gray-600;
+}
+
+a {
+  @apply text-gray-800 bg-transparent;
+
+  &:hover {
+    @apply text-gray-700;
+  }
+
+  &:focus {
+    @apply shadow-outline outline-none;
+  }
 }
 
 label {

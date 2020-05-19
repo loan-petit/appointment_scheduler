@@ -1,4 +1,6 @@
-import User from "./User"
+import gql from 'graphql-tag'
+
+import User from './User'
 
 type Event = {
   id: number
@@ -8,6 +10,19 @@ type Event = {
   price?: number
   generateClientSheet?: boolean
   user?: User
+}
+
+export const EventFragments = {
+  fields: gql`
+    fragment EventFields on Event {
+      id
+      name
+      description
+      price
+      generateClientSheet
+      user
+    }
+  `,
 }
 
 export default Event

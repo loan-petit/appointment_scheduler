@@ -89,7 +89,7 @@ const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
     RecurrentAvailabilitySlot[]
   >()
 
-  const recurrentAvailabilitiesQuery = useQuery(RecurrentAvailabilitiesQuery, {
+  const recurrentAvailabilitiesQueryResult = useQuery(RecurrentAvailabilitiesQuery, {
     variables: { userId: currentUser?.id },
   })
   const [createOneRecurrentAvailabilitySlotMutation] = useMutation(

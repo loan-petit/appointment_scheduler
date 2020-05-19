@@ -2,15 +2,18 @@ import { rule, shield } from 'graphql-shield'
 import { getUserId } from '../utils/getUserId'
 
 const isModelOwner = async (args: any, model: any, userId?: string) => {
-  const document = await model.findOne({
-    where: {
-      id: args.where.id,
-    },
-  })
-  if (!document) Boolean(userId)
-
-  const user = await document.user()
-  return userId === user.id
+  try {
+    const user = await model
+      .findOne({
+        where: {
+          id: args.where.id,
+        },
+      })
+      .user()
+    return userId === user.id
+  } catch (err) {
+    return Boolean(userId)
+  }
 }
 
 const rules = {
@@ -27,7 +30,7 @@ const rules = {
     })
     return Number(userId) === user.id
   }),
-  isEventOwner: rule()((_parent, args, ctx) =>
+  isEventOwner: rule()(async (_parent, args, ctx) =>
     isModelOwner(args, ctx.prisma.event, getUserId(ctx)),
   ),
   isAvailabilitySlotOwner: rule()((_parent, args, ctx) =>

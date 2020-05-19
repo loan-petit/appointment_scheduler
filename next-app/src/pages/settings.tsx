@@ -24,8 +24,10 @@ const CurrentUserQuery = gql`
 `
 const Settings = () => {
   const { loading, error, data } = useQuery(CurrentUserQuery)
+
+  // Verify CurrentUserQuery result
   if (loading) return <LoadingOverlay />
-  if (error) {
+  else if (error) {
     Router.push('/auth/signin')
     return <div />
   }

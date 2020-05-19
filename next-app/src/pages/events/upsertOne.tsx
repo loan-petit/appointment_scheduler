@@ -8,6 +8,7 @@ import Layout from '../../components/Layout'
 import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
 import LoadingOverlay from '../../components/LoadingOverlay'
 import User from '../../models/User'
+import { EventFragments } from '../../models/Event'
 
 const CurrentUserQuery = gql`
   query CurrentUserQuery {
@@ -22,18 +23,15 @@ const CurrentUserQuery = gql`
 const EventQuery = gql`
   query EventQuery($eventId: Int!) {
     event(where: { id: $eventId }) {
-      id
-      name
-      description
-      duration
-      price
-      generateClientSheet
+      ...EventFields
     }
   }
+  ${EventFragments.fields}
 `
 
-const CreateOneEventMutation = gql`
-  mutation CreateOneEventMutation(
+const UpsertOneEventMutation = gql`
+  mutation UpsertOneEventMutation(
+    $eventId: Int
     $name: String!
     $description: String
     $duration: Int!
@@ -41,8 +39,8 @@ const CreateOneEventMutation = gql`
     $generateClientSheet: Boolean
     $userId: Int!
   ) {
-    createOneEvent(
-      data: {
+    upsertOneEvent(
+      create: {
         name: $name
         description: $description
         duration: $duration
@@ -50,34 +48,19 @@ const CreateOneEventMutation = gql`
         generateClientSheet: $generateClientSheet
         user: { connect: { id: $userId } }
       }
-    ) {
-      id
-    }
-  }
-`
-
-const UpdateOneEventMutation = gql`
-  mutation UpdateOneEventMutation(
-    $eventId: Int!
-    $name: String!
-    $description: String
-    $duration: Int!
-    $price: Float
-    $generateClientSheet: Boolean
-  ) {
-    updateOneEvent(
-      where: { id: $eventId }
-      data: {
+      update: {
         name: $name
         description: $description
         duration: $duration
         price: $price
         generateClientSheet: $generateClientSheet
       }
+      where: { id: $eventId }
     ) {
-      id
+      ...EventFields
     }
   }
+  ${EventFragments.fields}
 `
 
 const UpsertOneEvent = () => {
@@ -95,8 +78,7 @@ const UpsertOneEvent = () => {
     variables: { eventId: Number(router.query.id) },
     skip: !router.query.id,
   })
-  const [createOneEvent] = useMutation(CreateOneEventMutation)
-  const [updateOneEvent] = useMutation(UpdateOneEventMutation)
+  const [upsertOneEvent] = useMutation(UpsertOneEventMutation)
 
   const fieldsValidator = (name: String, value: any) => {
     switch (name) {
@@ -114,26 +96,17 @@ const UpsertOneEvent = () => {
   const onSubmit = (
     fieldsInformation: FieldsInformation,
     additionalVariables: any,
-  ) => {
-    const variables = {
-      name: fieldsInformation.name.value,
-      description: fieldsInformation.description.value,
-      duration: fieldsInformation.duration.value,
-      price: fieldsInformation.price.value,
-      generateClientSheet: fieldsInformation.generateClientSheet.value,
-      ...additionalVariables,
-    }
-
-    if (additionalVariables.eventId) {
-      return updateOneEvent({
-        variables: variables,
-      })
-    } else {
-      return createOneEvent({
-        variables: variables,
-      })
-    }
-  }
+  ) =>
+    upsertOneEvent({
+      variables: {
+        name: fieldsInformation.name.value,
+        description: fieldsInformation.description.value,
+        duration: Number(fieldsInformation.duration.value),
+        price: Number(fieldsInformation.price.value),
+        generateClientSheet: fieldsInformation.generateClientSheet.value,
+        ...additionalVariables,
+      },
+    })
 
   const onSubmitResult = ({ error }: any) => {
     if (error) {
@@ -149,7 +122,7 @@ const UpsertOneEvent = () => {
         'description',
         'duration',
         'price',
-        'generateClientSheet',
+        { name: 'generateClientSheet', value: false },
       ],
       refreshComponent: forceUpdate,
       fieldsValidator: fieldsValidator,
@@ -160,7 +133,7 @@ const UpsertOneEvent = () => {
 
   // Verify CurrentUserQuery result
   if (currentUserQueryResult.loading) return <LoadingOverlay />
-  if (currentUserQueryResult.error) {
+  else if (currentUserQueryResult.error) {
     router.push('/auth/signin')
     return <div />
   }
@@ -171,7 +144,7 @@ const UpsertOneEvent = () => {
   // Verify EventQuery result
   if (router.query.id) {
     if (eventQueryResult.loading) return <LoadingOverlay />
-    if (eventQueryResult.error) {
+    else if (eventQueryResult.error) {
       return (
         <p className="error-message">
           Une erreur est survenue. Veuillez-réessayer.
@@ -291,14 +264,12 @@ const UpsertOneEvent = () => {
           })()}
           <button
             className="px-6 py-3 submit-button"
-            onClick={(e) =>
-              formHelper.handleSubmit.bind(formHelper)(
-                e,
-                router.query.id
-                  ? { eventId: Number(router.query.id) }
-                  : { userId: currentUser?.id },
-              )
-            }
+            onClick={(e) => {
+              formHelper.handleSubmit.bind(formHelper)(e, {
+                eventId: Number(router.query.id) || -1,
+                userId: currentUser?.id,
+              })
+            }}
           >
             Valider
           </button>
