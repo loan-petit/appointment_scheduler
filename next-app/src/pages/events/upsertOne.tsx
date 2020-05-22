@@ -8,7 +8,7 @@ import Layout from '../../components/Layout'
 import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
 import LoadingOverlay from '../../components/LoadingOverlay'
 import User from '../../models/User'
-import { EventFragments, EventOperations } from '../../models/Event'
+import Event, { EventFragments, EventOperations } from '../../models/Event'
 
 const CurrentUserQuery = gql`
   query CurrentUserQuery {
@@ -31,7 +31,7 @@ const EventQuery = gql`
 
 const UpsertOneEventMutation = gql`
   mutation UpsertOneEventMutation(
-    $eventId: Int
+    $eventId: Int!
     $name: String!
     $description: String
     $duration: Int!
@@ -71,6 +71,7 @@ const UpsertOneEvent = () => {
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
   const [currentUser, setCurrentUser] = React.useState<User>()
+  const [event, setEvent] = React.useState<Event>()
 
   const currentUserQueryResult = useQuery(CurrentUserQuery)
   const eventQueryResult = useQuery(EventQuery, {
@@ -83,6 +84,8 @@ const UpsertOneEvent = () => {
         query: EventOperations.events,
         variables: { userId: currentUser?.id },
       })
+      if (user.events.some((e: Event) => e.id == upsertOneEvent.id)) return
+
       cache.writeQuery({
         query: EventOperations.events,
         variables: { userId: currentUser?.id },
@@ -96,8 +99,6 @@ const UpsertOneEvent = () => {
       })
     },
   })
-
-  const [event, setEvent] = React.useState<Event>()
 
   const fieldsValidator = (name: String, value: any) => {
     switch (name) {

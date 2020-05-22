@@ -12,18 +12,22 @@ h4 {
 }
 
 h5 {
-  @apply font-bold text-gray-600;
+  @apply text-lg font-bold text-gray-600;
 }
 
 h6 {
   @apply text-sm font-bold text-gray-600;
 }
 
+p {
+  @apply text-gray-800;
+}
+
 a {
-  @apply text-gray-800 bg-transparent;
+  @apply text-gray-800 cursor-pointer;
 
   &:hover {
-    @apply text-gray-700;
+    @apply text-gray-900;
   }
 
   &:focus {
@@ -46,7 +50,7 @@ textarea {
 
 /* Extract CSS components */
 .submit-button {
-  @apply text-sm font-bold text-white uppercase bg-gray-900 rounded shadow outline-none;
+  @apply text-sm font-bold text-white uppercase bg-gray-900 rounded shadow;
 
   &:active {
     @apply bg-gray-700;
@@ -57,7 +61,7 @@ textarea {
   }
 
   &:focus {
-    @apply outline-none;
+    @apply shadow-outline outline-none;
   }
 }
 
@@ -74,13 +78,10 @@ textarea {
 }
 
 .nav-item {
-  @apply block px-4 py-2 mt-2 text-sm font-semibold text-gray-900 rounded-lg;
+  @apply block px-4 py-2 mt-2 text-sm font-semibold rounded-lg;
 
-  &:hover {
-    @apply text-gray-900 bg-gray-200;
-  }
-
+  &:hover,
   &:focus {
-    @apply text-gray-900 bg-gray-200 shadow-outline outline-none;
+    @apply bg-gray-200;
   }
 }

@@ -9,6 +9,7 @@ import User from '../models/User'
 import Layout from '../components/Layout'
 import UpdateInformations from '../components/settings/UpdateInformations'
 import UpdatePassword from '../components/settings/UpdatePassword'
+import UpsertOneRecurrentAvailability from '../components/settings/recurrentAvailability/UpsertRecurrentAvailaibilities'
 
 const CurrentUserQuery = gql`
   query CurrentUserQuery {
@@ -36,9 +37,13 @@ const Settings = () => {
   return (
     <Layout>
       <div className="md:w-1/2">
-        <UpdateInformations user={currentUser} />
+        <UpsertOneRecurrentAvailability currentUser={currentUser} />
 
-        <hr className="my-12 border-gr border-b-1" />
+        <hr className="my-12 border-b-1" />
+
+        <UpdateInformations currentUser={currentUser} />
+
+        <hr className="my-12 border-b-1" />
 
         <UpdatePassword />
       </div>

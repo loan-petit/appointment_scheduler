@@ -99,9 +99,9 @@ const Events = () => {
     <Layout>
       <div className="flex justify-center pb-2">
         <Link href="/events/upsertOne">
-          <a className="flex flex-row items-center justify-center py-4 text-gray-800 rounded-lg lg:w-1/2 hover:bg-gray-300">
+          <a className="flex flex-row items-center justify-center py-4 rounded-lg lg:w-1/2 hover:bg-gray-300">
             <FontAwesomeIcon icon={faPlus} />
-            <p className="pl-4">Créer un nouvel événement</p>
+            <p className="pl-4 text-lg">Créer un nouvel événement</p>
           </a>
         </Link>
       </div>
@@ -139,7 +139,7 @@ const Events = () => {
                   <a className="block p-2">Éditer</a>
                 </Link>
                 <a
-                  className="block p-2 text-red-500 cursor-pointer hover:text-red-400"
+                  className="block p-2 text-red-500 hover:text-red-600"
                   onClick={() => setEventToDeleteId(event.id)}
                 >
                   Supprimer

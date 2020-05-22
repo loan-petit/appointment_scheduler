@@ -1,10 +1,10 @@
 import { objectType } from 'nexus'
 
-export const AvailabilitySlot = objectType({
-  name: 'AvailabilitySlot',
+export const RecurrentAvailability = objectType({
+  name: 'RecurrentAvailability',
   definition(t) {
     t.model.id()
-    t.model.date()
+    t.model.day()
     t.model.startTime()
     t.model.endTime()
     t.model.user()

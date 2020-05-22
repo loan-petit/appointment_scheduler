@@ -9,7 +9,7 @@ type Event = {
   duration: number
   price?: number
   generateClientSheet?: boolean
-  user: User
+  user?: User
 }
 
 export const EventFragments = {

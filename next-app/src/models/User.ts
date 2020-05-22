@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 import Event from './Event'
-import RecurrentAvailabilitySlot from './RecurrentAvailabilitySlot'
+import RecurrentAvailability from './RecurrentAvailability'
 
 type User = {
   id: number
@@ -11,8 +11,8 @@ type User = {
   websiteUrl?: string
   address?: string
   minScheduleNotice: number
-  events: Event[]
-  recurrentAvailabilities: RecurrentAvailabilitySlot[]
+  events?: Event[]
+  recurrentAvailabilities?: RecurrentAvailability[]
 }
 
 export const UserFragments = {

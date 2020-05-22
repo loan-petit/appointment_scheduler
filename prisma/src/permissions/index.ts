@@ -33,11 +33,11 @@ const rules = {
   isEventOwner: rule()(async (_parent, args, ctx) =>
     isModelOwner(args, ctx.prisma.event, getUserId(ctx)),
   ),
-  isAvailabilitySlotOwner: rule()((_parent, args, ctx) =>
-    isModelOwner(args, ctx.prisma.availabilitySlot, getUserId(ctx)),
+  isAvailabilityOwner: rule()((_parent, args, ctx) =>
+    isModelOwner(args, ctx.prisma.availability, getUserId(ctx)),
   ),
-  isRecurrentAvailabilitySlotOwner: rule()((_parent, args, ctx) =>
-    isModelOwner(args, ctx.prisma.recurrentAvailabilitySlot, getUserId(ctx)),
+  isRecurrentAvailabilityOwner: rule()((_parent, args, ctx) =>
+    isModelOwner(args, ctx.prisma.recurrentAvailability, getUserId(ctx)),
   ),
 }
 
@@ -57,16 +57,16 @@ export const permissions = shield({
     upsertOneEvent: rules.isEventOwner,
     deleteOneEvent: rules.isEventOwner,
 
-    // AvailabilitySlot
-    createOneAvailabilitySlot: rules.isAuthenticatedUser,
-    updateOneAvailabilitySlot: rules.isAvailabilitySlotOwner,
-    upsertOneAvailabilitySlot: rules.isAvailabilitySlotOwner,
-    deleteOneAvailabilitySlot: rules.isAvailabilitySlotOwner,
+    // Availability
+    createOneAvailability: rules.isAuthenticatedUser,
+    updateOneAvailability: rules.isAvailabilityOwner,
+    upsertOneAvailability: rules.isAvailabilityOwner,
+    deleteOneAvailability: rules.isAvailabilityOwner,
 
-    // RecurrentAvailabilitySlot
-    createOneRecurrentAvailabilitySlot: rules.isAuthenticatedUser,
-    updateOneRecurrentAvailabilitySlot: rules.isRecurrentAvailabilitySlotOwner,
-    upsertOneRecurrentAvailabilitySlot: rules.isRecurrentAvailabilitySlotOwner,
-    deleteOneRecurrentAvailabilitySlot: rules.isRecurrentAvailabilitySlotOwner,
+    // RecurrentAvailability
+    createOneRecurrentAvailability: rules.isAuthenticatedUser,
+    updateOneRecurrentAvailability: rules.isRecurrentAvailabilityOwner,
+    upsertOneRecurrentAvailability: rules.isRecurrentAvailabilityOwner,
+    deleteOneRecurrentAvailability: rules.isRecurrentAvailabilityOwner,
   },
 })

@@ -8,11 +8,11 @@ export const DefaultQueries = queryType({
     t.crud.event()
     t.crud.events()
 
-    t.crud.availabilitySlot()
-    t.crud.availabilitySlots()
+    t.crud.availability()
+    t.crud.availabilities()
 
-    t.crud.recurrentAvailabilitySlot()
-    t.crud.recurrentAvailabilitySlot()
+    t.crud.recurrentAvailability()
+    t.crud.recurrentAvailabilities()
   },
 })
 

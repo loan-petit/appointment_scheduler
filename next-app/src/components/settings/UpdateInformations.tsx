@@ -25,10 +25,10 @@ const UpdateCurrentUserMutation = gql`
 `
 
 type Props = {
-  user: User
+  currentUser: User
 }
 
-const UpdateInformations: React.FunctionComponent<Props> = ({ user }) => {
+const UpdateInformations: React.FunctionComponent<Props> = ({ currentUser }) => {
   // Hook to force component rerender
   const [, updateState] = React.useState()
   const forceUpdate = React.useCallback(() => updateState({}), [])
@@ -70,9 +70,9 @@ const UpdateInformations: React.FunctionComponent<Props> = ({ user }) => {
   const [formHelper] = React.useState(
     new FormHelper({
       fields: [
-        { name: 'firstName', value: user.firstName },
-        { name: 'lastName', value: user.lastName },
-        { name: 'email', value: user.email },
+        { name: 'firstName', value: currentUser.firstName },
+        { name: 'lastName', value: currentUser.lastName },
+        { name: 'email', value: currentUser.email },
       ],
       refreshComponent: forceUpdate,
       fieldsValidator: fieldsValidator,
@@ -93,7 +93,7 @@ const UpdateInformations: React.FunctionComponent<Props> = ({ user }) => {
           <label className="block mb-2">Prénom</label>
           <input
             type="text"
-            className="w-full px-3 py-3 placeholder-gray-400"
+            className="w-full p-3 placeholder-gray-400"
             placeholder="Votre prénom"
             onChange={formHelper.handleInputChange.bind(formHelper)}
             name="firstName"
@@ -108,7 +108,7 @@ const UpdateInformations: React.FunctionComponent<Props> = ({ user }) => {
           <label className="block mb-2">Nom</label>
           <input
             type="text"
-            className="w-full px-3 py-3 placeholder-gray-400"
+            className="w-full p-3 placeholder-gray-400"
             placeholder="Votre nom"
             onChange={formHelper.handleInputChange.bind(formHelper)}
             name="lastName"
@@ -125,7 +125,7 @@ const UpdateInformations: React.FunctionComponent<Props> = ({ user }) => {
         <label className="block mb-2">E-mail</label>
         <input
           type="email"
-          className="w-full px-3 py-3 placeholder-gray-400"
+          className="w-full p-3 placeholder-gray-400"
           placeholder="Votre e-mail"
           onChange={formHelper.handleInputChange.bind(formHelper)}
           name="email"

@@ -234,7 +234,7 @@ const Signup = () => {
       {/* Signin */}
       <div className="mt-6 text-lg font-semibold text-center text-gray-800">
         <Link href="/auth/signin">
-          <small>Vous avez déjà un compte ? Connectez-vous.</small>
+          <small className="cursor-pointer">Vous avez déjà un compte ? Connectez-vous.</small>
         </Link>
       </div>
     </section>

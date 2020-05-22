@@ -86,7 +86,7 @@ const UpdatePassword = () => {
         <label className="block mb-2">Mot de passe actuel</label>
         <input
           type="password"
-          className="w-full px-3 py-3 placeholder-gray-400"
+          className="w-full p-3 placeholder-gray-400"
           placeholder="Votre mot de passe"
           name="oldPassword"
           onChange={formHelper.handleInputChange.bind(
@@ -104,7 +104,7 @@ const UpdatePassword = () => {
         <label className="block mb-2">Nouveau mot de passe</label>
         <input
           type="password"
-          className="w-full px-3 py-3 placeholder-gray-400"
+          className="w-full p-3 placeholder-gray-400"
           placeholder="Votre nouveau mot de passe"
           name="newPassword"
           onChange={formHelper.handleInputChange.bind(
@@ -124,7 +124,7 @@ const UpdatePassword = () => {
         </label>
         <input
           type="password"
-          className="w-full px-3 py-3 placeholder-gray-400"
+          className="w-full p-3 placeholder-gray-400"
           placeholder="Confirmez votre nouveau mot de passe"
           name="newPasswordConfirmation"
           onChange={formHelper.handleInputChange.bind(
