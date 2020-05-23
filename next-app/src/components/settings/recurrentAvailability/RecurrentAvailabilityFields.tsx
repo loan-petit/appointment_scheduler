@@ -4,18 +4,21 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import TimeField from 'react-simple-timefield'
 
 import RecurrentAvailability from '../../../models/RecurrentAvailability'
+import WarningModal from '../../WarningModal'
 
 type Props = {
   recurrentAvailability: RecurrentAvailability
   updateField: (e: React.ChangeEvent<HTMLInputElement>) => void
-  removeField?: () => void
+  remove: () => void
 }
 
 const RecurrentAvailabilityTimePicker: React.FunctionComponent<Props> = ({
   recurrentAvailability,
   updateField,
-  removeField,
+  remove,
 }) => {
+  const [showWarningModal, setShowWarningModal] = React.useState(false)
+
   const convertSecondsToTimeString = (seconds: number) =>
     new Date(seconds * 1000).toISOString().substr(11, 8)
 
@@ -38,6 +41,7 @@ const RecurrentAvailabilityTimePicker: React.FunctionComponent<Props> = ({
           onChange={updateField}
         />
       </div>
+
       <div className="flex flex-col ml-2">
         <label className="text-xs normal-case">Heure de fin</label>
         <TimeField
@@ -55,11 +59,20 @@ const RecurrentAvailabilityTimePicker: React.FunctionComponent<Props> = ({
           onChange={updateField}
         />
       </div>
-      {removeField && (
-        <button onClick={removeField} className="ml-4">
-          <FontAwesomeIcon icon={faTimes} className="text-red-500" size="lg" />
-        </button>
-      )}
+
+      <button onClick={() => setShowWarningModal(true)} className="ml-4">
+        <FontAwesomeIcon icon={faTimes} className="text-red-500" size="lg" />
+      </button>
+
+      <WarningModal
+        warningMessage="Vous êtes sur le point de supprimer un créneau de disponibilité récurrent, confirmez-vous cette action ?"
+        onCancel={() => setShowWarningModal(false)}
+        onConfirm={() => {
+          remove()
+          setShowWarningModal(false)
+        }}
+        isShown={showWarningModal}
+      />
     </div>
   )
 }

@@ -11,7 +11,7 @@ import RecurrentAvailability, {
 import Day, { dayToUserFriendlyString } from '../../../models/enums/Day'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import RecurrentAvailabilityTimePicker from './RecurrentAvailabilityTimePicker'
+import RecurrentAvailabilityTimePicker from './RecurrentAvailabilityFields'
 import getMaxId from '../../../utils/getMaxId'
 
 const RecurrentAvailabilitiesQuery = gql`
@@ -19,6 +19,9 @@ const RecurrentAvailabilitiesQuery = gql`
     user(where: { id: $userId }) {
       recurrentAvailabilities {
         ...RecurrentAvailabilityFields
+        user {
+          id
+        }
       }
     }
   }
@@ -28,8 +31,8 @@ const RecurrentAvailabilitiesQuery = gql`
 const UpsertOneRecurrentAvailabilityMutation = gql`
   mutation UpsertOneRecurrentAvailabilityMutation(
     $recurrentAvailabilityId: Int!
-    $day: String!
-    $startTime: String
+    $day: Day!
+    $startTime: Int!
     $endTime: Int!
     $userId: Int!
   ) {
@@ -43,6 +46,17 @@ const UpsertOneRecurrentAvailabilityMutation = gql`
       update: { day: $day, startTime: $startTime, endTime: $endTime }
       where: { id: $recurrentAvailabilityId }
     ) {
+      ...RecurrentAvailabilityFields
+    }
+  }
+  ${RecurrentAvailabilityFragments.fields}
+`
+
+const DeleteOneRecurrentAvailabilityMutation = gql`
+  mutation DeleteOneRecurrentAvailabilityMutation(
+    $recurrentAvailabilityId: Int!
+  ) {
+    deleteOneRecurrentAvailability(where: { id: $recurrentAvailabilityId }) {
       ...RecurrentAvailabilityFields
     }
   }
@@ -70,37 +84,73 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
       variables: { userId: currentUser.id },
     },
   )
-  // const [upsertOneRecurrentAvailability] =
-  useMutation(UpsertOneRecurrentAvailabilityMutation, {
-    update(cache, { data: { upsertOneRecurrentAvailability } }) {
-      const { user }: any = cache.readQuery({
-        query: RecurrentAvailabilitiesQuery,
-        variables: { userId: currentUser.id },
-      })
-      if (
-        user.recurrentAvailabilities.some(
-          (e: RecurrentAvailability) =>
-            e.id == upsertOneRecurrentAvailability.id,
+  const [upsertOneRecurrentAvailability] = useMutation(
+    UpsertOneRecurrentAvailabilityMutation,
+    {
+      update(cache, { data: { upsertOneRecurrentAvailability } }) {
+        const { user }: any = cache.readQuery({
+          query: RecurrentAvailabilitiesQuery,
+          variables: { userId: currentUser.id },
+        })
+        if (
+          user.recurrentAvailabilities.some(
+            (e: RecurrentAvailability) =>
+              e.id == upsertOneRecurrentAvailability.id,
+          )
         )
-      )
-        return
+          return
 
-      cache.writeQuery({
-        query: RecurrentAvailabilitiesQuery,
-        variables: { userId: currentUser.id },
-        data: {
-          __typename: 'User',
-          user: {
+        cache.writeQuery({
+          query: RecurrentAvailabilitiesQuery,
+          variables: { userId: currentUser.id },
+          data: {
             __typename: 'User',
-            ...user,
-            recurrentAvailabilities: user.recurrentAvailabilities.concat([
-              upsertOneRecurrentAvailability,
-            ]),
+            user: {
+              __typename: 'User',
+              ...user,
+              recurrentAvailabilities: user.recurrentAvailabilities.concat([
+                upsertOneRecurrentAvailability,
+              ]),
+            },
           },
-        },
-      })
+        })
+      },
     },
-  })
+  )
+  const [deleteOneRecurrentAvailability] = useMutation(
+    DeleteOneRecurrentAvailabilityMutation,
+    {
+      update(cache, { data: { deleteOneRecurrentAvailability } }) {
+        const { user }: any = cache.readQuery({
+          query: RecurrentAvailabilitiesQuery,
+          variables: { userId: currentUser?.id },
+        })
+
+        const recurrentAvailabilityRemovedIndex = user.recurrentAvailabilities.findIndex(
+          (e: RecurrentAvailability) =>
+            e.id == deleteOneRecurrentAvailability.id,
+        )
+        if (recurrentAvailabilityRemovedIndex > -1) {
+          user.recurrentAvailabilities.splice(
+            recurrentAvailabilityRemovedIndex,
+            1,
+          )
+        }
+
+        cache.writeQuery({
+          query: RecurrentAvailabilitiesQuery,
+          variables: { userId: currentUser?.id },
+          data: {
+            __typename: 'User',
+            user: {
+              ...user,
+              recurrentAvailabilities: user.recurrentAvailabilities,
+            },
+          },
+        })
+      },
+    },
+  )
 
   // Verify RecurrentAvailabilityQuery result
   if (recurrentAvailabilitiesQueryResult.loading) return <LoadingOverlay />
@@ -124,26 +174,6 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
     recurrentAvailabilities,
   )
 
-  const addRecurrentAvailability = (day: string) => {
-    if (!recurrentAvailabilities) return
-
-    setRecurrentAvailabilities(
-      recurrentAvailabilities.concat([
-        {
-          id: getMaxId(recurrentAvailabilities) + 1,
-          day: day,
-        },
-      ]),
-    )
-  }
-
-  const removeRecurrentAvailability = (id: number) => {
-    if (!recurrentAvailabilities) return
-    setRecurrentAvailabilities(
-      recurrentAvailabilities.filter((v) => v.id != id),
-    )
-  }
-
   const updateField = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
@@ -161,6 +191,62 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
     }
     setRecurrentAvailabilities(recurrentAvailabilities)
     forceUpdate()
+  }
+
+  const addRecurrentAvailability = (day: string) => {
+    if (!recurrentAvailabilities) return
+
+    setRecurrentAvailabilities(
+      recurrentAvailabilities.concat([
+        {
+          id: getMaxId(recurrentAvailabilities) + 1,
+          day: day,
+        },
+      ]),
+    )
+  }
+
+  const removeRecurrentAvailability = (index: number) => {
+    if (!recurrentAvailabilities) return
+
+    const recurrentAvailability = recurrentAvailabilities[index]
+    if (recurrentAvailability.user) {
+      console.log(recurrentAvailability)
+      deleteOneRecurrentAvailability({
+        variables: { recurrentAvailabilityId: recurrentAvailability.id },
+      })
+    }
+
+    recurrentAvailabilities.splice(index, 1)
+    setRecurrentAvailabilities(
+      RecurrentAvailabilityHelpers.addMissingDays(recurrentAvailabilities),
+    )
+  }
+
+  const handleSubmit = () => {
+    recurrentAvailabilities?.map(async (v) => {
+      if (!v.endTime || !v.startTime) return
+      try {
+        console.log({
+          day: v.day,
+          startTime: v.startTime,
+          endTime: v.endTime,
+          recurrentAvailabilityId: v.user ? v.id : -1,
+          userId: currentUser.id,
+        })
+        await upsertOneRecurrentAvailability({
+          variables: {
+            day: v.day,
+            startTime: v.startTime,
+            endTime: v.endTime,
+            recurrentAvailabilityId: v.user ? v.id : -1,
+            userId: currentUser.id,
+          },
+        })
+      } catch (e) {
+        console.log(e)
+      }
+    })
   }
 
   return (
@@ -183,19 +269,13 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
                 const index = recurrentAvailabilities.findIndex(
                   (v) => v.id == recurrentAvailability.id,
                 )
+
                 return (
                   <RecurrentAvailabilityTimePicker
                     key={i}
                     recurrentAvailability={recurrentAvailability}
                     updateField={(e) => updateField(e, index)}
-                    removeField={
-                      i
-                        ? () =>
-                            removeRecurrentAvailability(
-                              recurrentAvailability.id,
-                            )
-                        : undefined
-                    }
+                    remove={() => removeRecurrentAvailability(index)}
                   />
                 )
               })}
@@ -214,6 +294,12 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
           </div>
         ),
       )}
+      {/* Submit to upsert recurrent availabilities */}
+      <div className="mt-6">
+        <button className="px-6 py-3 submit-button" onClick={handleSubmit}>
+          Sauvegarder
+        </button>
+      </div>
     </>
   )
 }
