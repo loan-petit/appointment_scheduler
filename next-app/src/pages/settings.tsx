@@ -37,11 +37,11 @@ const Settings = () => {
   return (
     <Layout>
       <div className="md:w-1/2">
-        <UpsertOneRecurrentAvailability currentUser={currentUser} />
+        <UpdateInformations currentUser={currentUser} />
 
         <hr className="my-12 border-b-1" />
 
-        <UpdateInformations currentUser={currentUser} />
+        <UpsertOneRecurrentAvailability currentUser={currentUser} />
 
         <hr className="my-12 border-b-1" />
 

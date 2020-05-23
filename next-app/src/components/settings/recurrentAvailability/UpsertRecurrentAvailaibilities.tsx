@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import RecurrentAvailabilityTimePicker from './RecurrentAvailabilityFields'
 import getMaxId from '../../../utils/getMaxId'
+import { SubmitStatus } from '../../../utils/FormHelper'
 
 const RecurrentAvailabilitiesQuery = gql`
   query RecurrentAvailabilitiesQuery($userId: Int!) {
@@ -20,7 +21,7 @@ const RecurrentAvailabilitiesQuery = gql`
       recurrentAvailabilities {
         ...RecurrentAvailabilityFields
         user {
-          id
+          __typename
         }
       }
     }
@@ -73,6 +74,15 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
   // Hook to force component rerender
   const [, updateState] = React.useState()
   const forceUpdate = React.useCallback(() => updateState({}), [])
+
+  var [
+    invalidAvailabilityRanges,
+    setInvalidAvailabilityRanges,
+  ] = React.useState<number[]>([])
+  const [submitStatus, setSumbitStatus] = React.useState<SubmitStatus>({
+    isSubmitted: false,
+    userFriendlyError: '',
+  })
 
   var [recurrentAvailabilities, setRecurrentAvailabilities] = React.useState<
     RecurrentAvailability[]
@@ -224,16 +234,24 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
   }
 
   const handleSubmit = () => {
+    var recurrentAvailabilitiesToUpsert: RecurrentAvailability[] = []
+    invalidAvailabilityRanges = []
+
     recurrentAvailabilities?.map(async (v) => {
-      if (!v.endTime || !v.startTime) return
+      if (!v.startTime && !v.endTime) {
+        return
+      } else if (!v.startTime || !v.endTime) {
+        return invalidAvailabilityRanges.push(v.id)
+      }
+      recurrentAvailabilitiesToUpsert.push(v)
+    })
+
+    if (invalidAvailabilityRanges.length) {
+      return setInvalidAvailabilityRanges(invalidAvailabilityRanges)
+    }
+
+    recurrentAvailabilitiesToUpsert.map(async (v) => {
       try {
-        console.log({
-          day: v.day,
-          startTime: v.startTime,
-          endTime: v.endTime,
-          recurrentAvailabilityId: v.user ? v.id : -1,
-          userId: currentUser.id,
-        })
         await upsertOneRecurrentAvailability({
           variables: {
             day: v.day,
@@ -243,8 +261,15 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
             userId: currentUser.id,
           },
         })
+        setSumbitStatus({
+          isSubmitted: true,
+          userFriendlyError: '',
+        })
       } catch (e) {
-        console.log(e)
+        setSumbitStatus({
+          isSubmitted: true,
+          userFriendlyError: 'Une erreur est survenue. Veuillez-réessayer.',
+        })
       }
     })
   }
@@ -276,6 +301,9 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
                     recurrentAvailability={recurrentAvailability}
                     updateField={(e) => updateField(e, index)}
                     remove={() => removeRecurrentAvailability(index)}
+                    isRangeInvalid={invalidAvailabilityRanges.includes(
+                      recurrentAvailability.id,
+                    )}
                   />
                 )
               })}
@@ -294,7 +322,24 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
           </div>
         ),
       )}
+
       {/* Submit to upsert recurrent availabilities */}
+      {(() => {
+        if (submitStatus.isSubmitted) {
+          return (
+            <p className="pt-2 text-sm italic text-green-500">
+              Les créneaux de disponibilités enregistrés ont bien été pris en
+              compte.
+            </p>
+          )
+        } else if (submitStatus.userFriendlyError.length) {
+          return (
+            <p className="pt-2 form-submit-error">
+              {submitStatus.userFriendlyError}
+            </p>
+          )
+        } else return null
+      })()}
       <div className="mt-6">
         <button className="px-6 py-3 submit-button" onClick={handleSubmit}>
           Sauvegarder

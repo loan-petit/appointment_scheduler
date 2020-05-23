@@ -9,8 +9,8 @@ export type FieldsInformation = {
 
 export type SubmitStatus = {
   isSubmitted: boolean
-  response: any
-  error: any
+  response?: any
+  error?: any
   userFriendlyError: string
 }
 
