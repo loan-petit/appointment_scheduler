@@ -114,13 +114,13 @@ const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
           variables: { userId: currentUser?.id },
         })
 
-        const recurrentAvailabilityRemovedIndex = user.recurrentAvailabilities.findIndex(
+        const removedRecurrentAvailabilityIndex = user.recurrentAvailabilities.findIndex(
           (e: RecurrentAvailability) =>
             e.id == deleteOneRecurrentAvailability.id,
         )
-        if (recurrentAvailabilityRemovedIndex > -1) {
+        if (removedRecurrentAvailabilityIndex > -1) {
           user.recurrentAvailabilities.splice(
-            recurrentAvailabilityRemovedIndex,
+            removedRecurrentAvailabilityIndex,
             1,
           )
         }

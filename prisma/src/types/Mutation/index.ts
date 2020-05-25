@@ -14,10 +14,10 @@ export const DefaultMutations = mutationType({
     t.crud.upsertOneRecurrentAvailability()
     t.crud.deleteOneRecurrentAvailability()
 
-    t.crud.createOneAvailability()
-    t.crud.updateOneAvailability()
-    t.crud.upsertOneAvailability()
-    t.crud.deleteOneAvailability()
+    t.crud.createOneAvailabilityModifier()
+    t.crud.updateOneAvailabilityModifier()
+    t.crud.upsertOneAvailabilityModifier()
+    t.crud.deleteOneAvailabilityModifier()
   },
 })
 

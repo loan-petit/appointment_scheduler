@@ -36,7 +36,7 @@ const rules = {
   isRecurrentAvailabilityOwner: rule()((_parent, args, ctx) =>
     isModelOwner(args, ctx.prisma.recurrentAvailability, getUserId(ctx)),
   ),
-  isAvailabilityOwner: rule()((_parent, args, ctx) =>
+  isAvailabilityModifierOwner: rule()((_parent, args, ctx) =>
     isModelOwner(args, ctx.prisma.availability, getUserId(ctx)),
   ),
 }
@@ -64,9 +64,9 @@ export const permissions = shield({
     deleteOneRecurrentAvailability: rules.isRecurrentAvailabilityOwner,
 
     // Availability
-    createOneAvailability: rules.isAuthenticatedUser,
-    updateOneAvailability: rules.isAvailabilityOwner,
-    upsertOneAvailability: rules.isAvailabilityOwner,
-    deleteOneAvailability: rules.isAvailabilityOwner,
+    createOneAvailabilityModifier: rules.isAuthenticatedUser,
+    updateOneAvailabilityModifier: rules.isAvailabilityModifierOwner,
+    upsertOneAvailabilityModifier: rules.isAvailabilityModifierOwner,
+    deleteOneAvailabilityModifier: rules.isAvailabilityModifierOwner,
   },
 })

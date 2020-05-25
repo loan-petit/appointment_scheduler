@@ -1,24 +1,64 @@
 import React from 'react'
 import gql from 'graphql-tag'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery, useMutation } from '@apollo/react-hooks'
+import { EventInput } from '@fullcalendar/core'
+import { DateClickApi } from '@fullcalendar/core/Calendar'
+import moment from 'moment'
 
 import LoadingOverlay from '../LoadingOverlay'
 import User from '../../models/User'
-import Availability, { AvailabilityFragments } from '../../models/Availability'
+import AvailabilityModifier, {
+  AvailabilityModifierFragments,
+} from '../../models/AvailabilityModifier'
 import RecurrentAvailability from '../../models/RecurrentAvailability'
 import DynamicFullCalendar from '../fullCalendar/DynamicFullCalendar'
 import convertSecondsToTimeString from '../../utils/convertSecondsToTimeString'
 import Day from '../../models/enums/Day'
 
-const AvailabilitiesQuery = gql`
-  query AvailabilitiesQuery($userId: Int!) {
+const AvailabilityModifiersQuery = gql`
+  query AvailabilityModifiersQuery($userId: Int!) {
     user(where: { id: $userId }) {
-      availabilities {
-        ...AvailabilityFields
+      availabilityModifiers {
+        ...AvailabilityModifierFields
       }
     }
   }
-  ${AvailabilityFragments.fields}
+  ${AvailabilityModifierFragments.fields}
+`
+
+const UpsertOneAvailabilityModifierMutation = gql`
+  mutation UpsertOneAvailabilityModifierMutation(
+    $availabilityModifierId: Int!
+    $day: Day!
+    $startTime: Int!
+    $endTime: Int!
+    $userId: Int!
+  ) {
+    upsertOneAvailabilityModifier(
+      create: {
+        date: $date
+        startTime: $startTime
+        endTime: $endTime
+        user: { connect: { id: $userId } }
+      }
+      update: { date: $date, startTime: $startTime, endTime: $endTime }
+      where: { id: $availabilityModifierId }
+    ) {
+      ...AvailabilityModifierFields
+    }
+  }
+  ${AvailabilityModifierFragments.fields}
+`
+
+const DeleteOneAvailabilityModifierMutation = gql`
+  mutation DeleteOneAvailabilityModifierMutation(
+    $availabilityModifierId: Int!
+  ) {
+    deleteOneAvailabilityModifier(where: { id: $availabilityModifierId }) {
+      ...AvailabilityModifierFields
+    }
+  }
+  ${AvailabilityModifierFragments.fields}
 `
 
 type Props = {
@@ -30,65 +70,116 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
   currentUser,
   recurrentAvailabilities,
 }) => {
-  const availabilitiesQueryResult = useQuery(AvailabilitiesQuery, {
+  const { loading, error, data } = useQuery(AvailabilityModifiersQuery, {
     variables: { userId: currentUser.id },
   })
 
   const calendarComponentRef = React.createRef()
-  const [calendarEvents, setCalendarEvents] = React.useState<any>([
-    { title: 'Event Now', start: new Date(), rendering: 'background' },
-  ])
+  const [calendarEvents, setCalendarEvents] = React.useState<EventInput[]>([])
+
+  const [upsertOneAvailabilityModifier] = useMutation(
+    UpsertOneAvailabilityModifierMutation,
+    {
+      update(cache, { data: { upsertOneAvailabilityModifier } }) {
+        const { user }: any = cache.readQuery({
+          query: AvailabilityModifiersQuery,
+          variables: { userId: currentUser.id },
+        })
+        if (
+          user.availabilityModifiers.some(
+            (e: AvailabilityModifier) =>
+              e.id == upsertOneAvailabilityModifier.id,
+          )
+        )
+          return
+
+        cache.writeQuery({
+          query: AvailabilityModifiersQuery,
+          variables: { userId: currentUser.id },
+          data: {
+            __typename: 'User',
+            user: {
+              __typename: 'User',
+              ...user,
+              availabilityModifiers: user.availabilityModifiers.concat([
+                upsertOneAvailabilityModifier,
+              ]),
+            },
+          },
+        })
+      },
+    },
+  )
+  const [deleteOneAvailabilityModifier] = useMutation(
+    DeleteOneAvailabilityModifierMutation,
+    {
+      update(cache, { data: { deleteOneAvailabilityModifier } }) {
+        const { user }: any = cache.readQuery({
+          query: AvailabilityModifiersQuery,
+          variables: { userId: currentUser?.id },
+        })
+
+        const removedAvailabilityModifierIndex = user.availabilityModifiers.findIndex(
+          (e: AvailabilityModifier) => e.id == deleteOneAvailabilityModifier.id,
+        )
+        if (removedAvailabilityModifierIndex > -1) {
+          user.availabilityModifiers.splice(removedAvailabilityModifierIndex, 1)
+        }
+
+        cache.writeQuery({
+          query: AvailabilityModifiersQuery,
+          variables: { userId: currentUser?.id },
+          data: {
+            __typename: 'User',
+            user: {
+              ...user,
+              availabilityModifiers: user.availabilityModifiers,
+            },
+          },
+        })
+      },
+    },
+  )
 
   // Verify AvailabilityQuery result
-  if (availabilitiesQueryResult.loading) return <LoadingOverlay />
-  else if (availabilitiesQueryResult.error) {
-    console.log(availabilitiesQueryResult.error)
+  if (loading) return <LoadingOverlay />
+  else if (error) {
     return (
       <p className="error-message">
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
   }
-  const availabilities: Availability[] =
-    availabilitiesQueryResult.data.user.availabilities
+  const availabilityModifiers: AvailabilityModifier[] = data.user.availabilities
 
-  console.log(availabilities)
+  console.log(availabilityModifiers)
+  console.log(upsertOneAvailabilityModifier)
+  console.log(deleteOneAvailabilityModifier)
 
-  const handleDateClick = (arg: any) => {
-    if (confirm('Would you like to add an event to ' + arg.dateStr + ' ?')) {
+  const handleDateClick = async (arg: DateClickApi) => {
+    const isSameDateInput = (v: EventInput) => {
+      if (v.start instanceof Date) {
+        return v.start.getTime() === arg.date.getTime()
+      }
+      return v.start?.toString() === arg.date.toString()
+    }
+
+    if (calendarEvents.some(isSameDateInput)) {
+      setCalendarEvents(
+        calendarEvents.filter((v) => isSameDateInput(v) == false),
+      )
+    } else {
       setCalendarEvents(
         calendarEvents.concat({
           title: 'New Event',
-          start: new Date(arg.date),
+          start: arg.date,
+          end: moment(arg.date).add(30, 'minutes').toDate(),
           allDay: arg.allDay,
           rendering: 'background',
         }),
       )
     }
   }
-
-  const handleSelect = (info: any) => {
-    if (
-      confirm(
-        'Would you like to add an event from ' +
-          info.startStr +
-          ' to ' +
-          info.endStr +
-          ' ?',
-      )
-    ) {
-      setCalendarEvents(
-        calendarEvents.concat({
-          title: 'New Event',
-          start: info.start,
-          end: info.end,
-          allDay: info.allDay,
-          rendering: 'background',
-        }),
-      )
-    }
-  }
-  console.log(handleSelect)
 
   return (
     <>
@@ -118,8 +209,6 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
         ref={calendarComponentRef}
         events={calendarEvents}
         dateClick={handleDateClick}
-        // selectable={true}
-        // select={handleSelect}
         businessHours={recurrentAvailabilities.map((v) => {
           if (!v.startTime || !v.endTime) return {}
 

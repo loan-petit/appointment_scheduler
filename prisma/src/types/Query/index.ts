@@ -11,8 +11,8 @@ export const DefaultQueries = queryType({
     t.crud.recurrentAvailability()
     t.crud.recurrentAvailabilities()
 
-    t.crud.availability()
-    t.crud.availabilities()
+    t.crud.availabilityModifier()
+    t.crud.availabilityModifiers()
   },
 })
 

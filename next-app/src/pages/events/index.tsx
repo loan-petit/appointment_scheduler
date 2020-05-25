@@ -51,11 +51,11 @@ const Events = () => {
         variables: { userId: currentUser?.id },
       })
 
-      const eventRemovedIndex = user.events.findIndex(
+      const removedEventIndex = user.events.findIndex(
         (e: Event) => e.id == deleteOneEvent.id,
       )
-      if (eventRemovedIndex > -1) {
-        user.events.splice(eventRemovedIndex, 1)
+      if (removedEventIndex > -1) {
+        user.events.splice(removedEventIndex, 1)
       }
 
       cache.writeQuery({

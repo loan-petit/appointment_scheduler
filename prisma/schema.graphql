@@ -8,94 +8,101 @@ type AuthPayload {
   user: User!
 }
 
-type Availability {
+type AvailabilityModifier {
   date: DateTime!
   endTime: Int!
   id: Int!
+  isExclusive: Boolean!
   startTime: Int!
   user: User
 }
 
-input AvailabilityCreateInput {
+input AvailabilityModifierCreateInput {
   date: DateTime!
   endTime: Int!
+  isExclusive: Boolean!
   startTime: Int!
-  user: UserCreateOneWithoutAvailabilitiesInput
+  user: UserCreateOneWithoutAvailabilityModifiersInput
 }
 
-input AvailabilityCreateManyWithoutUserInput {
-  connect: [AvailabilityWhereUniqueInput!]
-  create: [AvailabilityCreateWithoutUserInput!]
+input AvailabilityModifierCreateManyWithoutUserInput {
+  connect: [AvailabilityModifierWhereUniqueInput!]
+  create: [AvailabilityModifierCreateWithoutUserInput!]
 }
 
-input AvailabilityCreateWithoutUserInput {
+input AvailabilityModifierCreateWithoutUserInput {
   date: DateTime!
   endTime: Int!
+  isExclusive: Boolean!
   startTime: Int!
 }
 
-input AvailabilityScalarWhereInput {
-  AND: [AvailabilityScalarWhereInput!]
+input AvailabilityModifierScalarWhereInput {
+  AND: [AvailabilityModifierScalarWhereInput!]
   date: DateTimeFilter
   endTime: IntFilter
   id: IntFilter
-  NOT: [AvailabilityScalarWhereInput!]
-  OR: [AvailabilityScalarWhereInput!]
+  isExclusive: BooleanFilter
+  NOT: [AvailabilityModifierScalarWhereInput!]
+  OR: [AvailabilityModifierScalarWhereInput!]
   startTime: IntFilter
   userId: NullableIntFilter
 }
 
-input AvailabilityUpdateInput {
+input AvailabilityModifierUpdateInput {
   date: DateTime
   endTime: Int
   id: Int
+  isExclusive: Boolean
   startTime: Int
-  user: UserUpdateOneWithoutAvailabilitiesInput
+  user: UserUpdateOneWithoutAvailabilityModifiersInput
 }
 
-input AvailabilityUpdateManyDataInput {
+input AvailabilityModifierUpdateManyDataInput {
   date: DateTime
   endTime: Int
   id: Int
+  isExclusive: Boolean
   startTime: Int
 }
 
-input AvailabilityUpdateManyWithoutUserInput {
-  connect: [AvailabilityWhereUniqueInput!]
-  create: [AvailabilityCreateWithoutUserInput!]
-  delete: [AvailabilityWhereUniqueInput!]
-  deleteMany: [AvailabilityScalarWhereInput!]
-  disconnect: [AvailabilityWhereUniqueInput!]
-  set: [AvailabilityWhereUniqueInput!]
-  update: [AvailabilityUpdateWithWhereUniqueWithoutUserInput!]
-  updateMany: [AvailabilityUpdateManyWithWhereNestedInput!]
-  upsert: [AvailabilityUpsertWithWhereUniqueWithoutUserInput!]
+input AvailabilityModifierUpdateManyWithoutUserInput {
+  connect: [AvailabilityModifierWhereUniqueInput!]
+  create: [AvailabilityModifierCreateWithoutUserInput!]
+  delete: [AvailabilityModifierWhereUniqueInput!]
+  deleteMany: [AvailabilityModifierScalarWhereInput!]
+  disconnect: [AvailabilityModifierWhereUniqueInput!]
+  set: [AvailabilityModifierWhereUniqueInput!]
+  update: [AvailabilityModifierUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [AvailabilityModifierUpdateManyWithWhereNestedInput!]
+  upsert: [AvailabilityModifierUpsertWithWhereUniqueWithoutUserInput!]
 }
 
-input AvailabilityUpdateManyWithWhereNestedInput {
-  data: AvailabilityUpdateManyDataInput!
-  where: AvailabilityScalarWhereInput!
+input AvailabilityModifierUpdateManyWithWhereNestedInput {
+  data: AvailabilityModifierUpdateManyDataInput!
+  where: AvailabilityModifierScalarWhereInput!
 }
 
-input AvailabilityUpdateWithoutUserDataInput {
+input AvailabilityModifierUpdateWithoutUserDataInput {
   date: DateTime
   endTime: Int
   id: Int
+  isExclusive: Boolean
   startTime: Int
 }
 
-input AvailabilityUpdateWithWhereUniqueWithoutUserInput {
-  data: AvailabilityUpdateWithoutUserDataInput!
-  where: AvailabilityWhereUniqueInput!
+input AvailabilityModifierUpdateWithWhereUniqueWithoutUserInput {
+  data: AvailabilityModifierUpdateWithoutUserDataInput!
+  where: AvailabilityModifierWhereUniqueInput!
 }
 
-input AvailabilityUpsertWithWhereUniqueWithoutUserInput {
-  create: AvailabilityCreateWithoutUserInput!
-  update: AvailabilityUpdateWithoutUserDataInput!
-  where: AvailabilityWhereUniqueInput!
+input AvailabilityModifierUpsertWithWhereUniqueWithoutUserInput {
+  create: AvailabilityModifierCreateWithoutUserInput!
+  update: AvailabilityModifierUpdateWithoutUserDataInput!
+  where: AvailabilityModifierWhereUniqueInput!
 }
 
-input AvailabilityWhereUniqueInput {
+input AvailabilityModifierWhereUniqueInput {
   id: Int
 }
 
@@ -244,20 +251,20 @@ input IntFilter {
 }
 
 type Mutation {
-  createOneAvailability(data: AvailabilityCreateInput!): Availability!
+  createOneAvailabilityModifier(data: AvailabilityModifierCreateInput!): AvailabilityModifier!
   createOneEvent(data: EventCreateInput!): Event!
   createOneRecurrentAvailability(data: RecurrentAvailabilityCreateInput!): RecurrentAvailability!
-  deleteOneAvailability(where: AvailabilityWhereUniqueInput!): Availability
+  deleteOneAvailabilityModifier(where: AvailabilityModifierWhereUniqueInput!): AvailabilityModifier
   deleteOneEvent(where: EventWhereUniqueInput!): Event
   deleteOneRecurrentAvailability(where: RecurrentAvailabilityWhereUniqueInput!): RecurrentAvailability
   deleteOneUser(where: UserWhereUniqueInput!): User
   signin(email: String!, password: String!): AuthPayload!
   signup(email: String!, firstName: String!, lastName: String!, password: String!, passwordConfirmation: String!): AuthPayload!
   updateCurrentUser(email: String, firstName: String, lastName: String, newPassword: String, newPasswordConfirmation: String, oldPassword: String): User!
-  updateOneAvailability(data: AvailabilityUpdateInput!, where: AvailabilityWhereUniqueInput!): Availability
+  updateOneAvailabilityModifier(data: AvailabilityModifierUpdateInput!, where: AvailabilityModifierWhereUniqueInput!): AvailabilityModifier
   updateOneEvent(data: EventUpdateInput!, where: EventWhereUniqueInput!): Event
   updateOneRecurrentAvailability(data: RecurrentAvailabilityUpdateInput!, where: RecurrentAvailabilityWhereUniqueInput!): RecurrentAvailability
-  upsertOneAvailability(create: AvailabilityCreateInput!, update: AvailabilityUpdateInput!, where: AvailabilityWhereUniqueInput!): Availability!
+  upsertOneAvailabilityModifier(create: AvailabilityModifierCreateInput!, update: AvailabilityModifierUpdateInput!, where: AvailabilityModifierWhereUniqueInput!): AvailabilityModifier!
   upsertOneEvent(create: EventCreateInput!, update: EventUpdateInput!, where: EventWhereUniqueInput!): Event!
   upsertOneRecurrentAvailability(create: RecurrentAvailabilityCreateInput!, update: RecurrentAvailabilityUpdateInput!, where: RecurrentAvailabilityWhereUniqueInput!): RecurrentAvailability!
 }
@@ -299,8 +306,8 @@ input NullableStringFilter {
 }
 
 type Query {
-  availabilities(after: AvailabilityWhereUniqueInput, before: AvailabilityWhereUniqueInput, first: Int, last: Int, skip: Int): [Availability!]!
-  availability(where: AvailabilityWhereUniqueInput!): Availability
+  availabilityModifier(where: AvailabilityModifierWhereUniqueInput!): AvailabilityModifier
+  availabilityModifiers(after: AvailabilityModifierWhereUniqueInput, before: AvailabilityModifierWhereUniqueInput, first: Int, last: Int, skip: Int): [AvailabilityModifier!]!
   event(where: EventWhereUniqueInput!): Event
   events(after: EventWhereUniqueInput, before: EventWhereUniqueInput, first: Int, last: Int, skip: Int): [Event!]!
   me: AuthPayload!
@@ -417,7 +424,7 @@ input StringFilter {
 
 type User {
   address: String
-  availabilities: [Availability!]!
+  availabilityModifiers: [AvailabilityModifier!]!
   email: String!
   events: [Event!]!
   firstName: String!
@@ -428,9 +435,9 @@ type User {
   websiteUrl: String
 }
 
-input UserCreateOneWithoutAvailabilitiesInput {
+input UserCreateOneWithoutAvailabilityModifiersInput {
   connect: UserWhereUniqueInput
-  create: UserCreateWithoutAvailabilitiesInput
+  create: UserCreateWithoutAvailabilityModifiersInput
 }
 
 input UserCreateOneWithoutEventsInput {
@@ -443,7 +450,7 @@ input UserCreateOneWithoutRecurrentAvailabilitiesInput {
   create: UserCreateWithoutRecurrentAvailabilitiesInput
 }
 
-input UserCreateWithoutAvailabilitiesInput {
+input UserCreateWithoutAvailabilityModifiersInput {
   address: String
   email: String!
   events: EventCreateManyWithoutUserInput
@@ -457,7 +464,7 @@ input UserCreateWithoutAvailabilitiesInput {
 
 input UserCreateWithoutEventsInput {
   address: String
-  availabilities: AvailabilityCreateManyWithoutUserInput
+  availabilityModifiers: AvailabilityModifierCreateManyWithoutUserInput
   email: String!
   firstName: String!
   lastName: String!
@@ -469,7 +476,7 @@ input UserCreateWithoutEventsInput {
 
 input UserCreateWithoutRecurrentAvailabilitiesInput {
   address: String
-  availabilities: AvailabilityCreateManyWithoutUserInput
+  availabilityModifiers: AvailabilityModifierCreateManyWithoutUserInput
   email: String!
   events: EventCreateManyWithoutUserInput
   firstName: String!
@@ -479,13 +486,13 @@ input UserCreateWithoutRecurrentAvailabilitiesInput {
   websiteUrl: String
 }
 
-input UserUpdateOneWithoutAvailabilitiesInput {
+input UserUpdateOneWithoutAvailabilityModifiersInput {
   connect: UserWhereUniqueInput
-  create: UserCreateWithoutAvailabilitiesInput
+  create: UserCreateWithoutAvailabilityModifiersInput
   delete: Boolean
   disconnect: Boolean
-  update: UserUpdateWithoutAvailabilitiesDataInput
-  upsert: UserUpsertWithoutAvailabilitiesInput
+  update: UserUpdateWithoutAvailabilityModifiersDataInput
+  upsert: UserUpsertWithoutAvailabilityModifiersInput
 }
 
 input UserUpdateOneWithoutEventsInput {
@@ -506,7 +513,7 @@ input UserUpdateOneWithoutRecurrentAvailabilitiesInput {
   upsert: UserUpsertWithoutRecurrentAvailabilitiesInput
 }
 
-input UserUpdateWithoutAvailabilitiesDataInput {
+input UserUpdateWithoutAvailabilityModifiersDataInput {
   address: String
   email: String
   events: EventUpdateManyWithoutUserInput
@@ -521,7 +528,7 @@ input UserUpdateWithoutAvailabilitiesDataInput {
 
 input UserUpdateWithoutEventsDataInput {
   address: String
-  availabilities: AvailabilityUpdateManyWithoutUserInput
+  availabilityModifiers: AvailabilityModifierUpdateManyWithoutUserInput
   email: String
   firstName: String
   id: Int
@@ -534,7 +541,7 @@ input UserUpdateWithoutEventsDataInput {
 
 input UserUpdateWithoutRecurrentAvailabilitiesDataInput {
   address: String
-  availabilities: AvailabilityUpdateManyWithoutUserInput
+  availabilityModifiers: AvailabilityModifierUpdateManyWithoutUserInput
   email: String
   events: EventUpdateManyWithoutUserInput
   firstName: String
@@ -545,9 +552,9 @@ input UserUpdateWithoutRecurrentAvailabilitiesDataInput {
   websiteUrl: String
 }
 
-input UserUpsertWithoutAvailabilitiesInput {
-  create: UserCreateWithoutAvailabilitiesInput!
-  update: UserUpdateWithoutAvailabilitiesDataInput!
+input UserUpsertWithoutAvailabilityModifiersInput {
+  create: UserCreateWithoutAvailabilityModifiersInput!
+  update: UserUpdateWithoutAvailabilityModifiersDataInput!
 }
 
 input UserUpsertWithoutEventsInput {

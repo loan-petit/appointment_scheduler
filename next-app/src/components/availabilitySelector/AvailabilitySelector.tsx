@@ -1,7 +1,7 @@
 import * as React from 'react'
 import moment from 'moment'
 
-import Availability from '../../models/Availability'
+import Availability from '../../models/AvailabilityModifier'
 
 moment.locale('fr')
 

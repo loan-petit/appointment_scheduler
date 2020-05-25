@@ -12,6 +12,6 @@ export const User = objectType({
     t.model.minScheduleNotice()
     t.model.events({ pagination: false })
     t.model.recurrentAvailabilities({ pagination: false })
-    t.model.availabilities({ pagination: false })
+    t.model.availabilityModifiers({ pagination: false })
   },
 })

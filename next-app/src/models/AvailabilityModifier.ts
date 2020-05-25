@@ -2,24 +2,26 @@ import gql from 'graphql-tag'
 
 import User from './User'
 
-type Availability = {
+type AvailabilityModifier = {
   id: number
   date: string
   startTime?: number
   endTime?: number
+  isExclusive?: boolean
   user?: User
 }
 
-export const AvailabilityFragments = {
+export const AvailabilityModifierFragments = {
   fields: gql`
-    fragment AvailabilityFields on Availability {
+    fragment AvailabilityModifierFields on AvailabilityModifier {
       __typename
       id
       date
       startTime
       endTime
+      isExclusive
     }
   `,
 }
 
-export default Availability
+export default AvailabilityModifier

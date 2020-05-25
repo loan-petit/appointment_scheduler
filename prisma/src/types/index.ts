@@ -3,7 +3,7 @@ import * as Query from './Query'
 export { Mutation, Query}
 
 export * from './AuthPayload'
-export * from './Availability'
+export * from './AvailabilityModifier'
 export * from './Event'
 export * from './RecurrentAvailability'
 export * from './User'
