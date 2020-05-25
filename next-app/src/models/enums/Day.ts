@@ -1,11 +1,11 @@
 enum Day {
+  SUNDAY,
   MONDAY,
   TUESDAY,
   WEDNESDAY,
   THURSDAY,
   FRIDAY,
   SATURDAY,
-  SUNDAY,
 }
 
 export const dayToUserFriendlyString = (day: Day | string) => {
@@ -18,6 +18,8 @@ export const dayToUserFriendlyString = (day: Day | string) => {
   }
 
   switch (day) {
+    case Day.SUNDAY:
+      return 'Dimanche'
     case Day.MONDAY:
       return 'Lundi'
     case Day.TUESDAY:
@@ -30,8 +32,6 @@ export const dayToUserFriendlyString = (day: Day | string) => {
       return 'Vendredi'
     case Day.SATURDAY:
       return 'Samedi'
-    case Day.SUNDAY:
-      return 'Dimanche'
     default:
       return ''
   }

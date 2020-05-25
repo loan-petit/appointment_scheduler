@@ -5,6 +5,7 @@ import TimeField from 'react-simple-timefield'
 
 import RecurrentAvailability from '../../../models/RecurrentAvailability'
 import WarningModal from '../../WarningModal'
+import convertSecondsToTimeString from '../../../utils/convertSecondsToTimeString'
 
 type Props = {
   recurrentAvailability: RecurrentAvailability
@@ -20,9 +21,6 @@ const RecurrentAvailabilityTimePicker: React.FunctionComponent<Props> = ({
   isRangeInvalid,
 }) => {
   const [showWarningModal, setShowWarningModal] = React.useState(false)
-
-  const convertSecondsToTimeString = (seconds: number) =>
-    new Date(seconds * 1000).toISOString().substr(11, 8)
 
   return (
     <div className="my-4">

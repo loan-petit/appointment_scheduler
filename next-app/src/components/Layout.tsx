@@ -35,12 +35,16 @@ const Layout: React.FunctionComponent<Props> = ({
   const router = useRouter()
   const routes = [
     {
-      path: '/settings',
-      name: 'Paramètres',
-    },
-    {
       path: '/events',
       name: 'Événements',
+    },
+    {
+      path: '/availabilities',
+      name: 'Disponibilités',
+    },
+    {
+      path: '/settings',
+      name: 'Paramètres',
     },
   ]
 
