@@ -4,6 +4,10 @@ import User from './User'
 import Day from './enums/Day'
 import getMaxId from '../utils/getMaxId'
 
+export type RecurrentAvailabilitiesGroupedByDay = {
+  [key in Day]?: RecurrentAvailability[]
+}
+
 type RecurrentAvailability = {
   id: number
   day: string
@@ -24,8 +28,20 @@ export const RecurrentAvailabilityFragments = {
   `,
 }
 
-export type RecurrentAvailabilitiesGroupedByDay = {
-  [key in Day]?: RecurrentAvailability[]
+export const RecurrentAvailabilityOperations = {
+  recurrentAvailabilities: gql`
+    query RecurrentAvailabilitiesQuery($userId: Int!) {
+      user(where: { id: $userId }) {
+        recurrentAvailabilities {
+          ...RecurrentAvailabilityFields
+          user {
+            __typename
+          }
+        }
+      }
+    }
+    ${RecurrentAvailabilityFragments.fields}
+  `,
 }
 
 export const RecurrentAvailabilityHelpers = {

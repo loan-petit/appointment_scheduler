@@ -1,33 +1,19 @@
 import React from 'react'
 import gql from 'graphql-tag'
-import { useMutation, useQuery } from '@apollo/react-hooks'
+import { useMutation } from '@apollo/react-hooks'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
-import LoadingOverlay from '../../LoadingOverlay'
 import User from '../../../models/User'
 import RecurrentAvailability, {
   RecurrentAvailabilityFragments,
   RecurrentAvailabilityHelpers,
+  RecurrentAvailabilityOperations,
 } from '../../../models/RecurrentAvailability'
 import Day, { dayToUserFriendlyString } from '../../../models/enums/Day'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import RecurrentAvailabilityTimePicker from './RecurrentAvailabilityFields'
 import getMaxId from '../../../utils/getMaxId'
 import { SubmitStatus } from '../../../utils/FormHelper'
-
-const RecurrentAvailabilitiesQuery = gql`
-  query RecurrentAvailabilitiesQuery($userId: Int!) {
-    user(where: { id: $userId }) {
-      recurrentAvailabilities {
-        ...RecurrentAvailabilityFields
-        user {
-          __typename
-        }
-      }
-    }
-  }
-  ${RecurrentAvailabilityFragments.fields}
-`
 
 const UpsertOneRecurrentAvailabilityMutation = gql`
   mutation UpsertOneRecurrentAvailabilityMutation(
@@ -66,10 +52,12 @@ const DeleteOneRecurrentAvailabilityMutation = gql`
 
 type Props = {
   currentUser: User
+  recurrentAvailabilities: RecurrentAvailability[]
 }
 
-const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
+const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
   currentUser,
+  recurrentAvailabilities,
 }) => {
   // Hook to force component rerender
   const [, updateState] = React.useState()
@@ -84,22 +72,12 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
     userFriendlyError: '',
   })
 
-  var [recurrentAvailabilities, setRecurrentAvailabilities] = React.useState<
-    RecurrentAvailability[]
-  >()
-
-  const recurrentAvailabilitiesQueryResult = useQuery(
-    RecurrentAvailabilitiesQuery,
-    {
-      variables: { userId: currentUser.id },
-    },
-  )
   const [upsertOneRecurrentAvailability] = useMutation(
     UpsertOneRecurrentAvailabilityMutation,
     {
       update(cache, { data: { upsertOneRecurrentAvailability } }) {
         const { user }: any = cache.readQuery({
-          query: RecurrentAvailabilitiesQuery,
+          query: RecurrentAvailabilityOperations.recurrentAvailabilities,
           variables: { userId: currentUser.id },
         })
         if (
@@ -111,7 +89,7 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
           return
 
         cache.writeQuery({
-          query: RecurrentAvailabilitiesQuery,
+          query: RecurrentAvailabilityOperations.recurrentAvailabilities,
           variables: { userId: currentUser.id },
           data: {
             __typename: 'User',
@@ -132,7 +110,7 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
     {
       update(cache, { data: { deleteOneRecurrentAvailability } }) {
         const { user }: any = cache.readQuery({
-          query: RecurrentAvailabilitiesQuery,
+          query: RecurrentAvailabilityOperations.recurrentAvailabilities,
           variables: { userId: currentUser?.id },
         })
 
@@ -148,7 +126,7 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
         }
 
         cache.writeQuery({
-          query: RecurrentAvailabilitiesQuery,
+          query: RecurrentAvailabilityOperations.recurrentAvailabilities,
           variables: { userId: currentUser?.id },
           data: {
             __typename: 'User',
@@ -162,24 +140,9 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
     },
   )
 
-  // Verify RecurrentAvailabilityQuery result
-  if (recurrentAvailabilitiesQueryResult.loading) return <LoadingOverlay />
-  else if (recurrentAvailabilitiesQueryResult.error) {
-    return (
-      <p className="error-message">
-        Une erreur est survenue. Veuillez-réessayer.
-      </p>
-    )
-  }
-  if (!recurrentAvailabilities) {
-    setRecurrentAvailabilities(
-      RecurrentAvailabilityHelpers.addMissingDays(
-        recurrentAvailabilitiesQueryResult.data.user.recurrentAvailabilities,
-      ),
-    )
-  }
-  if (!recurrentAvailabilities) return <div />
-
+  recurrentAvailabilities = RecurrentAvailabilityHelpers.addMissingDays(
+    recurrentAvailabilities,
+  )
   const recurrentAvailabilitiesGroupedByDay = RecurrentAvailabilityHelpers.groupByDay(
     recurrentAvailabilities,
   )
@@ -188,8 +151,6 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
   ) => {
-    if (!recurrentAvailabilities) return
-
     // Convert value in hh:mm format to seconds
     var split = e.target.value.split(':')
     var seconds = +split[0] * 60 * 60 + +split[1] * 60
@@ -199,38 +160,33 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
     } else if (e.target.name === 'endTime') {
       recurrentAvailabilities[index].endTime = seconds
     }
-    setRecurrentAvailabilities(recurrentAvailabilities)
+
     forceUpdate()
   }
 
   const addRecurrentAvailability = (day: string) => {
-    if (!recurrentAvailabilities) return
+    recurrentAvailabilities.push({
+      id: getMaxId(recurrentAvailabilities) + 1,
+      day: day,
+    })
 
-    setRecurrentAvailabilities(
-      recurrentAvailabilities.concat([
-        {
-          id: getMaxId(recurrentAvailabilities) + 1,
-          day: day,
-        },
-      ]),
-    )
+    forceUpdate()
   }
 
   const removeRecurrentAvailability = (index: number) => {
-    if (!recurrentAvailabilities) return
-
     const recurrentAvailability = recurrentAvailabilities[index]
     if (recurrentAvailability.user) {
-      console.log(recurrentAvailability)
       deleteOneRecurrentAvailability({
         variables: { recurrentAvailabilityId: recurrentAvailability.id },
       })
     }
 
     recurrentAvailabilities.splice(index, 1)
-    setRecurrentAvailabilities(
-      RecurrentAvailabilityHelpers.addMissingDays(recurrentAvailabilities),
+    recurrentAvailabilities = RecurrentAvailabilityHelpers.addMissingDays(
+      recurrentAvailabilities,
     )
+
+    forceUpdate()
   }
 
   const handleSubmit = () => {
@@ -311,9 +267,12 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
               {/* Add a recurrent availability */}
               <a
                 className="flex flex-row items-center pt-2 pb-4 text-sm"
-                onClick={() =>
-                  addRecurrentAvailability(Day[Number(key) as Day])
-                }
+                onClick={() => {
+                  if (!group) return
+
+                  if (group[group.length - 1].startTime || group[group.length - 1].endTime)
+                    addRecurrentAvailability(Day[Number(key) as Day])
+                }}
               >
                 <FontAwesomeIcon icon={faPlus} size="sm" />
                 <p className="pl-2">Ajouter une disponibilité</p>
@@ -349,4 +308,4 @@ const UpsertOneRecurrentAvailability: React.FunctionComponent<Props> = ({
   )
 }
 
-export default UpsertOneRecurrentAvailability
+export default UpsertRecurrentAvailabilities

@@ -33,11 +33,11 @@ const rules = {
   isEventOwner: rule()(async (_parent, args, ctx) =>
     isModelOwner(args, ctx.prisma.event, getUserId(ctx)),
   ),
-  isAvailabilityOwner: rule()((_parent, args, ctx) =>
-    isModelOwner(args, ctx.prisma.availability, getUserId(ctx)),
-  ),
   isRecurrentAvailabilityOwner: rule()((_parent, args, ctx) =>
     isModelOwner(args, ctx.prisma.recurrentAvailability, getUserId(ctx)),
+  ),
+  isAvailabilityOwner: rule()((_parent, args, ctx) =>
+    isModelOwner(args, ctx.prisma.availability, getUserId(ctx)),
   ),
 }
 
@@ -57,16 +57,16 @@ export const permissions = shield({
     upsertOneEvent: rules.isEventOwner,
     deleteOneEvent: rules.isEventOwner,
 
-    // Availability
-    createOneAvailability: rules.isAuthenticatedUser,
-    updateOneAvailability: rules.isAvailabilityOwner,
-    upsertOneAvailability: rules.isAvailabilityOwner,
-    deleteOneAvailability: rules.isAvailabilityOwner,
-
     // RecurrentAvailability
     createOneRecurrentAvailability: rules.isAuthenticatedUser,
     updateOneRecurrentAvailability: rules.isRecurrentAvailabilityOwner,
     upsertOneRecurrentAvailability: rules.isRecurrentAvailabilityOwner,
     deleteOneRecurrentAvailability: rules.isRecurrentAvailabilityOwner,
+
+    // Availability
+    createOneAvailability: rules.isAuthenticatedUser,
+    updateOneAvailability: rules.isAvailabilityOwner,
+    upsertOneAvailability: rules.isAvailabilityOwner,
+    deleteOneAvailability: rules.isAvailabilityOwner,
   },
 })

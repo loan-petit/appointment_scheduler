@@ -63,9 +63,15 @@ const RecurrentAvailabilityTimePicker: React.FunctionComponent<Props> = ({
           />
         </div>
 
-        <button onClick={() => setShowWarningModal(true)} className="ml-4">
-          <FontAwesomeIcon icon={faTimes} className="text-red-500" size="lg" />
-        </button>
+        {recurrentAvailability.startTime || recurrentAvailability.endTime ? (
+          <button className="ml-4" onClick={() => setShowWarningModal(true)}>
+            <FontAwesomeIcon
+              icon={faTimes}
+              className="text-red-500"
+              size="lg"
+            />
+          </button>
+        ) : null}
       </div>
 
       {isRangeInvalid && (
