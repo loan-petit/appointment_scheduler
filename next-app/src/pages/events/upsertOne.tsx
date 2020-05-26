@@ -180,9 +180,9 @@ const UpsertOneEvent = () => {
   return (
     <Layout>
       <div className="md:w-1/2">
-        <div className="mb-6">
+        <header className="mb-6">
           <h5>Informations de l'événement</h5>
-        </div>
+        </header>
 
         {/* Name */}
         <div className="w-full mb-3">

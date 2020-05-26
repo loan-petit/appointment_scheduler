@@ -212,10 +212,6 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
 
   return (
     <>
-      <div className="mb-6">
-        <h5>Calendrier de vos disponibilités</h5>
-      </div>
-
       <DynamicFullCalendar
         defaultView="timeGridWeek"
         header={{

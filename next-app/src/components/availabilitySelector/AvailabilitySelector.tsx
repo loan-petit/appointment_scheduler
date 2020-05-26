@@ -45,7 +45,6 @@ const AvailabilitySelector: React.FunctionComponent<Props> = ({
           </p>
           {weekdaysMin.map((_, j) => (
             <div key={j} />
-            
           ))}
         </div>
       ))}

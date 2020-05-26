@@ -77,10 +77,6 @@ const UpdatePassword = () => {
 
   return (
     <>
-      <div className="mb-6">
-        <h5>Changer votre mot de passe</h5>
-      </div>
-
       {/* Current password */}
       <div className="w-full mb-3">
         <label className="block mb-2">Mot de passe actuel</label>
@@ -89,9 +85,7 @@ const UpdatePassword = () => {
           className="w-full p-3 placeholder-gray-400"
           placeholder="Votre mot de passe"
           name="oldPassword"
-          onChange={formHelper.handleInputChange.bind(
-            formHelper,
-          )}
+          onChange={formHelper.handleInputChange.bind(formHelper)}
           value={formHelper.fieldsInformation.oldPassword.value}
         />
         <p className="form-field-error">
@@ -107,9 +101,7 @@ const UpdatePassword = () => {
           className="w-full p-3 placeholder-gray-400"
           placeholder="Votre nouveau mot de passe"
           name="newPassword"
-          onChange={formHelper.handleInputChange.bind(
-            formHelper,
-          )}
+          onChange={formHelper.handleInputChange.bind(formHelper)}
           value={formHelper.fieldsInformation.newPassword.value}
         />
         <p className="form-field-error">
@@ -127,12 +119,8 @@ const UpdatePassword = () => {
           className="w-full p-3 placeholder-gray-400"
           placeholder="Confirmez votre nouveau mot de passe"
           name="newPasswordConfirmation"
-          onChange={formHelper.handleInputChange.bind(
-            formHelper,
-          )}
-          value={
-            formHelper.fieldsInformation.newPasswordConfirmation.value
-          }
+          onChange={formHelper.handleInputChange.bind(formHelper)}
+          value={formHelper.fieldsInformation.newPasswordConfirmation.value}
         />
         <p className="form-field-error">
           {formHelper.fieldsInformation.newPasswordConfirmation.error}

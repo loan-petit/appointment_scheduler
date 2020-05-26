@@ -12,6 +12,8 @@ import RecurrentAvailability, {
 } from '../models/RecurrentAvailability'
 import UpsertRecurrentAvailabilities from '../components/availabilties/recurrentAvailability/UpsertRecurrentAvailaibilities'
 import AvailabilityCalendar from '../components/availabilties/AvailabilityCalendar'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleDown, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 
 const CurrentUserQuery = gql`
   query CurrentUserQuery {
@@ -24,6 +26,15 @@ const CurrentUserQuery = gql`
 `
 
 const Availabilities = () => {
+  const [
+    isAvailabilityCalendarShown,
+    setIsAvailabilityCalendarShown,
+  ] = React.useState<boolean>(false)
+  const [
+    areRecurrentAvailabilitiesShown,
+    setAreRecurrentAvailabilitiesShown,
+  ] = React.useState<boolean>(false)
+
   const [currentUser, setCurrentUser] = React.useState<User>()
 
   const currentUserQueryResult = useQuery(CurrentUserQuery)
@@ -62,17 +73,57 @@ const Availabilities = () => {
 
   return (
     <Layout>
-      <AvailabilityCalendar
-        currentUser={currentUser}
-        recurrentAvailabilities={recurrentAvailabilities}
-      />
+      <section>
+        <header
+          className="flex items-center mb-6 cursor-pointer"
+          onClick={() =>
+            setAreRecurrentAvailabilitiesShown(!areRecurrentAvailabilitiesShown)
+          }
+        >
+          <FontAwesomeIcon
+            icon={areRecurrentAvailabilitiesShown ? faAngleDown : faAngleRight}
+            size="lg"
+            className="text-gray-600"
+          />
+          <h5 className="pl-6">Définir vos disponibilitées par défaut</h5>
+        </header>
+
+        <div
+          className={
+            'md:w-1/2 ' + (areRecurrentAvailabilitiesShown ? '' : 'hidden')
+          }
+        >
+          <UpsertRecurrentAvailabilities
+            currentUser={currentUser}
+            recurrentAvailabilities={recurrentAvailabilities}
+          />
+        </div>
+      </section>
 
       <hr className="my-12 border-b-1" />
 
-      <UpsertRecurrentAvailabilities
-        currentUser={currentUser}
-        recurrentAvailabilities={recurrentAvailabilities}
-      />
+      <section>
+        <header
+          className="flex items-center mb-6 cursor-pointer"
+          onClick={() =>
+            setIsAvailabilityCalendarShown(!isAvailabilityCalendarShown)
+          }
+        >
+          <FontAwesomeIcon
+            icon={isAvailabilityCalendarShown ? faAngleDown : faAngleRight}
+            size="lg"
+            className="text-gray-600"
+          />
+          <h5 className="pl-6">Calendrier de vos disponibilités</h5>
+        </header>
+
+        <div className={isAvailabilityCalendarShown ? '' : 'hidden'}>
+          <AvailabilityCalendar
+            currentUser={currentUser}
+            recurrentAvailabilities={recurrentAvailabilities}
+          />
+        </div>
+      </section>
     </Layout>
   )
 }

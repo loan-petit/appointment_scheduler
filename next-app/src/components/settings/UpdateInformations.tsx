@@ -28,7 +28,9 @@ type Props = {
   currentUser: User
 }
 
-const UpdateInformations: React.FunctionComponent<Props> = ({ currentUser }) => {
+const UpdateInformations: React.FunctionComponent<Props> = ({
+  currentUser,
+}) => {
   // Hook to force component rerender
   const [, updateState] = React.useState()
   const forceUpdate = React.useCallback(() => updateState({}), [])
@@ -83,10 +85,6 @@ const UpdateInformations: React.FunctionComponent<Props> = ({ currentUser }) => 
 
   return (
     <>
-      <div className="mb-6">
-        <h5>Vos informations</h5>
-      </div>
-
       {/* Full Name */}
       <div className="flex flex-row justify-between mb-3">
         <div className="w-full mr-2">

@@ -231,10 +231,6 @@ const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
 
   return (
     <>
-      <div className="mb-6">
-        <h5>Définir vos disponibilitées par défaut</h5>
-      </div>
-
       {/* Display recurrent availabilities grouped by day */}
       {Object.entries(recurrentAvailabilitiesGroupedByDay).map(
         ([key, group]) => (
