@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 import User from './User'
-import Day from './enums/Day'
+import Day from '../types/Day'
 import getMaxId from '../utils/getMaxId'
 
 export type RecurrentAvailabilitiesGroupedByDay = {

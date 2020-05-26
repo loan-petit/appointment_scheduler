@@ -9,19 +9,17 @@ type AuthPayload {
 }
 
 type AvailabilityModifier {
-  date: DateTime!
-  endTime: Int!
+  end: DateTime!
   id: Int!
   isExclusive: Boolean!
-  startTime: Int!
+  start: DateTime!
   user: User
 }
 
 input AvailabilityModifierCreateInput {
-  date: DateTime!
-  endTime: Int!
+  end: DateTime!
   isExclusive: Boolean!
-  startTime: Int!
+  start: DateTime!
   user: UserCreateOneWithoutAvailabilityModifiersInput
 }
 
@@ -31,39 +29,35 @@ input AvailabilityModifierCreateManyWithoutUserInput {
 }
 
 input AvailabilityModifierCreateWithoutUserInput {
-  date: DateTime!
-  endTime: Int!
+  end: DateTime!
   isExclusive: Boolean!
-  startTime: Int!
+  start: DateTime!
 }
 
 input AvailabilityModifierScalarWhereInput {
   AND: [AvailabilityModifierScalarWhereInput!]
-  date: DateTimeFilter
-  endTime: IntFilter
+  end: DateTimeFilter
   id: IntFilter
   isExclusive: BooleanFilter
   NOT: [AvailabilityModifierScalarWhereInput!]
   OR: [AvailabilityModifierScalarWhereInput!]
-  startTime: IntFilter
+  start: DateTimeFilter
   userId: NullableIntFilter
 }
 
 input AvailabilityModifierUpdateInput {
-  date: DateTime
-  endTime: Int
+  end: DateTime
   id: Int
   isExclusive: Boolean
-  startTime: Int
+  start: DateTime
   user: UserUpdateOneWithoutAvailabilityModifiersInput
 }
 
 input AvailabilityModifierUpdateManyDataInput {
-  date: DateTime
-  endTime: Int
+  end: DateTime
   id: Int
   isExclusive: Boolean
-  startTime: Int
+  start: DateTime
 }
 
 input AvailabilityModifierUpdateManyWithoutUserInput {
@@ -84,11 +78,10 @@ input AvailabilityModifierUpdateManyWithWhereNestedInput {
 }
 
 input AvailabilityModifierUpdateWithoutUserDataInput {
-  date: DateTime
-  endTime: Int
+  end: DateTime
   id: Int
   isExclusive: Boolean
-  startTime: Int
+  start: DateTime
 }
 
 input AvailabilityModifierUpdateWithWhereUniqueWithoutUserInput {

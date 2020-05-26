@@ -1,7 +1,11 @@
 /* Remove that awful yellow color and border from today in Schedule */
-.fc-state-highlight {
-  opacity: 0;
-  border: none;
+.fc-today {
+  background-color: inherit !important;
+}
+
+/* Change business hours color */
+.fc-nonbusiness {
+  background:grey;
 }
 
 /* Styling for each event from Schedule */
@@ -23,9 +27,6 @@
 /* Remove the header border from Schedule */
 .fc td,
 .fc th {
-  border-style: none !important;
-  border-width: 1px !important;
-  padding: 0 !important;
   vertical-align: top !important;
 }
 

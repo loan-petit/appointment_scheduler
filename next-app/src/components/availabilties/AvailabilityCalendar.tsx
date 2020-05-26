@@ -1,7 +1,6 @@
 import React from 'react'
 import gql from 'graphql-tag'
 import { useQuery, useMutation } from '@apollo/react-hooks'
-import { EventInput } from '@fullcalendar/core'
 import { DateClickApi } from '@fullcalendar/core/Calendar'
 import moment from 'moment'
 
@@ -12,10 +11,11 @@ import AvailabilityModifier, {
 } from '../../models/AvailabilityModifier'
 import RecurrentAvailability from '../../models/RecurrentAvailability'
 import DynamicFullCalendar from '../fullCalendar/DynamicFullCalendar'
-import Day from '../../models/enums/Day'
-import getMaxId from '../../utils/getMaxId'
+import Day from '../../types/Day'
 import isInBusinessHours, { BusinessHour } from '../../utils/isInBusinessHours'
 import { convertSecondsToTimeString } from '../../utils/timeStringHelper'
+import MomentInterval from '../../types/MomentInterval'
+import getSurroundingEvents from '../../utils/getSurroundingEvents'
 
 const AvailabilityModifiersQuery = gql`
   query AvailabilityModifiersQuery($userId: Int!) {
@@ -31,26 +31,19 @@ const AvailabilityModifiersQuery = gql`
 const UpsertOneAvailabilityModifierMutation = gql`
   mutation UpsertOneAvailabilityModifierMutation(
     $availabilityModifierId: Int!
-    $day: Day!
-    $startTime: Int!
-    $endTime: Int!
+    $start: DateTime!
+    $end: DateTime!
     $isExclusive: Boolean!
     $userId: Int!
   ) {
     upsertOneAvailabilityModifier(
       create: {
-        date: $date
-        startTime: $startTime
-        endTime: $endTime
-        isExclusive: $endTime
+        start: $start
+        end: $end
+        isExclusive: $isExclusive
         user: { connect: { id: $userId } }
       }
-      update: {
-        date: $date
-        startTime: $startTime
-        endTime: $endTime
-        isExclusive: $isExclusive
-      }
+      update: { start: $start, end: $end, isExclusive: $isExclusive }
       where: { id: $availabilityModifierId }
     ) {
       ...AvailabilityModifierFields
@@ -79,12 +72,13 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
   currentUser,
   recurrentAvailabilities,
 }) => {
+  // Hook to force component rerender
+  const [, updateState] = React.useState()
+  const forceUpdate = React.useCallback(() => updateState({}), [])
+
   const { loading, error, data } = useQuery(AvailabilityModifiersQuery, {
     variables: { userId: currentUser.id },
   })
-
-  const calendarComponentRef = React.createRef()
-  const [calendarEvents, setCalendarEvents] = React.useState<EventInput[]>([])
 
   const [upsertOneAvailabilityModifier] = useMutation(
     UpsertOneAvailabilityModifierMutation,
@@ -162,10 +156,6 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
   const availabilityModifiers: AvailabilityModifier[] =
     data.user.availabilityModifiers
 
-  console.log(availabilityModifiers)
-  console.log(upsertOneAvailabilityModifier)
-  console.log(deleteOneAvailabilityModifier)
-
   const businessHours: BusinessHour[] = recurrentAvailabilities
     .filter((v) => v.startTime && v.endTime)
     .map((v) => {
@@ -180,95 +170,44 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
       }
     })
 
-  const updateAvailabilityModifiers = async (arg: DateClickApi) => {
-    const endTime = moment(arg.date).add(30, 'minutes')
-    const isEventInBusinessHours = isInBusinessHours(
-      {
-        startTime: arg.date,
-        endTime: moment(arg.date).add(30, 'minutes').toDate(),
-        allDay: arg.allDay,
-      },
-      businessHours,
+  const handleDateClick = async (arg: DateClickApi) => {
+    var event: MomentInterval = {
+      start: moment(arg.date),
+      end: moment(arg.date).add(30, 'minutes'),
+    }
+
+    const isEventInBusinessHours = isInBusinessHours(event, businessHours)
+    const surroundings = getSurroundingEvents(
+      event,
+      availabilityModifiers.map((v, i) => {
+        return {
+          index: i,
+          interval: { start: moment(v.start), end: moment(v.end) },
+        }
+      }),
     )
 
-    const atSameDate = availabilityModifiers.find(
-      (v) =>
-        v.isExclusive === isEventInBusinessHours &&
-        moment(v.startTime).isSameOrBefore(arg.date) &&
-        moment(v.endTime).isSameOrAfter(endTime),
-    )
-    const adjacent = availabilityModifiers.find(
-      (v) =>
-        v.isExclusive === isEventInBusinessHours &&
-        (moment(v.startTime).isSame(endTime) ||
-          moment(v.endTime).isSame(arg.date)),
-    )
-
-    if (atSameDate) {
-      await upsertOneAvailabilityModifier({
-        variables: {
-          availabilityModifierId: atSameDate.id,
-          startTime: atSameDate.startTime,
-          endTime: arg.date,
-          isExclusive: atSameDate.isExclusive,
-          userId: currentUser.id,
-        },
-      })
-      await upsertOneAvailabilityModifier({
-        variables: {
-          availabilityModifierId: atSameDate.id,
-          startTime: endTime,
-          endTime: atSameDate.endTime,
-          isExclusive: atSameDate.isExclusive,
-          userId: currentUser.id,
-        },
-      })
-    } else if (adjacent) {
-      await upsertOneAvailabilityModifier({
-        variables: {
-          availabilityModifierId: adjacent.id,
-          startTime: moment(adjacent.startTime).isSame(endTime)
-            ? arg.date
-            : adjacent.startTime,
-          endTime: moment(adjacent.endTime).isSame(arg.date)
-            ? endTime
-            : adjacent.endTime,
-          isExclusive: adjacent.isExclusive,
-          userId: currentUser.id,
-        },
-      })
+    if (surroundings.equal.length) {
+      surroundings.equal.forEach(
+        async (v) =>
+          await deleteOneAvailabilityModifier({
+            variables: {
+              availabilityModifierId: availabilityModifiers[v.index].id,
+            },
+          }),
+      )
     } else {
       await upsertOneAvailabilityModifier({
         variables: {
-          availabilityModifierId: getMaxId(availabilityModifiers) + 1,
-          startTime: arg.date,
-          endTime: endTime,
+          availabilityModifierId: -1,
+          start: event.start,
+          end: event.end,
           isExclusive: isEventInBusinessHours,
           userId: currentUser.id,
         },
       })
     }
-  }
-  console.log(updateAvailabilityModifiers)
-
-  const handleDateClick = async (arg: DateClickApi) => {
-    // await updateAvailabilityModifiers(arg)
-
-    if (calendarEvents.some((v) => moment(v.start).isSame(arg.date))) {
-      setCalendarEvents(
-        calendarEvents.filter((v) => !moment(v.start).isSame(arg.date)),
-      )
-    } else {
-      setCalendarEvents(
-        calendarEvents.concat({
-          title: getMaxId(availabilityModifiers).toString(),
-          start: arg.date,
-          end: moment(arg.date).add(30, 'minutes').toDate(),
-          allDay: arg.allDay,
-          rendering: 'background',
-        }),
-      )
-    }
+    return forceUpdate()
   }
 
   return (
@@ -296,8 +235,31 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
             },
           },
         }}
-        ref={calendarComponentRef}
-        events={calendarEvents}
+        nowIndicator={true}
+        navLinks={true}
+        allDaySlot={false}
+        events={availabilityModifiers.map((v) => {
+          const momentInterval: MomentInterval = {
+            start: moment(v.start),
+            end: moment(v.end),
+          }
+
+          const isAllDay =
+            momentInterval.start.hours() == 0 &&
+            momentInterval.start.minutes() == 0 &&
+            momentInterval.end.hours() == 23 &&
+            momentInterval.end.minutes() == 59
+
+          return {
+            id: v.id,
+            title: v.id,
+            start: momentInterval.start.toDate(),
+            end: !isAllDay ? momentInterval.end.toDate() : undefined,
+            allDay: isAllDay,
+            rendering: 'background',
+            backgroundColor: v.isExclusive ? 'red' : 'green',
+          }
+        })}
         dateClick={handleDateClick}
         businessHours={businessHours}
       />

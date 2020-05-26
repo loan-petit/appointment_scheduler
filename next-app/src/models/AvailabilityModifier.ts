@@ -4,9 +4,8 @@ import User from './User'
 
 type AvailabilityModifier = {
   id: number
-  date: string
-  startTime: number
-  endTime: number
+  start: Date
+  end: Date
   isExclusive: boolean
   user?: User
 }
@@ -16,9 +15,8 @@ export const AvailabilityModifierFragments = {
     fragment AvailabilityModifierFields on AvailabilityModifier {
       __typename
       id
-      date
-      startTime
-      endTime
+      start
+      end
       isExclusive
     }
   `,

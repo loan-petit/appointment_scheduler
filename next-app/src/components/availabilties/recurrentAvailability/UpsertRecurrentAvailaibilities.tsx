@@ -10,7 +10,7 @@ import RecurrentAvailability, {
   RecurrentAvailabilityHelpers,
   RecurrentAvailabilityOperations,
 } from '../../../models/RecurrentAvailability'
-import Day, { dayToUserFriendlyString } from '../../../models/enums/Day'
+import Day, { dayToUserFriendlyString } from '../../../types/Day'
 import RecurrentAvailabilityTimePicker from './RecurrentAvailabilityFields'
 import getMaxId from '../../../utils/getMaxId'
 import { SubmitStatus } from '../../../utils/FormHelper'

@@ -1,0 +1,34 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "AvailabilityModifier",
+      "field": "start",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "AvailabilityModifier",
+      "field": "end",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "AvailabilityModifier",
+      "field": "date"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "AvailabilityModifier",
+      "field": "startTime"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "AvailabilityModifier",
+      "field": "endTime"
+    }
+  ]
+}

@@ -3,7 +3,7 @@
 @import '@fullcalendar/daygrid/main.css';
 @import '@fullcalendar/timegrid/main.css';
 
-/* @import '_materialFullCalendar.css'; */
+@import '_materialFullCalendar.css';
 
 /* purgecss start ignore */
 @import 'tailwindcss/base';
