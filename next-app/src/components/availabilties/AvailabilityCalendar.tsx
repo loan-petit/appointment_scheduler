@@ -12,8 +12,10 @@ import AvailabilityModifier, {
 } from '../../models/AvailabilityModifier'
 import RecurrentAvailability from '../../models/RecurrentAvailability'
 import DynamicFullCalendar from '../fullCalendar/DynamicFullCalendar'
-import convertSecondsToTimeString from '../../utils/convertSecondsToTimeString'
 import Day from '../../models/enums/Day'
+import getMaxId from '../../utils/getMaxId'
+import isInBusinessHours, { BusinessHour } from '../../utils/isInBusinessHours'
+import { convertSecondsToTimeString } from '../../utils/timeStringHelper'
 
 const AvailabilityModifiersQuery = gql`
   query AvailabilityModifiersQuery($userId: Int!) {
@@ -32,6 +34,7 @@ const UpsertOneAvailabilityModifierMutation = gql`
     $day: Day!
     $startTime: Int!
     $endTime: Int!
+    $isExclusive: Boolean!
     $userId: Int!
   ) {
     upsertOneAvailabilityModifier(
@@ -39,9 +42,15 @@ const UpsertOneAvailabilityModifierMutation = gql`
         date: $date
         startTime: $startTime
         endTime: $endTime
+        isExclusive: $endTime
         user: { connect: { id: $userId } }
       }
-      update: { date: $date, startTime: $startTime, endTime: $endTime }
+      update: {
+        date: $date
+        startTime: $startTime
+        endTime: $endTime
+        isExclusive: $isExclusive
+      }
       where: { id: $availabilityModifierId }
     ) {
       ...AvailabilityModifierFields
@@ -150,28 +159,109 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
       </p>
     )
   }
-  const availabilityModifiers: AvailabilityModifier[] = data.user.availabilities
+  const availabilityModifiers: AvailabilityModifier[] =
+    data.user.availabilityModifiers
 
   console.log(availabilityModifiers)
   console.log(upsertOneAvailabilityModifier)
   console.log(deleteOneAvailabilityModifier)
 
-  const handleDateClick = async (arg: DateClickApi) => {
-    const isSameDateInput = (v: EventInput) => {
-      if (v.start instanceof Date) {
-        return v.start.getTime() === arg.date.getTime()
+  const businessHours: BusinessHour[] = recurrentAvailabilities
+    .filter((v) => v.startTime && v.endTime)
+    .map((v) => {
+      if (!v.startTime || !v.endTime) {
+        throw Error('RecurrentAvailabilities startTime and endTime must be set')
       }
-      return v.start?.toString() === arg.date.toString()
-    }
 
-    if (calendarEvents.some(isSameDateInput)) {
+      return {
+        daysOfWeek: [Object.values(Day).indexOf(v.day)],
+        startTime: convertSecondsToTimeString(v.startTime),
+        endTime: convertSecondsToTimeString(v.endTime),
+      }
+    })
+
+  const updateAvailabilityModifiers = async (arg: DateClickApi) => {
+    const endTime = moment(arg.date).add(30, 'minutes')
+    const isEventInBusinessHours = isInBusinessHours(
+      {
+        startTime: arg.date,
+        endTime: moment(arg.date).add(30, 'minutes').toDate(),
+        allDay: arg.allDay,
+      },
+      businessHours,
+    )
+
+    const atSameDate = availabilityModifiers.find(
+      (v) =>
+        v.isExclusive === isEventInBusinessHours &&
+        moment(v.startTime).isSameOrBefore(arg.date) &&
+        moment(v.endTime).isSameOrAfter(endTime),
+    )
+    const adjacent = availabilityModifiers.find(
+      (v) =>
+        v.isExclusive === isEventInBusinessHours &&
+        (moment(v.startTime).isSame(endTime) ||
+          moment(v.endTime).isSame(arg.date)),
+    )
+
+    if (atSameDate) {
+      await upsertOneAvailabilityModifier({
+        variables: {
+          availabilityModifierId: atSameDate.id,
+          startTime: atSameDate.startTime,
+          endTime: arg.date,
+          isExclusive: atSameDate.isExclusive,
+          userId: currentUser.id,
+        },
+      })
+      await upsertOneAvailabilityModifier({
+        variables: {
+          availabilityModifierId: atSameDate.id,
+          startTime: endTime,
+          endTime: atSameDate.endTime,
+          isExclusive: atSameDate.isExclusive,
+          userId: currentUser.id,
+        },
+      })
+    } else if (adjacent) {
+      await upsertOneAvailabilityModifier({
+        variables: {
+          availabilityModifierId: adjacent.id,
+          startTime: moment(adjacent.startTime).isSame(endTime)
+            ? arg.date
+            : adjacent.startTime,
+          endTime: moment(adjacent.endTime).isSame(arg.date)
+            ? endTime
+            : adjacent.endTime,
+          isExclusive: adjacent.isExclusive,
+          userId: currentUser.id,
+        },
+      })
+    } else {
+      await upsertOneAvailabilityModifier({
+        variables: {
+          availabilityModifierId: getMaxId(availabilityModifiers) + 1,
+          startTime: arg.date,
+          endTime: endTime,
+          isExclusive: isEventInBusinessHours,
+          userId: currentUser.id,
+        },
+      })
+    }
+  }
+  console.log(updateAvailabilityModifiers)
+
+  const handleDateClick = async (arg: DateClickApi) => {
+    // await updateAvailabilityModifiers(arg)
+
+    if (calendarEvents.some((v) => moment(v.start).isSame(arg.date))) {
       setCalendarEvents(
-        calendarEvents.filter((v) => isSameDateInput(v) == false),
+        calendarEvents.filter((v) => !moment(v.start).isSame(arg.date)),
       )
     } else {
       setCalendarEvents(
         calendarEvents.concat({
-          title: 'New Event',
+          title: getMaxId(availabilityModifiers).toString(),
           start: arg.date,
           end: moment(arg.date).add(30, 'minutes').toDate(),
           allDay: arg.allDay,
@@ -209,15 +299,7 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
         ref={calendarComponentRef}
         events={calendarEvents}
         dateClick={handleDateClick}
-        businessHours={recurrentAvailabilities.map((v) => {
-          if (!v.startTime || !v.endTime) return {}
-
-          return {
-            daysOfWeek: [Object.values(Day).indexOf(v.day)],
-            startTime: convertSecondsToTimeString(v.startTime),
-            endTime: convertSecondsToTimeString(v.endTime),
-          }
-        })}
+        businessHours={businessHours}
       />
     </>
   )

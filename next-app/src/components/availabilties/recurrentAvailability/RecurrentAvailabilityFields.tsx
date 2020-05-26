@@ -5,7 +5,7 @@ import TimeField from 'react-simple-timefield'
 
 import RecurrentAvailability from '../../../models/RecurrentAvailability'
 import WarningModal from '../../WarningModal'
-import convertSecondsToTimeString from '../../../utils/convertSecondsToTimeString'
+import { convertSecondsToTimeString } from '../../../utils/timeStringHelper'
 
 type Props = {
   recurrentAvailability: RecurrentAvailability

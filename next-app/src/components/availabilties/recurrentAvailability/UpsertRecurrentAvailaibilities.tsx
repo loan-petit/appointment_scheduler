@@ -14,6 +14,7 @@ import Day, { dayToUserFriendlyString } from '../../../models/enums/Day'
 import RecurrentAvailabilityTimePicker from './RecurrentAvailabilityFields'
 import getMaxId from '../../../utils/getMaxId'
 import { SubmitStatus } from '../../../utils/FormHelper'
+import { convertTimeStringToSeconds } from '../../../utils/timeStringHelper'
 
 const UpsertOneRecurrentAvailabilityMutation = gql`
   mutation UpsertOneRecurrentAvailabilityMutation(
@@ -151,9 +152,7 @@ const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
   ) => {
-    // Convert value in hh:mm format to seconds
-    var split = e.target.value.split(':')
-    var seconds = +split[0] * 60 * 60 + +split[1] * 60
+    const seconds = convertTimeStringToSeconds(e.target.value)
 
     if (e.target.name === 'startTime') {
       recurrentAvailabilities[index].startTime = seconds
@@ -270,7 +269,10 @@ const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
                 onClick={() => {
                   if (!group) return
 
-                  if (group[group.length - 1].startTime || group[group.length - 1].endTime)
+                  if (
+                    group[group.length - 1].startTime ||
+                    group[group.length - 1].endTime
+                  )
                     addRecurrentAvailability(Day[Number(key) as Day])
                 }}
               >

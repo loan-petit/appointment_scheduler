@@ -5,9 +5,9 @@ import User from './User'
 type AvailabilityModifier = {
   id: number
   date: string
-  startTime?: number
-  endTime?: number
-  isExclusive?: boolean
+  startTime: number
+  endTime: number
+  isExclusive: boolean
   user?: User
 }
 
