@@ -105,7 +105,7 @@ const UpsertOneEvent = () => {
       case 'name':
         return !value.length ? 'Ce champ est obligatoire.' : ''
       case 'duration':
-        return isNaN(value) ? 'Ce champ doit contenir une durée.' : ''
+        return !value || isNaN(value) ? 'Ce champ doit contenir une durée.' : ''
       case 'price':
         return isNaN(value) ? 'Ce champ doit contenir un prix.' : ''
       default:

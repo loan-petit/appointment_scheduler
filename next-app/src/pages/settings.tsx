@@ -8,19 +8,17 @@ import LoadingOverlay from '../components/LoadingOverlay'
 import Layout from '../components/Layout'
 import UpdateInformations from '../components/settings/UpdateInformations'
 import UpdatePassword from '../components/settings/UpdatePassword'
-import User from '../models/User'
+import User, { UserFragments } from '../models/User'
 
 const CurrentUserQuery = gql`
   query CurrentUserQuery {
     me {
       user {
-        id
-        email
-        firstName
-        lastName
+        ...UserFields
       }
     }
   }
+  ${UserFragments.fields}
 `
 
 const Settings = () => {

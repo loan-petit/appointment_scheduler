@@ -253,7 +253,7 @@ type Mutation {
   deleteOneUser(where: UserWhereUniqueInput!): User
   signin(email: String!, password: String!): AuthPayload!
   signup(email: String!, firstName: String!, lastName: String!, password: String!, passwordConfirmation: String!): AuthPayload!
-  updateCurrentUser(email: String, firstName: String, lastName: String, newPassword: String, newPasswordConfirmation: String, oldPassword: String): User!
+  updateCurrentUser(address: String, email: String, firstName: String, lastName: String, minScheduleNotice: Int, newPassword: String, newPasswordConfirmation: String, oldPassword: String, websiteUrl: String): User!
   updateOneAvailabilityModifier(data: AvailabilityModifierUpdateInput!, where: AvailabilityModifierWhereUniqueInput!): AvailabilityModifier
   updateOneEvent(data: EventUpdateInput!, where: EventWhereUniqueInput!): Event
   updateOneRecurrentAvailability(data: RecurrentAvailabilityUpdateInput!, where: RecurrentAvailabilityWhereUniqueInput!): RecurrentAvailability

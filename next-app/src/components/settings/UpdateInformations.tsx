@@ -3,25 +3,29 @@ import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
 
 import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
-import User from '../../models/User'
+import User, { UserFragments } from '../../models/User'
 
 const UpdateCurrentUserMutation = gql`
   mutation UpdateCurrentUserMutation(
     $email: String
     $firstName: String
     $lastName: String
+    $websiteUrl: String
+    $address: String
+    $minScheduleNotice: Int
   ) {
     updateCurrentUser(
       email: $email
       firstName: $firstName
       lastName: $lastName
+      websiteUrl: $websiteUrl
+      address: $address
+      minScheduleNotice: $minScheduleNotice
     ) {
-      id
-      email
-      firstName
-      lastName
+      ...UserFields
     }
   }
+  ${UserFragments.fields}
 `
 
 type Props = {
@@ -41,6 +45,10 @@ const UpdateInformations: React.FunctionComponent<Props> = ({
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
   )
 
+  const urlRegex = RegExp(
+    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
+  )
+
   const fieldsValidator = (name: String, value: any) => {
     switch (name) {
       case 'firstName':
@@ -48,6 +56,10 @@ const UpdateInformations: React.FunctionComponent<Props> = ({
         return !value.length ? 'Ce champ est obligatoire.' : ''
       case 'email':
         return !emailRegex.test(value) ? 'Veuillez entrer un email valide.' : ''
+      case 'websiteUrl':
+        return !urlRegex.test(value) ? 'Veuillez entrer une URL valide.' : ''
+      case 'minScheduleNotice':
+        return !value || isNaN(value) ? 'Ce champ doit contenir une durée.' : ''
       default:
         return ''
     }
@@ -59,6 +71,9 @@ const UpdateInformations: React.FunctionComponent<Props> = ({
         firstName: fieldsInformation.firstName.value,
         lastName: fieldsInformation.lastName.value,
         email: fieldsInformation.email.value,
+        websiteUrl: fieldsInformation.websiteUrl.value,
+        address: fieldsInformation.address.value,
+        minScheduleNotice: Number(fieldsInformation.minScheduleNotice.value),
       },
     })
 
@@ -75,6 +90,9 @@ const UpdateInformations: React.FunctionComponent<Props> = ({
         { name: 'firstName', value: currentUser.firstName },
         { name: 'lastName', value: currentUser.lastName },
         { name: 'email', value: currentUser.email },
+        { name: 'websiteUrl', value: currentUser.websiteUrl },
+        { name: 'address', value: currentUser.address },
+        { name: 'minScheduleNotice', value: currentUser.minScheduleNotice },
       ],
       refreshComponent: forceUpdate,
       fieldsValidator: fieldsValidator,
@@ -131,6 +149,57 @@ const UpdateInformations: React.FunctionComponent<Props> = ({
         />
         <p className="form-field-error">
           {formHelper.fieldsInformation.email.error}
+        </p>
+      </div>
+
+      {/* Website URL */}
+      <div className="w-full mb-3">
+        <label className="block mb-2">Site web</label>
+        <input
+          type="text"
+          className="w-full p-3 placeholder-gray-400"
+          placeholder="L'URL de votre site web"
+          onChange={formHelper.handleInputChange.bind(formHelper)}
+          name="websiteUrl"
+          value={formHelper.fieldsInformation.websiteUrl.value}
+        />
+        <p className="form-field-error">
+          {formHelper.fieldsInformation.websiteUrl.error}
+        </p>
+      </div>
+
+      {/* Address */}
+      <div className="w-full mb-3">
+        <label className="block mb-2">Adresse physique</label>
+        <input
+          type="test"
+          className="w-full p-3 placeholder-gray-400"
+          placeholder="Votre adresse"
+          onChange={formHelper.handleInputChange.bind(formHelper)}
+          name="address"
+          value={formHelper.fieldsInformation.address.value}
+        />
+        <p className="form-field-error">
+          {formHelper.fieldsInformation.address.error}
+        </p>
+      </div>
+
+      {/* Minimum schedule notice*/}
+      <div className="w-full mb-3">
+        <label className="block mb-2">
+          Durée minimale avant planification (en minutes)
+        </label>
+        <input
+          type="number"
+          className="w-full px-3 py-3 placeholder-gray-400"
+          placeholder="Durée minimale avant planification"
+          onChange={formHelper.handleInputChange.bind(formHelper)}
+          name="minScheduleNotice"
+          value={formHelper.fieldsInformation.minScheduleNotice.value}
+          autoFocus
+        />
+        <p className="form-field-error">
+          {formHelper.fieldsInformation.minScheduleNotice.error}
         </p>
       </div>
 

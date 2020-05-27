@@ -1,6 +1,6 @@
 import { compare, hash } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
-import { mutationField, stringArg } from 'nexus'
+import { mutationField, stringArg, intArg } from 'nexus'
 
 import { JWT_SECRET, getUserId } from '../../utils/getUserId'
 
@@ -80,6 +80,9 @@ export const updateCurrentUser = mutationField('updateCurrentUser', {
     email: stringArg(),
     firstName: stringArg(),
     lastName: stringArg(),
+    websiteUrl: stringArg({ nullable: true }),
+    address: stringArg({ nullable: true }),
+    minScheduleNotice: intArg({ nullable: true }),
     oldPassword: stringArg(),
     newPassword: stringArg(),
     newPasswordConfirmation: stringArg(),
@@ -90,6 +93,9 @@ export const updateCurrentUser = mutationField('updateCurrentUser', {
       email,
       firstName,
       lastName,
+      websiteUrl,
+      address,
+      minScheduleNotice,
       oldPassword,
       newPassword,
       newPasswordConfirmation,
@@ -128,6 +134,9 @@ export const updateCurrentUser = mutationField('updateCurrentUser', {
         email,
         firstName,
         lastName,
+        websiteUrl,
+        address,
+        minScheduleNotice,
         password: hashedPassword,
       },
     })
