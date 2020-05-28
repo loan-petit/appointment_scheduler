@@ -2,8 +2,10 @@
 @import '@fullcalendar/core/main.css';
 @import '@fullcalendar/daygrid/main.css';
 @import '@fullcalendar/timegrid/main.css';
+@import 'customFullCalendar.css';
 
-@import '_materialFullCalendar.css';
+/* Import react-day-picker styles */
+@import 'react-day-picker/lib/style.css';
 
 /* purgecss start ignore */
 @import 'tailwindcss/base';
