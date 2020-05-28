@@ -11,6 +11,7 @@ generator client {
 model User {
   id                      Int                     @default(autoincrement()) @id
   email                   String                  @unique
+  username                String                  @unique
   firstName               String
   lastName                String
   password                String
@@ -19,7 +20,7 @@ model User {
   minScheduleNotice       Int                     @default(0)
   events                  Event[]
   recurrentAvailabilities RecurrentAvailability[]
-  availabilities          Availability[]
+  availabilityModifiers   AvailabilityModifier[]
 }
 
 model Event {
@@ -42,21 +43,21 @@ model RecurrentAvailability {
   userId    Int?
 }
 
-model Availability {
-  id        Int      @default(autoincrement()) @id
-  date      DateTime
-  startTime Int
-  endTime   Int
-  user      User?    @relation(fields: [userId], references: [id])
-  userId    Int?
+model AvailabilityModifier {
+  id          Int      @default(autoincrement()) @id
+  start       DateTime
+  end         DateTime
+  isExclusive Boolean
+  user        User?    @relation(fields: [userId], references: [id])
+  userId      Int?
 }
 
 enum Day {
+  SUNDAY
   MONDAY
   TUESDAY
   WEDNESDAY
   THURSDAY
   FRIDAY
   SATURDAY
-  SUNDAY
 }

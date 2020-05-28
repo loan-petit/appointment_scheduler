@@ -44,7 +44,6 @@ const rules = {
 export const permissions = shield({
   Query: {
     me: rules.isAuthenticatedUser,
-    user: rules.isAuthenticatedUser,
     users: rules.isAuthenticatedUser,
   },
   Mutation: {

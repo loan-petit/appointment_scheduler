@@ -196,7 +196,6 @@ const UpdateInformations: React.FunctionComponent<Props> = ({
           onChange={formHelper.handleInputChange.bind(formHelper)}
           name="minScheduleNotice"
           value={formHelper.fieldsInformation.minScheduleNotice.value}
-          autoFocus
         />
         <p className="form-field-error">
           {formHelper.fieldsInformation.minScheduleNotice.error}

@@ -6,6 +6,7 @@ import RecurrentAvailability from './RecurrentAvailability'
 type User = {
   id: number
   email: string
+  username: string
   firstName: string
   lastName: string
   websiteUrl?: string
@@ -21,6 +22,7 @@ export const UserFragments = {
       __typename
       id
       email
+      username
       firstName
       lastName
       websiteUrl

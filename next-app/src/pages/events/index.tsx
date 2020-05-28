@@ -105,9 +105,10 @@ const Events = () => {
           </a>
         </Link>
       </div>
+
       {/* Events */}
       <div className="flex flex-wrap">
-        {events?.map((event, i) => (
+        {events.map((event, i) => (
           <div
             key={i}
             className="flex justify-between w-full m-4 text-gray-800 bg-white rounded-lg shadow-lg md:w-4/12"

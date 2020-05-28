@@ -2,10 +2,9 @@ import * as React from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-
+import Cookies from 'js-cookie'
 import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
 
@@ -108,6 +107,15 @@ const Layout: React.FunctionComponent<Props> = ({
                 </a>
               </Link>
             ))}
+            <a
+              className="text-red-500 nav-item hover:text-red-500 focus:text-red-500"
+              onClick={() => {
+                Cookies.remove('token')
+                router.push('/auth/signin')
+              }}
+            >
+              Se déconnecter
+            </a>
           </nav>
         </div>
         <div className="w-full p-10 bg-gray-100">{children}</div>

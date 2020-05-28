@@ -1,6 +1,6 @@
 import { compare, hash } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
-import { mutationField, stringArg, intArg } from 'nexus'
+import { mutationField, stringArg, intArg, idArg } from 'nexus'
 
 import { JWT_SECRET, getUserId } from '../../utils/getUserId'
 
@@ -23,9 +23,28 @@ export const signup = mutationField('signup', {
     }
 
     const hashedPassword = await hash(password, 10)
-    const user = await ctx.prisma.user.create({
+
+    var user
+    var username: string = `${firstName}${lastName}`.toLowerCase()
+    do {
+      user = await ctx.prisma.user.findOne({
+        where: { username: username },
+      })
+      if (user) {
+        if (!isNaN(Number(username.substr(username.length - 1)))) {
+          username =
+            username.substr(0, username.length - 1) +
+            (Number(username[username.length - 1]) + 1).toString()
+        } else {
+          username += '1'
+        }
+      }
+    } while (user)
+
+    user = await ctx.prisma.user.create({
       data: {
         email,
+        username,
         firstName,
         lastName,
         password: hashedPassword,

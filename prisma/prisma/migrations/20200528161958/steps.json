@@ -2,6 +2,19 @@
   "version": "0.3.14-fixed",
   "steps": [
     {
+      "tag": "CreateEnum",
+      "enum": "Day",
+      "values": [
+        "SUNDAY",
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY"
+      ]
+    },
+    {
       "tag": "CreateSource",
       "source": "db"
     },
@@ -100,6 +113,24 @@
     {
       "tag": "CreateField",
       "model": "User",
+      "field": "username",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "username"
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
       "field": "firstName",
       "type": "String",
       "arity": "Required"
@@ -175,14 +206,14 @@
       "tag": "CreateField",
       "model": "User",
       "field": "recurrentAvailabilities",
-      "type": "RecurrentAvailabilitySlot",
+      "type": "RecurrentAvailability",
       "arity": "List"
     },
     {
       "tag": "CreateField",
       "model": "User",
-      "field": "availabilities",
-      "type": "AvailabilitySlot",
+      "field": "availabilityModifiers",
+      "type": "AvailabilityModifier",
       "arity": "List"
     },
     {
@@ -295,7 +326,7 @@
     {
       "tag": "CreateField",
       "model": "Event",
-      "field": "User",
+      "field": "user",
       "type": "User",
       "arity": "Optional"
     },
@@ -305,7 +336,7 @@
         "path": {
           "tag": "Field",
           "model": "Event",
-          "field": "User"
+          "field": "user"
         },
         "directive": "relation"
       }
@@ -317,7 +348,7 @@
         "path": {
           "tag": "Field",
           "model": "Event",
-          "field": "User"
+          "field": "user"
         },
         "directive": "relation"
       },
@@ -331,7 +362,7 @@
         "path": {
           "tag": "Field",
           "model": "Event",
-          "field": "User"
+          "field": "user"
         },
         "directive": "relation"
       },
@@ -347,11 +378,11 @@
     },
     {
       "tag": "CreateModel",
-      "model": "RecurrentAvailabilitySlot"
+      "model": "RecurrentAvailability"
     },
     {
       "tag": "CreateField",
-      "model": "RecurrentAvailabilitySlot",
+      "model": "RecurrentAvailability",
       "field": "id",
       "type": "Int",
       "arity": "Required"
@@ -361,7 +392,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "RecurrentAvailabilitySlot",
+          "model": "RecurrentAvailability",
           "field": "id"
         },
         "directive": "default"
@@ -373,7 +404,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "RecurrentAvailabilitySlot",
+          "model": "RecurrentAvailability",
           "field": "id"
         },
         "directive": "default"
@@ -386,7 +417,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "RecurrentAvailabilitySlot",
+          "model": "RecurrentAvailability",
           "field": "id"
         },
         "directive": "id"
@@ -394,29 +425,29 @@
     },
     {
       "tag": "CreateField",
-      "model": "RecurrentAvailabilitySlot",
+      "model": "RecurrentAvailability",
       "field": "day",
-      "type": "String",
+      "type": "Day",
       "arity": "Required"
     },
     {
       "tag": "CreateField",
-      "model": "RecurrentAvailabilitySlot",
+      "model": "RecurrentAvailability",
       "field": "startTime",
       "type": "Int",
       "arity": "Required"
     },
     {
       "tag": "CreateField",
-      "model": "RecurrentAvailabilitySlot",
+      "model": "RecurrentAvailability",
       "field": "endTime",
       "type": "Int",
       "arity": "Required"
     },
     {
       "tag": "CreateField",
-      "model": "RecurrentAvailabilitySlot",
-      "field": "User",
+      "model": "RecurrentAvailability",
+      "field": "user",
       "type": "User",
       "arity": "Optional"
     },
@@ -425,8 +456,8 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "RecurrentAvailabilitySlot",
-          "field": "User"
+          "model": "RecurrentAvailability",
+          "field": "user"
         },
         "directive": "relation"
       }
@@ -437,8 +468,8 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "RecurrentAvailabilitySlot",
-          "field": "User"
+          "model": "RecurrentAvailability",
+          "field": "user"
         },
         "directive": "relation"
       },
@@ -451,8 +482,8 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "RecurrentAvailabilitySlot",
-          "field": "User"
+          "model": "RecurrentAvailability",
+          "field": "user"
         },
         "directive": "relation"
       },
@@ -461,18 +492,18 @@
     },
     {
       "tag": "CreateField",
-      "model": "RecurrentAvailabilitySlot",
+      "model": "RecurrentAvailability",
       "field": "userId",
       "type": "Int",
       "arity": "Optional"
     },
     {
       "tag": "CreateModel",
-      "model": "AvailabilitySlot"
+      "model": "AvailabilityModifier"
     },
     {
       "tag": "CreateField",
-      "model": "AvailabilitySlot",
+      "model": "AvailabilityModifier",
       "field": "id",
       "type": "Int",
       "arity": "Required"
@@ -482,7 +513,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "AvailabilitySlot",
+          "model": "AvailabilityModifier",
           "field": "id"
         },
         "directive": "default"
@@ -494,7 +525,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "AvailabilitySlot",
+          "model": "AvailabilityModifier",
           "field": "id"
         },
         "directive": "default"
@@ -507,7 +538,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "AvailabilitySlot",
+          "model": "AvailabilityModifier",
           "field": "id"
         },
         "directive": "id"
@@ -515,29 +546,29 @@
     },
     {
       "tag": "CreateField",
-      "model": "AvailabilitySlot",
-      "field": "date",
+      "model": "AvailabilityModifier",
+      "field": "start",
       "type": "DateTime",
       "arity": "Required"
     },
     {
       "tag": "CreateField",
-      "model": "AvailabilitySlot",
-      "field": "startTime",
-      "type": "Int",
+      "model": "AvailabilityModifier",
+      "field": "end",
+      "type": "DateTime",
       "arity": "Required"
     },
     {
       "tag": "CreateField",
-      "model": "AvailabilitySlot",
-      "field": "endTime",
-      "type": "Int",
+      "model": "AvailabilityModifier",
+      "field": "isExclusive",
+      "type": "Boolean",
       "arity": "Required"
     },
     {
       "tag": "CreateField",
-      "model": "AvailabilitySlot",
-      "field": "User",
+      "model": "AvailabilityModifier",
+      "field": "user",
       "type": "User",
       "arity": "Optional"
     },
@@ -546,8 +577,8 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "AvailabilitySlot",
-          "field": "User"
+          "model": "AvailabilityModifier",
+          "field": "user"
         },
         "directive": "relation"
       }
@@ -558,8 +589,8 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "AvailabilitySlot",
-          "field": "User"
+          "model": "AvailabilityModifier",
+          "field": "user"
         },
         "directive": "relation"
       },
@@ -572,8 +603,8 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "AvailabilitySlot",
-          "field": "User"
+          "model": "AvailabilityModifier",
+          "field": "user"
         },
         "directive": "relation"
       },
@@ -582,7 +613,7 @@
     },
     {
       "tag": "CreateField",
-      "model": "AvailabilitySlot",
+      "model": "AvailabilityModifier",
       "field": "userId",
       "type": "Int",
       "arity": "Optional"
