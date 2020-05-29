@@ -30,6 +30,15 @@ export const UserFragments = {
       minScheduleNotice
     }
   `,
+  publicFields: gql`
+    fragment UserPublicFields on User {
+      id
+      firstName
+      lastName
+      websiteUrl
+      address
+    }
+  `,
 }
 
 export default User

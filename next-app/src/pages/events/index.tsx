@@ -6,12 +6,12 @@ import { faPlus, faEllipsisH } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import Router from 'next/router'
 
-import LoadingOverlay from '../../components/LoadingOverlay'
+import LoadingOverlay from '../../components/shared/LoadingOverlay'
 import User from '../../models/User'
 import Event, { EventFragments, EventOperations } from '../../models/Event'
 import { withApollo } from '../../apollo/client'
-import Layout from '../../components/Layout'
-import WarningModal from '../../components/WarningModal'
+import Layout from '../../components/adminSite/Layout'
+import WarningModal from '../../components/shared/WarningModal'
 
 const CurrentUserQuery = gql`
   query CurrentUserQuery {

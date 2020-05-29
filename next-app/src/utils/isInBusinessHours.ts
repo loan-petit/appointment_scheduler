@@ -16,7 +16,7 @@ const isInBusinessHours = (
 ) => {
   var momentIsInBusinessHours = false
 
-  businessHours.map((businessHour) => {
+  businessHours.forEach((businessHour) => {
     const businessHourMoment = {
       start: moment(
         convertTimeStringToSeconds(businessHour.startTime) * 1000,
@@ -26,7 +26,7 @@ const isInBusinessHours = (
       ).utc(),
     }
 
-    businessHour.daysOfWeek.map((day: Day) => {
+    businessHour.daysOfWeek.forEach((day: Day) => {
       const slot = {
         start: event.start
           .clone()

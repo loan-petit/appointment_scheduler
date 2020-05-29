@@ -4,29 +4,21 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import { DateClickApi } from '@fullcalendar/core/Calendar'
 import moment from 'moment'
 
-import LoadingOverlay from '../LoadingOverlay'
-import User from '../../models/User'
+import LoadingOverlay from '../../shared/LoadingOverlay'
+import User from '../../../models/User'
 import AvailabilityModifier, {
   AvailabilityModifierFragments,
-} from '../../models/AvailabilityModifier'
-import RecurrentAvailability from '../../models/RecurrentAvailability'
-import DynamicFullCalendar from '../fullCalendar/DynamicFullCalendar'
-import Day from '../../types/Day'
-import isInBusinessHours, { BusinessHour } from '../../utils/isInBusinessHours'
-import { convertSecondsToTimeString } from '../../utils/timeStringHelper'
-import MomentInterval from '../../types/MomentInterval'
-import getSurroundingEvents from '../../utils/getSurroundingEvents'
-
-const AvailabilityModifiersQuery = gql`
-  query AvailabilityModifiersQuery($userId: Int!) {
-    user(where: { id: $userId }) {
-      availabilityModifiers {
-        ...AvailabilityModifierFields
-      }
-    }
-  }
-  ${AvailabilityModifierFragments.fields}
-`
+  AvailabilityModifierOperations,
+} from '../../../models/AvailabilityModifier'
+import RecurrentAvailability from '../../../models/RecurrentAvailability'
+import DynamicFullCalendar from '../../shared/fullCalendar/DynamicFullCalendar'
+import Day from '../../../types/Day'
+import isInBusinessHours, {
+  BusinessHour,
+} from '../../../utils/isInBusinessHours'
+import { convertSecondsToTimeString } from '../../../utils/timeStringHelper'
+import MomentInterval from '../../../types/MomentInterval'
+import getSurroundingEvents from '../../../utils/getSurroundingEvents'
 
 const UpsertOneAvailabilityModifierMutation = gql`
   mutation UpsertOneAvailabilityModifierMutation(
@@ -76,16 +68,19 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
   const [, updateState] = React.useState()
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
-  const { loading, error, data } = useQuery(AvailabilityModifiersQuery, {
-    variables: { userId: currentUser.id },
-  })
+  const { loading, error, data } = useQuery(
+    AvailabilityModifierOperations.availabilityModifiers,
+    {
+      variables: { userId: currentUser.id },
+    },
+  )
 
   const [upsertOneAvailabilityModifier] = useMutation(
     UpsertOneAvailabilityModifierMutation,
     {
       update(cache, { data: { upsertOneAvailabilityModifier } }) {
         const { user }: any = cache.readQuery({
-          query: AvailabilityModifiersQuery,
+          query: AvailabilityModifierOperations.availabilityModifiers,
           variables: { userId: currentUser.id },
         })
         if (
@@ -97,7 +92,7 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
           return
 
         cache.writeQuery({
-          query: AvailabilityModifiersQuery,
+          query: AvailabilityModifierOperations.availabilityModifiers,
           variables: { userId: currentUser.id },
           data: {
             __typename: 'User',
@@ -118,7 +113,7 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
     {
       update(cache, { data: { deleteOneAvailabilityModifier } }) {
         const { user }: any = cache.readQuery({
-          query: AvailabilityModifiersQuery,
+          query: AvailabilityModifierOperations.availabilityModifiers,
           variables: { userId: currentUser?.id },
         })
 
@@ -130,7 +125,7 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
         }
 
         cache.writeQuery({
-          query: AvailabilityModifiersQuery,
+          query: AvailabilityModifierOperations.availabilityModifiers,
           variables: { userId: currentUser?.id },
           data: {
             __typename: 'User',
@@ -144,7 +139,7 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
     },
   )
 
-  // Verify AvailabilityQuery result
+  // Verify AvailabilityModifiersQuery result
   if (loading) return <LoadingOverlay />
   else if (error) {
     return (

@@ -2,7 +2,7 @@ import React from 'react'
 import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
 
-import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
+import FormHelper, { FieldsInformation } from '../../../utils/FormHelper'
 
 const UpdateCurrentUserMutation = gql`
   mutation UpdateCurrentUserMutation(

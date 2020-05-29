@@ -45,15 +45,25 @@ export const RecurrentAvailabilityOperations = {
 }
 
 export const RecurrentAvailabilityHelpers = {
-  addMissingDays: (recurrentAvailabilities: RecurrentAvailability[]) => {
-    var maxId = getMaxId(recurrentAvailabilities)
+  getMissingDays: (recurrentAvailabilities: RecurrentAvailability[]) => {
+    const missingDays: Day[] = []
 
     Object.values(Day).forEach((day) => {
       if (typeof day === 'string') return
       if (recurrentAvailabilities.findIndex((e) => e.day == Day[day]) === -1) {
-        maxId += 1
-        recurrentAvailabilities.push({ id: maxId, day: Day[day] })
+        missingDays.push(day)
       }
+    })
+    return missingDays
+  },
+  addMissingDays: (recurrentAvailabilities: RecurrentAvailability[]) => {
+    var maxId = getMaxId(recurrentAvailabilities)
+
+    RecurrentAvailabilityHelpers.getMissingDays(
+      recurrentAvailabilities,
+    ).forEach((v) => {
+      maxId += 1
+      recurrentAvailabilities.push({ id: maxId, day: Day[v] })
     })
     return recurrentAvailabilities
   },

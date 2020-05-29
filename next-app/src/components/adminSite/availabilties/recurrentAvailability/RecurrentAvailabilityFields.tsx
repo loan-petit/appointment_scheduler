@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import TimeField from 'react-simple-timefield'
 
-import RecurrentAvailability from '../../../models/RecurrentAvailability'
-import WarningModal from '../../WarningModal'
-import { convertSecondsToTimeString } from '../../../utils/timeStringHelper'
+import RecurrentAvailability from '../../../../models/RecurrentAvailability'
+import WarningModal from '../../../shared/WarningModal'
+import { convertSecondsToTimeString } from '../../../../utils/timeStringHelper'
 
 type Props = {
   recurrentAvailability: RecurrentAvailability

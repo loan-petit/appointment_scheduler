@@ -4,9 +4,9 @@ import { useMutation, useQuery } from '@apollo/react-hooks'
 import { useRouter } from 'next/router'
 
 import { withApollo } from '../../apollo/client'
-import Layout from '../../components/Layout'
+import Layout from '../../components/adminSite/Layout'
 import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
-import LoadingOverlay from '../../components/LoadingOverlay'
+import LoadingOverlay from '../../components/shared/LoadingOverlay'
 import User from '../../models/User'
 import Event, { EventFragments, EventOperations } from '../../models/Event'
 

@@ -4,17 +4,17 @@ import { useMutation } from '@apollo/react-hooks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
-import User from '../../../models/User'
+import User from '../../../../models/User'
 import RecurrentAvailability, {
   RecurrentAvailabilityFragments,
   RecurrentAvailabilityHelpers,
   RecurrentAvailabilityOperations,
-} from '../../../models/RecurrentAvailability'
-import Day, { dayToUserFriendlyString } from '../../../types/Day'
+} from '../../../../models/RecurrentAvailability'
+import Day, { dayToUserFriendlyString } from '../../../../types/Day'
 import RecurrentAvailabilityTimePicker from './RecurrentAvailabilityFields'
-import getMaxId from '../../../utils/getMaxId'
-import { SubmitStatus } from '../../../utils/FormHelper'
-import { convertTimeStringToSeconds } from '../../../utils/timeStringHelper'
+import getMaxId from '../../../../utils/getMaxId'
+import { SubmitStatus } from '../../../../utils/FormHelper'
+import { convertTimeStringToSeconds } from '../../../../utils/timeStringHelper'
 
 const UpsertOneRecurrentAvailabilityMutation = gql`
   mutation UpsertOneRecurrentAvailabilityMutation(
@@ -192,7 +192,7 @@ const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
     var recurrentAvailabilitiesToUpsert: RecurrentAvailability[] = []
     invalidAvailabilityRanges = []
 
-    recurrentAvailabilities?.map(async (v) => {
+    recurrentAvailabilities?.forEach(async (v) => {
       if (!v.startTime && !v.endTime) {
         return
       } else if (!v.startTime || !v.endTime) {
@@ -205,7 +205,7 @@ const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
       return setInvalidAvailabilityRanges(invalidAvailabilityRanges)
     }
 
-    recurrentAvailabilitiesToUpsert.map(async (v) => {
+    recurrentAvailabilitiesToUpsert.forEach(async (v) => {
       try {
         await upsertOneRecurrentAvailability({
           variables: {

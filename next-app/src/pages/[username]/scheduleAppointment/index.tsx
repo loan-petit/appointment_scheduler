@@ -1,25 +1,30 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import gql from 'graphql-tag'
-import { withApollo } from '../../../apollo/client'
 import { useQuery } from '@apollo/react-hooks'
-import LoadingOverlay from '../../../components/LoadingOverlay'
-import User from '../../../models/User'
+
+import { withApollo } from '../../../apollo/client'
+import LoadingOverlay from '../../../components/shared/LoadingOverlay'
+import User, { UserFragments } from '../../../models/User'
 import Event, { EventOperations } from '../../../models/Event'
+import Layout from '../../../components/appointmentScheduler/Layout'
+import SelectAppointmentType from '../../../components/appointmentScheduler/selectAppointmentType'
+import SelectDateTime from '../../../components/appointmentScheduler/selectDateTime'
 
 const UserQuery = gql`
   query UserQuery($username: String!) {
     user(where: { username: $username }) {
-      id
-      firstName
-      lastName
-      websiteUrl
+      ...UserFields
     }
   }
+  ${UserFragments.fields}
 `
 
-const ScheduleAppointment = () => {
+const AppointmentScheduler = () => {
   const router = useRouter()
+
+  const [selectedEvent, setSelectedEvent] = React.useState<Event>()
+  const [selectedDateTime, setSelectedDateTime] = React.useState<Date>()
 
   var [user, setUser] = React.useState<User>()
   const userQueryResult = useQuery(UserQuery, {
@@ -60,25 +65,20 @@ const ScheduleAppointment = () => {
   const events: Event[] = eventsQueryResult.data.user.events
 
   return (
-    <div className="flex flex-wrap">
-      {events.map((event, i) => (
-        <div
-          key={i}
-          className="flex justify-between w-full m-4 bg-white rounded-lg shadow-lg cursor-pointer break-words00 md:w-4/12"
-          onClick={() =>
-            router.push(
-              `/${router.query.username}/scheduleAppointment/${event.id}`,
-            )
+    <Layout user={user}>
+      {!selectedEvent && (
+        <SelectAppointmentType
+          events={events}
+          selectEvent={(eventId: number) =>
+            setSelectedEvent(events.find((v) => v.id == eventId))
           }
-        >
-          <div className="flex flex-col p-4 break-words">
-            <h4 className="text-xl font-semibold">{event.name}</h4>
-            <p className="mt-1 text-gray-600">{event.description}</p>
-          </div>
-        </div>
-      ))}
-    </div>
+        />
+      )}
+      {selectedEvent && !selectedDateTime && (
+        <SelectDateTime user={user as User} event={selectedEvent} />
+      )}
+    </Layout>
   )
 }
 
-export default withApollo(ScheduleAppointment)
+export default withApollo(AppointmentScheduler)

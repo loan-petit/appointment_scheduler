@@ -22,4 +22,17 @@ export const AvailabilityModifierFragments = {
   `,
 }
 
+export const AvailabilityModifierOperations = {
+  availabilityModifiers: gql`
+    query AvailabilityModifiersQuery($userId: Int!) {
+      user(where: { id: $userId }) {
+        availabilityModifiers {
+          ...AvailabilityModifierFields
+        }
+      }
+    }
+    ${AvailabilityModifierFragments.fields}
+  `,
+}
+
 export default AvailabilityModifier

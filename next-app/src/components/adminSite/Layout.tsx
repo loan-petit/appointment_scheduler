@@ -8,8 +8,8 @@ import { useQuery } from '@apollo/react-hooks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
 
-import User from '../models/User'
-import LoadingOverlay from './LoadingOverlay'
+import User from '../../models/User'
+import LoadingOverlay from '../shared/LoadingOverlay'
 
 const CurrentUserQuery = gql`
   query CurrentUserQuery {
@@ -67,11 +67,11 @@ const Layout: React.FunctionComponent<Props> = ({
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
-      <div className="flex-col w-full md:flex md:flex-row md:min-h-screen">
+      <div className="flex-col w-full min-h-screen md:flex md:flex-row">
         <div className="flex flex-col flex-shrink-0 w-full text-gray-700 bg-white md:w-64">
           <div className="flex flex-row items-center justify-between flex-shrink-0 px-8 py-6">
             <Link href="/">
-              <h1 className="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg cursor-pointer focus:outline-none focus:shadow-outline">
+              <h1 className="tracking-widest rounded-lg cursor-pointer focus:outline-none focus:shadow-outline">
                 {`${currentUser?.firstName} ${currentUser?.lastName}`}
               </h1>
             </Link>

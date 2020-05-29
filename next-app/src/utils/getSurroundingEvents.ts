@@ -43,27 +43,23 @@ const getSurroundingEvents = (
 
   events.forEach((v) => {
     if (
-      moment(v.interval.start).isSame(event.start) &&
-      moment(v.interval.end).isSame(event.end)
+      moment(event.start).isSame(v.interval.start) &&
+      moment(event.end).isSame(v.interval.end)
     ) {
       surroundings.equal.push(v)
     } else if (
-      moment(v.interval.start).isBefore(event.start) &&
-      moment(v.interval.end).isAfter(event.end)
+      moment(event.start).isBefore(v.interval.start) &&
+      moment(event.end).isAfter(v.interval.end)
     ) {
       surroundings.inclusive.push(v)
-    } else if (moment(v.interval.start).isSame(event.start)) {
-      if (moment(v.interval.end).isAfter(event.end)) {
-        surroundings.adjacent.inclusive.start.push(v)
-      } else {
-        surroundings.adjacent.exclusive.start.push(v)
-      }
-    } else if (moment(v.interval.end).isSame(event.end)) {
-      if (moment(v.interval.start).isBefore(event.start)) {
-        surroundings.adjacent.inclusive.end.push(v)
-      } else {
-        surroundings.adjacent.exclusive.end.push(v)
-      }
+    } else if (moment(event.start).isSame(v.interval.start)) {
+      surroundings.adjacent.inclusive.start.push(v)
+    } else if (moment(event.start).isSame(v.interval.end)) {
+      surroundings.adjacent.exclusive.start.push(v)
+    } else if (moment(event.end).isSame(v.interval.end)) {
+      surroundings.adjacent.inclusive.end.push(v)
+    } else if (moment(event.end).isSame(v.interval.start)) {
+      surroundings.adjacent.exclusive.end.push(v)
     }
   })
 

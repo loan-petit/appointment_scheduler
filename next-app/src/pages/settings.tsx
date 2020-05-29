@@ -4,10 +4,10 @@ import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 
 import { withApollo } from '../apollo/client'
-import LoadingOverlay from '../components/LoadingOverlay'
-import Layout from '../components/Layout'
-import UpdateInformations from '../components/settings/UpdateInformations'
-import UpdatePassword from '../components/settings/UpdatePassword'
+import LoadingOverlay from '../components/shared/LoadingOverlay'
+import Layout from '../components/adminSite/Layout'
+import UpdateInformations from '../components/adminSite/settings/UpdateInformations'
+import UpdatePassword from '../components/adminSite/settings/UpdatePassword'
 import User, { UserFragments } from '../models/User'
 
 const CurrentUserQuery = gql`

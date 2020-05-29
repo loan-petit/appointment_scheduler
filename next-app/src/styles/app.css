@@ -16,6 +16,10 @@
 @import 'tailwindcss/utilities';
 
 /* Custom base styles */
+h1 {
+  @apply text-xl font-semibold text-gray-900 uppercase;
+}
+
 h4 {
   @apply font-bold text-gray-800;
 }

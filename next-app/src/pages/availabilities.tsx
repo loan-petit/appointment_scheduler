@@ -4,14 +4,14 @@ import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 
 import { withApollo } from '../apollo/client'
-import LoadingOverlay from '../components/LoadingOverlay'
+import LoadingOverlay from '../components/shared/LoadingOverlay'
 import User from '../models/User'
-import Layout from '../components/Layout'
+import Layout from '../components/adminSite/Layout'
 import RecurrentAvailability, {
   RecurrentAvailabilityOperations,
 } from '../models/RecurrentAvailability'
-import UpsertRecurrentAvailabilities from '../components/availabilties/recurrentAvailability/UpsertRecurrentAvailaibilities'
-import AvailabilityCalendar from '../components/availabilties/AvailabilityCalendar'
+import UpsertRecurrentAvailabilities from '../components/adminSite/availabilties/recurrentAvailability/UpsertRecurrentAvailaibilities'
+import AvailabilityCalendar from '../components/adminSite/availabilties/AvailabilityCalendar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 

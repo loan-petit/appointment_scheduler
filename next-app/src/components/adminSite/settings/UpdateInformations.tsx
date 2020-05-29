@@ -2,8 +2,8 @@ import React from 'react'
 import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
 
-import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
-import User, { UserFragments } from '../../models/User'
+import FormHelper, { FieldsInformation } from '../../../utils/FormHelper'
+import User, { UserFragments } from '../../../models/User'
 
 const UpdateCurrentUserMutation = gql`
   mutation UpdateCurrentUserMutation(
@@ -59,7 +59,7 @@ const UpdateInformations: React.FunctionComponent<Props> = ({
       case 'websiteUrl':
         return !urlRegex.test(value) ? 'Veuillez entrer une URL valide.' : ''
       case 'minScheduleNotice':
-        return !value || isNaN(value) ? 'Ce champ doit contenir une durée.' : ''
+        return isNaN(value) ? 'Ce champ doit contenir une durée.' : ''
       default:
         return ''
     }
