@@ -1,0 +1,26 @@
+{
+  "name": "send_email",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node dist/index",
+    "clean": "rm -rf dist",
+    "build": "npm -s run clean && tsc",
+    "dev": "ts-node-dev --no-notify --respawn --transpileOnly src/index",
+    "format": "prettier-standard --format"
+  },
+  "dependencies": {
+    "@koa/cors": "^2.2.3",
+    "@types/koa": "^2.11.3",
+    "@types/koa__cors": "^3.0.1",
+    "aws-sdk": "^2.656.0",
+    "koa": "^2.11.0",
+    "koa-body": "^4.1.1",
+    "typescript": "^3.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^13.11.1",
+    "prettier-standard": "^16.2.1",
+    "ts-node-dev": "^1.0.0-pre.44"
+  }
+}
