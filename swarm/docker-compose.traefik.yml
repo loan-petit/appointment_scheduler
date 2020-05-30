@@ -13,6 +13,7 @@ services:
       - "--entrypoints.websecure.address=:443"
       - "--entrypoints.prisma.address=:4000"
       - "--entrypoints.traefik.address=:8080"
+      - "--entrypoints.backend-services.address=:8081"
       # ACME challenge for SSL certificate creation
       - "--certificatesresolvers.default.acme.httpchallenge=true"
       - "--certificatesresolvers.default.acme.httpchallenge.entrypoint=web"
@@ -23,6 +24,7 @@ services:
       - "443:443"
       - "4000:4000"
       - "8080:8080"
+      - "8081:8081"
     secrets:
       - TRAEFIK_USERS
     volumes:

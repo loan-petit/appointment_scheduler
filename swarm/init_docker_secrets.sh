@@ -75,6 +75,14 @@ if [ ${TRAEFIK_USER+x} ] && [ ${TRAEFIK_PASSWORD+x} ]; then
     docker $DOCKER_HOST_LIST secret create TRAEFIK_USERS -
 fi
 
+# Generate secrets to store AWS credentials
+if [ ${AWS_ACCESS_KEY_ID+x} ] && [ ${AWS_SECRET_ACCESS_KEY+x} ]; then
+  remove_secret AWS_ACCESS_KEY_ID
+  remove_secret AWS_SECRET_ACCESS_KEY
+  echo -n $AWS_ACCESS_KEY_ID | docker $DOCKER_HOST_LIST secret create AWS_ACCESS_KEY_ID -
+  echo -n $AWS_SECRET_ACCESS_KEY | docker $DOCKER_HOST_LIST secret create AWS_SECRET_ACCESS_KEY -
+fi
+
 # Generate random secrets for various services
 SECRETS=(
   JWT_SECRET
