@@ -38,7 +38,7 @@ class FormHelper {
   onSubmitResult: (submitStatus: SubmitStatus) => string
   submitStatus: SubmitStatus
 
-  constructor(props: Props) {
+  constructor (props: Props) {
     this.fieldsInformation = props.fields.reduce(
       (obj: FieldsInformation, v: FieldDescription) => {
         if (typeof v === 'string') {
@@ -64,7 +64,7 @@ class FormHelper {
     }
   }
 
-  updateFieldValues(fieldValues: { [key: string]: any }) {
+  updateFieldValues (fieldValues: { [key: string]: any }) {
     Object.entries(fieldValues).forEach(([key, value]) => {
       if (this.fieldsInformation[key]) {
         this.fieldsInformation[key].value = value
@@ -73,7 +73,7 @@ class FormHelper {
     this.refreshComponent()
   }
 
-  validateForm() {
+  validateForm () {
     let isValid = true
 
     Object.entries(this.fieldsInformation).forEach(([key, value]) => {
@@ -88,7 +88,7 @@ class FormHelper {
     return isValid
   }
 
-  handleInputChange(
+  handleInputChange (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) {
     const name = event.target.name
@@ -110,7 +110,7 @@ class FormHelper {
     this.refreshComponent()
   }
 
-  async handleSubmit(
+  async handleSubmit (
     event: React.MouseEvent<HTMLButtonElement>,
     additionalVariables?: Object,
   ) {

@@ -85,73 +85,73 @@ const Signin = () => {
   )
 
   return (
-    <section className="absolute flex flex-col justify-center w-full h-full p-4 bg-gray-100">
-      <div className="container flex flex-col w-full min-w-0 p-4 mx-auto break-words bg-gray-300 rounded-lg shadow-lg lg:w-5/12">
+    <section className='absolute flex flex-col justify-center w-full h-full p-4 bg-gray-100'>
+      <div className='container flex flex-col w-full min-w-0 p-4 mx-auto break-words bg-gray-300 rounded-lg shadow-lg lg:w-5/12'>
         {/* Signin with Google */}
-        <div className="px-6 py-6 mb-0 rounded-t">
-          <div className="mb-3 text-center">
+        <div className='px-6 py-6 mb-0 rounded-t'>
+          <div className='mb-3 text-center'>
             <h6>Se connecter avec</h6>
           </div>
-          <div className="text-center btn-wrapper">
+          <div className='text-center btn-wrapper'>
             <button
-              className="inline-flex items-center px-4 py-2 mb-1 mr-1 text-xs font-normal font-bold text-gray-800 uppercase bg-white rounded shadow outline-none active:bg-gray-100 focus:outline-none hover:shadow-md"
-              type="button"
+              className='inline-flex items-center px-4 py-2 mb-1 mr-1 text-xs font-normal font-bold text-gray-800 uppercase bg-white rounded shadow outline-none active:bg-gray-100 focus:outline-none hover:shadow-md'
+              type='button'
             >
-              <img alt="..." className="w-5 mr-1" src="/svg/googleLogo.svg" />
+              <img alt='...' className='w-5 mr-1' src='/svg/googleLogo.svg' />
               Google
             </button>
           </div>
-          <hr className="mt-6 border-gray-500 border-b-1" />
+          <hr className='mt-6 border-gray-500 border-b-1' />
         </div>
 
         {/* Signin with credentials */}
-        <div className="flex-auto px-4 py-10 pt-0 lg:px-10">
-          <div className="mb-3 text-center">
+        <div className='flex-auto px-4 py-10 pt-0 lg:px-10'>
+          <div className='mb-3 text-center'>
             <h6>Ou avec des identifiants</h6>
           </div>
 
           {/* Email */}
-          <div className="relative w-full mb-3">
-            <label className="block mb-2">E-mail</label>
+          <div className='relative w-full mb-3'>
+            <label className='block mb-2'>E-mail</label>
             <input
-              type="email"
-              className="w-full px-3 py-3 placeholder-gray-400"
-              placeholder="Votre e-mail"
+              type='email'
+              className='w-full px-3 py-3 placeholder-gray-400'
+              placeholder='Votre e-mail'
               onChange={formHelper.handleInputChange.bind(formHelper)}
-              name="email"
+              name='email'
               value={formHelper.fieldsInformation.email.value}
               autoFocus
             />
-            <p className="form-field-error">
+            <p className='form-field-error'>
               {formHelper.fieldsInformation.email.error}
             </p>
           </div>
 
           {/* Password */}
-          <div className="relative w-full mb-3">
-            <label className="block mb-2">Mot de passe</label>
+          <div className='relative w-full mb-3'>
+            <label className='block mb-2'>Mot de passe</label>
             <input
-              type="password"
-              className="w-full px-3 py-3 placeholder-gray-400"
-              placeholder="Votre mot de passe"
-              name="password"
+              type='password'
+              className='w-full px-3 py-3 placeholder-gray-400'
+              placeholder='Votre mot de passe'
+              name='password'
               onChange={formHelper.handleInputChange.bind(formHelper)}
               value={formHelper.fieldsInformation.password.value}
             />
-            <p className="form-field-error">
+            <p className='form-field-error'>
               {formHelper.fieldsInformation.password.error}
             </p>
           </div>
 
           {/* Submit */}
-          <div className="mt-6 text-center">
+          <div className='mt-6 text-center'>
             {formHelper.submitStatus.userFriendlyError.length ? (
-              <p className="pt-0 pb-4 form-submit-error">
+              <p className='pt-0 pb-4 form-submit-error'>
                 {formHelper.submitStatus.userFriendlyError}
               </p>
             ) : null}
             <button
-              className="px-6 py-3 submit-button"
+              className='px-6 py-3 submit-button'
               onClick={formHelper.handleSubmit.bind(formHelper)}
             >
               Se connecter
@@ -161,9 +161,9 @@ const Signin = () => {
       </div>
 
       {/* Signup */}
-      <div className="mt-6 text-lg font-semibold text-center text-gray-800">
-        <Link href="/auth/signup">
-          <small className="cursor-pointer">Pas de compte ? Créez-en un.</small>
+      <div className='mt-6 text-lg font-semibold text-center text-gray-800'>
+        <Link href='/auth/signup'>
+          <small className='cursor-pointer'>Pas de compte ? Créez-en un.</small>
         </Link>
       </div>
     </section>

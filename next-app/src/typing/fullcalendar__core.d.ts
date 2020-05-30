@@ -1,1 +1,1 @@
-declare module '@fullcalendar/core/locales/fr';
+declare module '@fullcalendar/core/locales/fr'

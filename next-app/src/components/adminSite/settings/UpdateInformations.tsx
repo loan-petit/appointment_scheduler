@@ -104,123 +104,123 @@ const UpdateInformations: React.FunctionComponent<Props> = ({
   return (
     <>
       {/* Full Name */}
-      <div className="flex flex-row justify-between mb-3">
-        <div className="w-full mr-2">
-          <label className="block mb-2">Prénom</label>
+      <div className='flex flex-row justify-between mb-3'>
+        <div className='w-full mr-2'>
+          <label className='block mb-2'>Prénom</label>
           <input
-            type="text"
-            className="w-full p-3 placeholder-gray-400"
-            placeholder="Votre prénom"
+            type='text'
+            className='w-full p-3 placeholder-gray-400'
+            placeholder='Votre prénom'
             onChange={formHelper.handleInputChange.bind(formHelper)}
-            name="firstName"
+            name='firstName'
             value={formHelper.fieldsInformation.firstName.value}
             autoFocus
           />
-          <p className="form-field-error">
+          <p className='form-field-error'>
             {formHelper.fieldsInformation.firstName.error}
           </p>
         </div>
-        <div className="w-full ml-2">
-          <label className="block mb-2">Nom</label>
+        <div className='w-full ml-2'>
+          <label className='block mb-2'>Nom</label>
           <input
-            type="text"
-            className="w-full p-3 placeholder-gray-400"
-            placeholder="Votre nom"
+            type='text'
+            className='w-full p-3 placeholder-gray-400'
+            placeholder='Votre nom'
             onChange={formHelper.handleInputChange.bind(formHelper)}
-            name="lastName"
+            name='lastName'
             value={formHelper.fieldsInformation.lastName.value}
           />
-          <p className="form-field-error">
+          <p className='form-field-error'>
             {formHelper.fieldsInformation.lastName.error}
           </p>
         </div>
       </div>
 
       {/* Email */}
-      <div className="w-full mb-3">
-        <label className="block mb-2">E-mail</label>
+      <div className='w-full mb-3'>
+        <label className='block mb-2'>E-mail</label>
         <input
-          type="email"
-          className="w-full p-3 placeholder-gray-400"
-          placeholder="Votre e-mail"
+          type='email'
+          className='w-full p-3 placeholder-gray-400'
+          placeholder='Votre e-mail'
           onChange={formHelper.handleInputChange.bind(formHelper)}
-          name="email"
+          name='email'
           value={formHelper.fieldsInformation.email.value}
         />
-        <p className="form-field-error">
+        <p className='form-field-error'>
           {formHelper.fieldsInformation.email.error}
         </p>
       </div>
 
       {/* Website URL */}
-      <div className="w-full mb-3">
-        <label className="block mb-2">Site web</label>
+      <div className='w-full mb-3'>
+        <label className='block mb-2'>Site web</label>
         <input
-          type="text"
-          className="w-full p-3 placeholder-gray-400"
+          type='text'
+          className='w-full p-3 placeholder-gray-400'
           placeholder="L'URL de votre site web"
           onChange={formHelper.handleInputChange.bind(formHelper)}
-          name="websiteUrl"
+          name='websiteUrl'
           value={formHelper.fieldsInformation.websiteUrl.value}
         />
-        <p className="form-field-error">
+        <p className='form-field-error'>
           {formHelper.fieldsInformation.websiteUrl.error}
         </p>
       </div>
 
       {/* Address */}
-      <div className="w-full mb-3">
-        <label className="block mb-2">Adresse physique</label>
+      <div className='w-full mb-3'>
+        <label className='block mb-2'>Adresse physique</label>
         <input
-          type="test"
-          className="w-full p-3 placeholder-gray-400"
-          placeholder="Votre adresse"
+          type='test'
+          className='w-full p-3 placeholder-gray-400'
+          placeholder='Votre adresse'
           onChange={formHelper.handleInputChange.bind(formHelper)}
-          name="address"
+          name='address'
           value={formHelper.fieldsInformation.address.value}
         />
-        <p className="form-field-error">
+        <p className='form-field-error'>
           {formHelper.fieldsInformation.address.error}
         </p>
       </div>
 
       {/* Minimum schedule notice*/}
-      <div className="w-full mb-3">
-        <label className="block mb-2">
+      <div className='w-full mb-3'>
+        <label className='block mb-2'>
           Durée minimale avant planification (en minutes)
         </label>
         <input
-          type="number"
-          className="w-full px-3 py-3 placeholder-gray-400"
-          placeholder="Durée minimale avant planification"
+          type='number'
+          className='w-full px-3 py-3 placeholder-gray-400'
+          placeholder='Durée minimale avant planification'
           onChange={formHelper.handleInputChange.bind(formHelper)}
-          name="minScheduleNotice"
+          name='minScheduleNotice'
           value={formHelper.fieldsInformation.minScheduleNotice.value}
         />
-        <p className="form-field-error">
+        <p className='form-field-error'>
           {formHelper.fieldsInformation.minScheduleNotice.error}
         </p>
       </div>
 
       {/* Submit to change information */}
-      <div className="mt-6">
+      <div className='mt-6'>
         {(() => {
           if (formHelper.submitStatus.response) {
             return (
-              <p className="pt-0 pb-4 text-sm italic text-green-500">
+              <p className='pt-0 pb-4 text-sm italic text-green-500'>
                 Les informations de votre compte ont bien été mises à jour.
               </p>
             )
           } else if (formHelper.submitStatus.userFriendlyError.length) {
             return (
-              <p className="pt-0 pb-4 form-submit-error">
+              <p className='pt-0 pb-4 form-submit-error'>
                 {formHelper.submitStatus.userFriendlyError}
               </p>
             )
           } else return null
         })()}
         <button
-          className="px-6 py-3 submit-button"
+          className='px-6 py-3 submit-button'
           onClick={formHelper.handleSubmit.bind(formHelper)}
         >
           Sauvegarder

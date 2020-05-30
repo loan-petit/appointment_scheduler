@@ -7,7 +7,7 @@ moment.locale('fr')
 
 const weekdaysMin = moment
   .weekdaysMin()
-  .map((v) => v.charAt(0).toUpperCase() + v.substring(1) + '.')
+  .map(v => v.charAt(0).toUpperCase() + v.substring(1) + '.')
 
 const hours = new Array(24 * 2)
   .fill(0)
@@ -30,17 +30,17 @@ const AvailabilitySelector: React.FunctionComponent<Props> = ({
   console.log(hours)
 
   return (
-    <div className="flex flex-col">
-      <div className="flex flex-row">
+    <div className='flex flex-col'>
+      <div className='flex flex-row'>
         {weekdaysMin.map((v, i) => (
-          <p key={i} className="w-full text-xs text-center">
+          <p key={i} className='w-full text-xs text-center'>
             {v}
           </p>
         ))}
       </div>
       {hours.map((v, i) => (
-        <div className="flex flex-row">
-          <p key={i} className="text-xs text-center">
+        <div className='flex flex-row'>
+          <p key={i} className='text-xs text-center'>
             {v}
           </p>
           {weekdaysMin.map((_, j) => (

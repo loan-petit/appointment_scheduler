@@ -45,7 +45,7 @@ const Events = () => {
     skip: !currentUser,
   })
   const [deleteOneEvent] = useMutation(DeleteOneEventMutation, {
-    update(cache, { data: { deleteOneEvent } }) {
+    update (cache, { data: { deleteOneEvent } }) {
       const { user }: any = cache.readQuery({
         query: EventOperations.events,
         variables: { userId: currentUser?.id },
@@ -86,7 +86,7 @@ const Events = () => {
   if (eventsQueryResult.loading) return <LoadingOverlay />
   else if (eventsQueryResult.error) {
     return (
-      <p className="error-message">
+      <p className='error-message'>
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
@@ -97,28 +97,28 @@ const Events = () => {
 
   return (
     <Layout>
-      <div className="flex justify-center pb-2">
-        <Link href="/events/upsertOne">
-          <a className="flex flex-row items-center justify-center py-4 rounded-lg lg:w-1/2 hover:bg-gray-300">
+      <div className='flex justify-center pb-2'>
+        <Link href='/events/upsertOne'>
+          <a className='flex flex-row items-center justify-center py-4 rounded-lg lg:w-1/2 hover:bg-gray-300'>
             <FontAwesomeIcon icon={faPlus} />
-            <p className="pl-4 text-lg">Créer un nouvel événement</p>
+            <p className='pl-4 text-lg'>Créer un nouvel événement</p>
           </a>
         </Link>
       </div>
 
       {/* Events */}
-      <div className="flex flex-wrap">
+      <div className='flex flex-wrap'>
         {events.map((event, i) => (
           <div
             key={i}
-            className="flex justify-between w-full m-4 text-gray-800 bg-white rounded-lg shadow-lg md:w-4/12"
+            className='flex justify-between w-full m-4 text-gray-800 bg-white rounded-lg shadow-lg md:w-4/12'
           >
-            <div className="flex flex-col p-4 break-words">
-              <h4 className="text-xl font-semibold">{event.name}</h4>
-              <p className="mt-1 text-gray-600">{event.description}</p>
+            <div className='flex flex-col p-4 break-words'>
+              <h4 className='text-xl font-semibold'>{event.name}</h4>
+              <p className='mt-1 text-gray-600'>{event.description}</p>
             </div>
 
-            <div className="relative m-4">
+            <div className='relative m-4'>
               <FontAwesomeIcon
                 icon={faEllipsisH}
                 onClick={() =>
@@ -128,7 +128,7 @@ const Events = () => {
                     ).map((x, j) => (i == j ? !x : false)),
                   )
                 }
-                className="cursor-pointer"
+                className='cursor-pointer'
               />
               <div
                 className={
@@ -137,10 +137,10 @@ const Events = () => {
                 }
               >
                 <Link href={`/events/upsertOne?id=${event.id}`}>
-                  <a className="block p-2">Éditer</a>
+                  <a className='block p-2'>Éditer</a>
                 </Link>
                 <a
-                  className="block p-2 text-red-500 hover:text-red-600"
+                  className='block p-2 text-red-500 hover:text-red-600'
                   onClick={() => setEventToDeleteId(event.id)}
                 >
                   Supprimer
@@ -152,7 +152,7 @@ const Events = () => {
       </div>
 
       <WarningModal
-        warningMessage="Vous êtes sur le point de supprimer un événement, confirmez-vous cette action ?"
+        warningMessage='Vous êtes sur le point de supprimer un événement, confirmez-vous cette action ?'
         onCancel={() => setEventToDeleteId(-1)}
         onConfirm={() => {
           deleteOneEvent({

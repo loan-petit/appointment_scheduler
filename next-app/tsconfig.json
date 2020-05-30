@@ -19,5 +19,11 @@
     "target": "esnext"
   },
   "exclude": ["node_modules"],
-  "include": ["**/*.ts", "**/*.tsx", "tailwind.config.js", "src/pages/_app.js", "src/components/reactDates/DayPickerSingleDateControllerWrapper.jsx"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "tailwind.config.js",
+    "src/pages/_app.js",
+    "src/components/reactDates/DayPickerSingleDateControllerWrapper.jsx"
+  ]
 }

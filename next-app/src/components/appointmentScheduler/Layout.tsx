@@ -36,7 +36,7 @@ const Layout: React.FunctionComponent<Props> = ({
     if (userQueryResult.loading) return <LoadingOverlay />
     else if (userQueryResult.error) {
       return (
-        <p className="error-message">
+        <p className='error-message'>
           Une erreur est survenue. Veuillez-réessayer.
         </p>
       )
@@ -50,23 +50,19 @@ const Layout: React.FunctionComponent<Props> = ({
         <title>
           {`Prise de rendez-vous - ${user?.firstName} ${user?.lastName}`}
         </title>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta charSet='utf-8' />
+        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       </Head>
 
-      <div className="flex items-center justify-center p-4 md:my-10">
-        <div className="container flex flex-col w-full mx-auto rounded-lg shadow-xl md:flex-row">
-          <div className="flex flex-col justify-center py-4 text-center bg-gray-100 rounded-t-lg md:rounded-l-lg md:w-1/3">
-            <h1>
-              {`${user?.firstName} ${user?.lastName}`}
-            </h1>
+      <div className='flex items-center justify-center p-4 md:my-10'>
+        <div className='container flex flex-col w-full mx-auto rounded-lg shadow-xl md:flex-row'>
+          <div className='flex flex-col justify-center py-4 text-center bg-gray-100 rounded-t-lg md:rounded-l-lg md:w-1/3'>
+            <h1>{`${user?.firstName} ${user?.lastName}`}</h1>
             {user?.websiteUrl && (
-              <h6 className="py-2">
-               Site web : {user?.websiteUrl}
-              </h6>
+              <h6 className='py-2'>Site web : {user?.websiteUrl}</h6>
             )}
           </div>
-          <div className="w-full p-6">{children}</div>
+          <div className='w-full p-6'>{children}</div>
         </div>
       </div>
     </>

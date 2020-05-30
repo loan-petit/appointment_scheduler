@@ -41,7 +41,7 @@ const getSurroundingEvents = (
     },
   }
 
-  events.forEach((v) => {
+  events.forEach(v => {
     if (
       moment(event.start).isSame(v.interval.start) &&
       moment(event.end).isSame(v.interval.end)

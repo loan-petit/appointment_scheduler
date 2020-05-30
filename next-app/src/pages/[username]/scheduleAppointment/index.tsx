@@ -4,12 +4,13 @@ import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 
 import { withApollo } from '../../../apollo/client'
+import ContactInformation from '../../../components/appointmentScheduler/ContactInformation'
 import LoadingOverlay from '../../../components/shared/LoadingOverlay'
 import User, { UserFragments } from '../../../models/User'
 import Event, { EventOperations } from '../../../models/Event'
 import Layout from '../../../components/appointmentScheduler/Layout'
-import SelectAppointmentType from '../../../components/appointmentScheduler/selectAppointmentType'
-import SelectDateTime from '../../../components/appointmentScheduler/selectDateTime'
+import SelectAppointmentType from '../../../components/appointmentScheduler/SelectAppointmentType'
+import SelectDateTime from '../../../components/appointmentScheduler/SelectDateTime'
 
 const UserQuery = gql`
   query UserQuery($username: String!) {
@@ -42,7 +43,7 @@ const AppointmentScheduler = () => {
   if (userQueryResult.loading) return <LoadingOverlay />
   else if (userQueryResult.error) {
     return (
-      <p className="error-message">
+      <p className='error-message'>
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
@@ -55,7 +56,7 @@ const AppointmentScheduler = () => {
   if (eventsQueryResult.loading) return <LoadingOverlay />
   else if (eventsQueryResult.error) {
     return (
-      <p className="error-message">
+      <p className='error-message'>
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
@@ -64,18 +65,31 @@ const AppointmentScheduler = () => {
   }
   const events: Event[] = eventsQueryResult.data.user.events
 
+  console.log(selectedDateTime)
+
   return (
     <Layout user={user}>
       {!selectedEvent && (
         <SelectAppointmentType
           events={events}
           selectEvent={(eventId: number) =>
-            setSelectedEvent(events.find((v) => v.id == eventId))
+            setSelectedEvent(events.find(v => v.id == eventId))
           }
         />
       )}
-      {selectedEvent && !selectedDateTime && (
-        <SelectDateTime user={user as User} event={selectedEvent} />
+      {user && selectedEvent && !selectedDateTime && (
+        <SelectDateTime
+          user={user}
+          event={selectedEvent}
+          selectDateTime={setSelectedDateTime}
+        />
+      )}
+      {user && selectedEvent && selectedDateTime && (
+        <ContactInformation
+          user={user}
+          event={selectedEvent}
+          dateTime={selectedDateTime}
+        />
       )}
     </Layout>
   )

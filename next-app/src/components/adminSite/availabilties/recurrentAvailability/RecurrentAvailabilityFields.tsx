@@ -23,15 +23,15 @@ const RecurrentAvailabilityTimePicker: React.FunctionComponent<Props> = ({
   const [showWarningModal, setShowWarningModal] = React.useState(false)
 
   return (
-    <div className="my-4">
-      <div className="flex flex-row items-center">
-        <div className="flex flex-col mr-2">
-          <label className="text-xs normal-case">Heure de début</label>
+    <div className='my-4'>
+      <div className='flex flex-row items-center'>
+        <div className='flex flex-col mr-2'>
+          <label className='text-xs normal-case'>Heure de début</label>
           <TimeField
             input={
               <input
-                name="startTime"
-                className="w-full p-2 mt-2 placeholder-gray-400"
+                name='startTime'
+                className='w-full p-2 mt-2 placeholder-gray-400'
               />
             }
             value={
@@ -43,13 +43,13 @@ const RecurrentAvailabilityTimePicker: React.FunctionComponent<Props> = ({
           />
         </div>
 
-        <div className="flex flex-col ml-2">
-          <label className="text-xs normal-case">Heure de fin</label>
+        <div className='flex flex-col ml-2'>
+          <label className='text-xs normal-case'>Heure de fin</label>
           <TimeField
             input={
               <input
-                name="endTime"
-                className="w-full p-2 mt-2 placeholder-gray-400"
+                name='endTime'
+                className='w-full p-2 mt-2 placeholder-gray-400'
               />
             }
             value={
@@ -62,24 +62,24 @@ const RecurrentAvailabilityTimePicker: React.FunctionComponent<Props> = ({
         </div>
 
         {recurrentAvailability.startTime || recurrentAvailability.endTime ? (
-          <button className="ml-4" onClick={() => setShowWarningModal(true)}>
+          <button className='ml-4' onClick={() => setShowWarningModal(true)}>
             <FontAwesomeIcon
               icon={faTimes}
-              className="text-red-500"
-              size="lg"
+              className='text-red-500'
+              size='lg'
             />
           </button>
         ) : null}
       </div>
 
       {isRangeInvalid && (
-        <p className="form-field-error">
+        <p className='form-field-error'>
           Vous devez spécifier l'heure de début et l'heure de fin
         </p>
       )}
 
       <WarningModal
-        warningMessage="Vous êtes sur le point de supprimer un créneau de disponibilité récurrent, confirmez-vous cette action ?"
+        warningMessage='Vous êtes sur le point de supprimer un créneau de disponibilité récurrent, confirmez-vous cette action ?'
         onCancel={() => setShowWarningModal(false)}
         onConfirm={() => {
           remove()

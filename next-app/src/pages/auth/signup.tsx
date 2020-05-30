@@ -108,121 +108,121 @@ const Signup = () => {
   )
 
   return (
-    <section className="absolute flex flex-col justify-center w-full h-full p-4 bg-gray-100">
-      <div className="container flex flex-col w-full min-w-0 p-4 mx-auto break-words bg-gray-300 rounded-lg shadow-lg lg:w-5/12">
+    <section className='absolute flex flex-col justify-center w-full h-full p-4 bg-gray-100'>
+      <div className='container flex flex-col w-full min-w-0 p-4 mx-auto break-words bg-gray-300 rounded-lg shadow-lg lg:w-5/12'>
         {/* Signup with Google */}
-        <div className="px-6 py-6 mb-0 rounded-t">
-          <div className="mb-3 text-center">
+        <div className='px-6 py-6 mb-0 rounded-t'>
+          <div className='mb-3 text-center'>
             <h6>S'inscrire avec</h6>
           </div>
-          <div className="text-center btn-wrapper">
+          <div className='text-center btn-wrapper'>
             <button
-              className="inline-flex items-center px-4 py-2 mb-1 mr-1 text-xs font-normal font-bold text-gray-800 uppercase bg-white rounded shadow outline-none active:bg-gray-100 focus:outline-none hover:shadow-md"
-              type="button"
+              className='inline-flex items-center px-4 py-2 mb-1 mr-1 text-xs font-normal font-bold text-gray-800 uppercase bg-white rounded shadow outline-none active:bg-gray-100 focus:outline-none hover:shadow-md'
+              type='button'
             >
-              <img alt="..." className="w-5 mr-1" src="/svg/googleLogo.svg" />
+              <img alt='...' className='w-5 mr-1' src='/svg/googleLogo.svg' />
               Google
             </button>
           </div>
-          <hr className="mt-6 border-gray-500 border-b-1" />
+          <hr className='mt-6 border-gray-500 border-b-1' />
         </div>
 
         {/* Signup with credentials */}
-        <div className="flex-auto px-4 py-10 pt-0 lg:px-10">
-          <div className="mb-3 text-center">
+        <div className='flex-auto px-4 py-10 pt-0 lg:px-10'>
+          <div className='mb-3 text-center'>
             <h6>Ou avec des identifiants</h6>
           </div>
 
           {/* Full Name */}
-          <div className="relative flex flex-row justify-between mb-3">
-            <div className="w-full mr-2">
-              <label className="block mb-2">Prénom</label>
+          <div className='relative flex flex-row justify-between mb-3'>
+            <div className='w-full mr-2'>
+              <label className='block mb-2'>Prénom</label>
               <input
-                type="text"
-                className="w-full px-3 py-3 placeholder-gray-400"
-                placeholder="Votre prénom"
+                type='text'
+                className='w-full px-3 py-3 placeholder-gray-400'
+                placeholder='Votre prénom'
                 onChange={formHelper.handleInputChange.bind(formHelper)}
-                name="firstName"
+                name='firstName'
                 value={formHelper.fieldsInformation.firstName.value}
                 autoFocus
               />
-              <p className="form-field-error">
+              <p className='form-field-error'>
                 {formHelper.fieldsInformation.firstName.error}
               </p>
             </div>
-            <div className="w-full ml-2">
-              <label className="block mb-2">Nom</label>
+            <div className='w-full ml-2'>
+              <label className='block mb-2'>Nom</label>
               <input
-                type="text"
-                className="w-full px-3 py-3 placeholder-gray-400"
-                placeholder="Votre nom"
+                type='text'
+                className='w-full px-3 py-3 placeholder-gray-400'
+                placeholder='Votre nom'
                 onChange={formHelper.handleInputChange.bind(formHelper)}
-                name="lastName"
+                name='lastName'
                 value={formHelper.fieldsInformation.lastName.value}
               />
-              <p className="form-field-error">
+              <p className='form-field-error'>
                 {formHelper.fieldsInformation.lastName.error}
               </p>
             </div>
           </div>
 
           {/* Email */}
-          <div className="relative w-full mb-3">
-            <label className="block mb-2">E-mail</label>
+          <div className='relative w-full mb-3'>
+            <label className='block mb-2'>E-mail</label>
             <input
-              type="email"
-              className="w-full px-3 py-3 placeholder-gray-400"
-              placeholder="Votre e-mail"
+              type='email'
+              className='w-full px-3 py-3 placeholder-gray-400'
+              placeholder='Votre e-mail'
               onChange={formHelper.handleInputChange.bind(formHelper)}
-              name="email"
+              name='email'
               value={formHelper.fieldsInformation.email.value}
             />
-            <p className="form-field-error">
+            <p className='form-field-error'>
               {formHelper.fieldsInformation.email.error}
             </p>
           </div>
 
           {/* Password */}
-          <div className="relative w-full mb-3">
-            <label className="block mb-2">Mot de passe</label>
+          <div className='relative w-full mb-3'>
+            <label className='block mb-2'>Mot de passe</label>
             <input
-              type="password"
-              className="w-full px-3 py-3 placeholder-gray-400"
-              placeholder="Votre mot de passe"
-              name="password"
+              type='password'
+              className='w-full px-3 py-3 placeholder-gray-400'
+              placeholder='Votre mot de passe'
+              name='password'
               onChange={formHelper.handleInputChange.bind(formHelper)}
               value={formHelper.fieldsInformation.password.value}
             />
-            <p className="form-field-error">
+            <p className='form-field-error'>
               {formHelper.fieldsInformation.password.error}
             </p>
           </div>
 
           {/* Password confirmation */}
-          <div className="relative w-full mb-3">
-            <label className="block mb-2">Confirmer votre mot de passe</label>
+          <div className='relative w-full mb-3'>
+            <label className='block mb-2'>Confirmer votre mot de passe</label>
             <input
-              type="password"
-              className="w-full px-3 py-3 placeholder-gray-400"
-              placeholder="Confirmez votre mot de passe"
-              name="passwordConfirmation"
+              type='password'
+              className='w-full px-3 py-3 placeholder-gray-400'
+              placeholder='Confirmez votre mot de passe'
+              name='passwordConfirmation'
               onChange={formHelper.handleInputChange.bind(formHelper)}
               value={formHelper.fieldsInformation.passwordConfirmation.value}
             />
-            <p className="form-field-error">
+            <p className='form-field-error'>
               {formHelper.fieldsInformation.passwordConfirmation.error}
             </p>
           </div>
 
           {/* Submit */}
-          <div className="mt-6 text-center">
+          <div className='mt-6 text-center'>
             {formHelper.submitStatus.userFriendlyError.length ? (
-              <p className="pt-0 pb-4 form-submit-error">
+              <p className='pt-0 pb-4 form-submit-error'>
                 {formHelper.submitStatus.userFriendlyError}
               </p>
             ) : null}
             <button
-              className="px-6 py-3 submit-button"
+              className='px-6 py-3 submit-button'
               onClick={formHelper.handleSubmit.bind(formHelper)}
             >
               Créer mon compte
@@ -232,9 +232,11 @@ const Signup = () => {
       </div>
 
       {/* Signin */}
-      <div className="mt-6 text-lg font-semibold text-center text-gray-800">
-        <Link href="/auth/signin">
-          <small className="cursor-pointer">Vous avez déjà un compte ? Connectez-vous.</small>
+      <div className='mt-6 text-lg font-semibold text-center text-gray-800'>
+        <Link href='/auth/signin'>
+          <small className='cursor-pointer'>
+            Vous avez déjà un compte ? Connectez-vous.
+          </small>
         </Link>
       </div>
     </section>

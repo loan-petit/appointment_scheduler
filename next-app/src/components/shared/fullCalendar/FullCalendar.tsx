@@ -4,7 +4,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import frLocale from '@fullcalendar/core/locales/fr'
 
-const FullCalendarComponent: React.FunctionComponent<any> = (props) => (
+const FullCalendarComponent: React.FunctionComponent<any> = props => (
   <FullCalendar
     plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
     locale={frLocale}

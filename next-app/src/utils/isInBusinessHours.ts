@@ -16,7 +16,7 @@ const isInBusinessHours = (
 ) => {
   var momentIsInBusinessHours = false
 
-  businessHours.forEach((businessHour) => {
+  businessHours.forEach(businessHour => {
     const businessHourMoment = {
       start: moment(
         convertTimeStringToSeconds(businessHour.startTime) * 1000,

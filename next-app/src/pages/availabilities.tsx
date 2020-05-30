@@ -61,7 +61,7 @@ const Availabilities = () => {
   if (recurrentAvailabilitiesQueryResult.loading) return <LoadingOverlay />
   else if (recurrentAvailabilitiesQueryResult.error) {
     return (
-      <p className="error-message">
+      <p className='error-message'>
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
@@ -75,17 +75,17 @@ const Availabilities = () => {
     <Layout>
       <section>
         <header
-          className="flex items-center mb-6 cursor-pointer"
+          className='flex items-center mb-6 cursor-pointer'
           onClick={() =>
             setAreRecurrentAvailabilitiesShown(!areRecurrentAvailabilitiesShown)
           }
         >
           <FontAwesomeIcon
             icon={areRecurrentAvailabilitiesShown ? faAngleDown : faAngleRight}
-            size="lg"
-            className="text-gray-600"
+            size='lg'
+            className='text-gray-600'
           />
-          <h5 className="pl-6">Définir vos disponibilitées par défaut</h5>
+          <h5 className='pl-6'>Définir vos disponibilitées par défaut</h5>
         </header>
 
         <div
@@ -100,21 +100,21 @@ const Availabilities = () => {
         </div>
       </section>
 
-      <hr className="my-12 border-b-1" />
+      <hr className='my-12 border-b-1' />
 
       <section>
         <header
-          className="flex items-center mb-6 cursor-pointer"
+          className='flex items-center mb-6 cursor-pointer'
           onClick={() =>
             setIsAvailabilityCalendarShown(!isAvailabilityCalendarShown)
           }
         >
           <FontAwesomeIcon
             icon={isAvailabilityCalendarShown ? faAngleDown : faAngleRight}
-            size="lg"
-            className="text-gray-600"
+            size='lg'
+            className='text-gray-600'
           />
-          <h5 className="pl-6">Calendrier de vos disponibilités</h5>
+          <h5 className='pl-6'>Calendrier de vos disponibilités</h5>
         </header>
 
         <div className={isAvailabilityCalendarShown ? '' : 'hidden'}>

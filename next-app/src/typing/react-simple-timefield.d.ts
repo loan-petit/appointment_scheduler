@@ -1,1 +1,1 @@
-declare module 'react-simple-timefield';
+declare module 'react-simple-timefield'
