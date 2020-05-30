@@ -118,7 +118,8 @@ const SelectDateTime: React.FunctionComponent<Props> = ({ user, event }) => {
         }),
       )
 
-      surroundings = groupedSurroundings.equal
+      surroundings = surroundings
+        .concat(groupedSurroundings.equal)
         .concat(groupedSurroundings.inclusive)
         .concat(groupedSurroundings.adjacent.inclusive.start)
         .concat(groupedSurroundings.adjacent.inclusive.end)
@@ -178,7 +179,7 @@ const SelectDateTime: React.FunctionComponent<Props> = ({ user, event }) => {
     <>
       <h4 className="pb-6">Quand souhaitez-vous plannifier ce rendez-vous ?</h4>
 
-      <div className="flex flex-col justify-center md:flex-row">
+      <div className="flex flex-col items-center justify-center md:flex-row">
         <div className="flex justify-center w-full">
           <DayPicker
             localeUtils={MomentLocaleUtils}
@@ -194,7 +195,7 @@ const SelectDateTime: React.FunctionComponent<Props> = ({ user, event }) => {
         </div>
 
         {selectedDate && (
-          <div className="flex flex-col w-full pr-2 mt-10 overflow-y-scroll md:mt-0">
+          <div className="flex flex-col w-full pr-2 mt-10 md:overflow-y-scroll md:mt-0 md:h-64">
             {availabilityChunks.map((v, i) => {
               const slot = `${v.start.format('hh:mm')} - ${v.end.format(
                 'hh:mm',
