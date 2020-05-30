@@ -1,8 +1,8 @@
-import { objectType } from 'nexus'
+import { objectType } from '@nexus/schema'
 
 export const RecurrentAvailability = objectType({
   name: 'RecurrentAvailability',
-  definition(t) {
+  definition (t) {
     t.model.id()
     t.model.day()
     t.model.startTime()

@@ -1,6 +1,6 @@
 import { compare, hash } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
-import { mutationField, stringArg, intArg, idArg } from 'nexus'
+import { mutationField, stringArg, intArg, idArg } from '@nexus/schema'
 
 import { JWT_SECRET, getUserId } from '../../utils/getUserId'
 

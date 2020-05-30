@@ -1,8 +1,8 @@
-import { objectType } from 'nexus'
+import { objectType } from '@nexus/schema'
 
 export const AvailabilityModifier = objectType({
   name: 'AvailabilityModifier',
-  definition(t) {
+  definition (t) {
     t.model.id()
     t.model.start()
     t.model.end()

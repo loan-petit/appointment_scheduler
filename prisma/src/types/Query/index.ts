@@ -1,7 +1,7 @@
-import { queryType } from 'nexus'
+import { queryType } from '@nexus/schema'
 
 export const DefaultQueries = queryType({
-  definition(t) {
+  definition (t) {
     t.crud.user()
     t.crud.users()
 
