@@ -1,8 +1,10 @@
 import gql from 'graphql-tag'
+import moment from 'moment'
 
 import User from './User'
 import Day from '../types/Day'
 import getMaxId from '../utils/getMaxId'
+import MomentInterval from '../types/MomentInterval'
 
 export type RecurrentAvailabilitiesGroupedByDay = {
   [key in Day]?: RecurrentAvailability[]
@@ -45,6 +47,23 @@ export const RecurrentAvailabilityOperations = {
 }
 
 export const RecurrentAvailabilityHelpers = {
+  atDay: (recurrentAvailabilities: RecurrentAvailability[], day: Day) => {
+    return recurrentAvailabilities.reduce((obj: MomentInterval[], v) => {
+      if (!v.startTime || !v.endTime) return obj
+
+      const dayIndex: Day = Object.values(Day).indexOf(v.day)
+
+      if (dayIndex == day) {
+        return obj.concat([
+          {
+            start: moment(v.startTime * 1000).utc(),
+            end: moment(v.endTime * 1000).utc(),
+          },
+        ])
+      }
+      return obj
+    }, [])
+  },
   getMissingDays: (recurrentAvailabilities: RecurrentAvailability[]) => {
     const missingDays: Day[] = []
 

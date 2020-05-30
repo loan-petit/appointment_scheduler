@@ -16,7 +16,6 @@ import { useQuery } from '@apollo/react-hooks'
 import LoadingOverlay from '../shared/LoadingOverlay'
 import Day from '../../types/Day'
 import MomentInterval from '../../types/MomentInterval'
-import { convertTimeStringToSeconds } from '../../utils/timeStringHelper'
 import getSurroundingEvents, {
   IndexedMomentInterval,
 } from '../../utils/getSurroundingEvents'
@@ -73,51 +72,36 @@ const SelectDateTime: React.FunctionComponent<Props> = ({ user, event }) => {
     recurrentAvailabilities,
   )
 
-  const isDayAvailable = (date: Date) => {
-    console.log(date)
-    if (moment().isAfter(date)) return false
+  const getAvailabilities = (date: Date) => {
+    if (moment().isAfter(date)) return []
 
     const day: Day = moment(date).day()
-    var exclusiveAvailabilityModifiersOnSameDay: AvailabilityModifier[] = []
-    var isAvailable = false
+
+    var availabilities: MomentInterval[] = []
+    var exclusiveAvailabilities: AvailabilityModifier[] = []
 
     availabilityModifiers.forEach((v) => {
       if (moment(v.start).isSame(date, 'day')) {
         if (v.isExclusive) {
-          exclusiveAvailabilityModifiersOnSameDay.push(v)
+          exclusiveAvailabilities.push(v)
         } else {
-          isAvailable = true
+          availabilities.push({ start: moment(v.start), end: moment(v.end) })
         }
       }
     })
-    if (isAvailable) return isAvailable
-    if (unavailableRecurrentDays.includes(day)) return false
+    if (availabilities.length) return availabilities
+    if (unavailableRecurrentDays.includes(day)) return []
 
-    var availableTimes: MomentInterval[] = recurrentAvailabilities.reduce(
-      (obj: MomentInterval[], v) => {
-        if (!v.startTime || !v.endTime) return obj
-
-        const dayIndex: Day = Object.values(Day).indexOf(v.day)
-
-        if (dayIndex == day) {
-          return obj.concat([
-            {
-              start: moment(v.startTime * 1000).utc(),
-              end: moment(v.endTime * 1000).utc(),
-            },
-          ])
-        }
-        return obj
-      },
-      [],
+    availabilities = availabilities.concat(
+      RecurrentAvailabilityHelpers.atDay(recurrentAvailabilities, day),
     )
 
     var surroundings: IndexedMomentInterval[] = []
 
-    availableTimes.forEach((availableTime) => {
+    availabilities.forEach((availability) => {
       const groupedSurroundings = getSurroundingEvents(
-        availableTime,
-        exclusiveAvailabilityModifiersOnSameDay.map((v, i) => {
+        availability,
+        exclusiveAvailabilities.map((v, i) => {
           const secondsFromStartOfEpoch = (date: Moment) => {
             return date.hour() * 3600 + date.minute() * 60 + date.second()
           }
@@ -141,36 +125,92 @@ const SelectDateTime: React.FunctionComponent<Props> = ({ user, event }) => {
     })
 
     surroundings.forEach(({ interval }) => {
-      availableTimes.forEach((v, i) => {
+      availabilities.forEach((v, i) => {
         if (
           v.start.isSameOrBefore(interval.start) &&
           v.end.isSameOrAfter(interval.end)
         ) {
-          availableTimes.push({ start: interval.end, end: v.end })
-          availableTimes[i].end = interval.start
+          availabilities.push({ start: interval.end, end: v.end })
+          availabilities[i].end = interval.start
         }
       })
     })
 
-    return availableTimes.filter((v) => !v.start.isSame(v.end)).length !== 0
+    return availabilities.filter((v) => !v.start.isSame(v.end))
+  }
+
+  const splitAvailabilityInChunks = (
+    availability: MomentInterval,
+    minutes: number,
+  ) => {
+    const chunks: MomentInterval[] = [
+      {
+        start: availability.start.clone(),
+        end: availability.start.clone().add(minutes, 'minutes'),
+      },
+    ]
+
+    while (
+      !chunks[chunks.length - 1].end
+        .clone()
+        .add(minutes, 'minutes')
+        .isAfter(availability.end)
+    ) {
+      chunks.push({
+        start: chunks[chunks.length - 1].end.clone(),
+        end: chunks[chunks.length - 1].end.clone().add(minutes, 'minutes'),
+      })
+    }
+    return chunks
+  }
+
+  var availabilityChunks: MomentInterval[] = []
+  if (selectedDate) {
+    availabilityChunks = getAvailabilities(selectedDate).reduce(
+      (obj: MomentInterval[], v) => {
+        return obj.concat(splitAvailabilityInChunks(v, event.duration))
+      },
+      [],
+    )
   }
 
   return (
     <>
       <h4 className="pb-6">Quand souhaitez-vous plannifier ce rendez-vous ?</h4>
 
-      <div className="flex justify-center md:justify-start">
-        <DayPicker
-          localeUtils={MomentLocaleUtils}
-          locale="fr"
-          fromMonth={new Date()}
-          selectedDays={selectedDate}
-          disabledDays={(day) => !isDayAvailable(day)}
-          onDayClick={(day, { selected }) =>
-            selected ? setSelectedDate(undefined) : setSelectedDate(day)
-          }
-          className="border"
-        />
+      <div className="flex flex-col justify-center md:flex-row">
+        <div className="flex justify-center w-full">
+          <DayPicker
+            localeUtils={MomentLocaleUtils}
+            locale="fr"
+            fromMonth={new Date()}
+            selectedDays={selectedDate}
+            disabledDays={(day) => getAvailabilities(day).length == 0}
+            onDayClick={(day, { selected }) =>
+              selected ? setSelectedDate(undefined) : setSelectedDate(day)
+            }
+            className="border rounded-lg"
+          />
+        </div>
+
+        {selectedDate && (
+          <div className="flex flex-col w-full pr-2 mt-10 overflow-y-scroll md:mt-0">
+            {availabilityChunks.map((v, i) => {
+              const slot = `${v.start.format('hh:mm')} - ${v.end.format(
+                'hh:mm',
+              )}`
+
+              return (
+                <div
+                  key={i}
+                  className="p-2 my-2 text-center text-gray-800 border rounded-lg"
+                >
+                  {slot}
+                </div>
+              )
+            })}
+          </div>
+        )}
       </div>
     </>
   )
