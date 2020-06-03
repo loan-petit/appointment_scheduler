@@ -1,4 +1,3 @@
-import 'react-dates/initialize'
 import 'moment/locale/fr'
 
 import '../styles/app.css'

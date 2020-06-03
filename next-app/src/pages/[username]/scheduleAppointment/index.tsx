@@ -65,8 +65,6 @@ const AppointmentScheduler = () => {
   }
   const events: Event[] = eventsQueryResult.data.user.events
 
-  console.log(selectedDateTime)
-
   return (
     <Layout user={user}>
       {!selectedEvent && (
