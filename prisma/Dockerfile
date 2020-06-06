@@ -13,7 +13,7 @@ COPY ./package.json ./
 COPY ./prisma/schema.prisma ./prisma/
 RUN npm install
 
-# Copy code ressources
+# Copy code resources
 COPY . .
 
 # Generate Prisma clients

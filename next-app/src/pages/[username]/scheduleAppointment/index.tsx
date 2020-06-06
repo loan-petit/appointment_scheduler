@@ -43,7 +43,7 @@ const AppointmentScheduler = () => {
   if (userQueryResult.loading) return <LoadingOverlay />
   else if (userQueryResult.error) {
     return (
-      <p className='error-message'>
+      <p className="error-message">
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
@@ -56,7 +56,7 @@ const AppointmentScheduler = () => {
   if (eventsQueryResult.loading) return <LoadingOverlay />
   else if (eventsQueryResult.error) {
     return (
-      <p className='error-message'>
+      <p className="error-message">
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
@@ -71,7 +71,7 @@ const AppointmentScheduler = () => {
         <SelectAppointmentType
           events={events}
           selectEvent={(eventId: number) =>
-            setSelectedEvent(events.find(v => v.id == eventId))
+            setSelectedEvent(events.find((v) => v.id == eventId))
           }
         />
       )}
@@ -86,7 +86,7 @@ const AppointmentScheduler = () => {
         <ContactInformation
           user={user}
           event={selectedEvent}
-          dateTime={selectedDateTime}
+          startDateTime={selectedDateTime}
         />
       )}
     </Layout>

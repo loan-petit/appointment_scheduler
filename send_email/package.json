@@ -12,10 +12,18 @@
   "dependencies": {
     "@koa/cors": "^2.2.3",
     "@types/koa": "^2.11.3",
+    "@types/koa-router": "^7.4.1",
     "@types/koa__cors": "^3.0.1",
+    "@types/node-cache": "^4.2.5",
     "aws-sdk": "^2.656.0",
+    "axios": "^0.19.2",
+    "email-comb": "^3.9.18",
+    "html-crush": "^1.9.35",
+    "juice": "^6.0.0",
     "koa": "^2.11.0",
     "koa-body": "^4.1.1",
+    "koa-router": "^9.0.1",
+    "node-cache": "^5.1.0",
     "typescript": "^3.8.3"
   },
   "devDependencies": {

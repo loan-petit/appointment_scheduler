@@ -5,18 +5,19 @@ import axios from 'axios'
 import User from '../../models/User'
 import Event from '../../models/Event'
 import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
-import AppointmentConfirmation from './appointmentConfirmation'
+import CustomerAppointmentConfirmation from '../emails/appointmentConfirmation/customer'
+import ServiceProviderAppointmentConfirmation from '../emails/appointmentConfirmation/serviceProvider'
 
 type Props = {
   user: User
   event: Event
-  dateTime: Date
+  startDateTime: Date
 }
 
 const ContactInformation: React.FunctionComponent<Props> = ({
   user,
   event,
-  dateTime,
+  startDateTime,
 }) => {
   // Hook to force component rerender
   const [, updateState] = React.useState()
@@ -43,34 +44,51 @@ const ContactInformation: React.FunctionComponent<Props> = ({
       throw "Environment variable 'SEND_EMAIL_API_URL' must be specified"
     }
 
-    // Send email to client
+    const customerDetails = {
+      name: `${fieldsInformation.firstName.value} ${fieldsInformation.lastName.value}`,
+      email: fieldsInformation.email.value,
+    }
+
+    const resources = [
+      {
+        name: 'tailwindcss',
+        url: 'https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css',
+        rel: 'stylesheet',
+      },
+    ]
+
+    // Send email to the customer
     await axios.post(process.env.SEND_EMAIL_API_URL, {
       toAddresses: [fieldsInformation.email.value],
       html: ReactDOMServer.renderToStaticMarkup(
-        <AppointmentConfirmation
+        <CustomerAppointmentConfirmation
+          customerDetails={customerDetails}
+          user={user}
           event={event}
-          dateTime={dateTime}
-          message={`Vous venez de prendre rendez-vous avec ${user.firstName}`}
+          startDateTime={startDateTime}
         />,
       ),
       subject: `Vous avez pris rendez-vous avec ${user.firstName} ${user.lastName}`,
       sender: user.email,
       replyToAddresses: [user.email],
+      resources: resources,
     })
 
-    // Send email to the service provider
+    // Send email to the user
     await axios.post(process.env.SEND_EMAIL_API_URL, {
       toAddresses: [user.email],
       html: ReactDOMServer.renderToStaticMarkup(
-        <AppointmentConfirmation
+        <ServiceProviderAppointmentConfirmation
+          customerDetails={customerDetails}
+          user={user}
           event={event}
-          dateTime={dateTime}
-          message={`${fieldsInformation.firstName.value} ${fieldsInformation.lastName.value} as pris rendez-vous avec vous.`}
+          startDateTime={startDateTime}
         />,
       ),
-      subject: `${fieldsInformation.firstName.value} ${fieldsInformation.lastName.value} as pris rendez-vous avec vous`,
+      subject: `Un nouveau rendez-vous à été pris par ${fieldsInformation.firstName.value} ${fieldsInformation.lastName.value}`,
       sender: 'petit.loan1@gmail.com',
       replyToAddresses: [fieldsInformation.email.value],
+      resources: resources,
     })
 
     return true
@@ -78,7 +96,6 @@ const ContactInformation: React.FunctionComponent<Props> = ({
 
   const onSubmitResult = ({ error }: any) => {
     if (error) {
-      console.log(error)
       return 'Une erreur est survenue. Veuillez-réessayer.'
     }
     return ''
@@ -152,25 +169,29 @@ const ContactInformation: React.FunctionComponent<Props> = ({
         {(() => {
           if (formHelper.submitStatus.response) {
             return (
-              <p className="pt-0 pb-4 text-sm italic text-green-500">
+              <p className="text-sm italic text-green-500">
                 Le rendez-vous a bien été pris en compte. Vous allez recevoir un
                 email de confirmation.
               </p>
             )
-          } else if (formHelper.submitStatus.userFriendlyError.length) {
-            return (
-              <p className="pt-0 pb-4 form-submit-error">
-                {formHelper.submitStatus.userFriendlyError}
-              </p>
-            )
-          } else return null
+          }
+
+          return (
+            <>
+              {formHelper.submitStatus.userFriendlyError.length ? (
+                <p className="pt-0 pb-4 form-submit-error">
+                  {formHelper.submitStatus.userFriendlyError}
+                </p>
+              ) : null}
+              <button
+                className="px-6 py-3 submit-button"
+                onClick={formHelper.handleSubmit.bind(formHelper)}
+              >
+                Confirmer le rendez-vous
+              </button>
+            </>
+          )
         })()}
-        <button
-          className="px-6 py-3 submit-button"
-          onClick={formHelper.handleSubmit.bind(formHelper)}
-        >
-          Confirmer le rendez-vous
-        </button>
       </div>
     </>
   )
