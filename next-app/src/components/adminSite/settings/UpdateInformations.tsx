@@ -72,6 +72,7 @@ const UpdateInformations: React.FunctionComponent<Props> = ({
         lastName: fieldsInformation.lastName.value,
         email: fieldsInformation.email.value,
         websiteUrl: fieldsInformation.websiteUrl.value,
+        phone: fieldsInformation.phone.value,
         address: fieldsInformation.address.value,
         minScheduleNotice: Number(fieldsInformation.minScheduleNotice.value),
       },
@@ -90,6 +91,7 @@ const UpdateInformations: React.FunctionComponent<Props> = ({
         { name: 'firstName', value: currentUser.firstName },
         { name: 'lastName', value: currentUser.lastName },
         { name: 'email', value: currentUser.email },
+        { name: 'phoneNumber', value: currentUser.phone },
         { name: 'websiteUrl', value: currentUser.websiteUrl },
         { name: 'address', value: currentUser.address },
         { name: 'minScheduleNotice', value: currentUser.minScheduleNotice },
@@ -168,11 +170,27 @@ const UpdateInformations: React.FunctionComponent<Props> = ({
         </p>
       </div>
 
+      {/* Phone */}
+      <div className='w-full mb-3'>
+        <label className='block mb-2'>Téléphone</label>
+        <input
+          type='tel'
+          className='w-full p-3 placeholder-gray-400'
+          placeholder='Votre numéro de téléphone'
+          onChange={formHelper.handleInputChange.bind(formHelper)}
+          name='phone'
+          value={formHelper.fieldsInformation.phone.value}
+        />
+        <p className='form-field-error'>
+          {formHelper.fieldsInformation.phone.error}
+        </p>
+      </div>
+
       {/* Address */}
       <div className='w-full mb-3'>
-        <label className='block mb-2'>Adresse physique</label>
+        <label className='block mb-2'>Adresse postale</label>
         <input
-          type='test'
+          type='text'
           className='w-full p-3 placeholder-gray-400'
           placeholder='Votre adresse'
           onChange={formHelper.handleInputChange.bind(formHelper)}

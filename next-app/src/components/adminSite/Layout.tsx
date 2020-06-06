@@ -34,7 +34,7 @@ const Layout: React.FunctionComponent<Props> = ({
   const router = useRouter()
   const routes = [
     {
-      path: '/events',
+      path: '/appointmentTypes',
       name: 'Événements',
     },
     {

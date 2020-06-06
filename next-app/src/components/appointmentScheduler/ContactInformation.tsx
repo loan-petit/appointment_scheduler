@@ -3,20 +3,21 @@ import ReactDOMServer from 'react-dom/server'
 import axios from 'axios'
 
 import User from '../../models/User'
-import Event from '../../models/Event'
+import AppointmentType from '../../models/AppointmentType'
 import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
 import CustomerAppointmentConfirmation from '../emails/appointmentConfirmation/customer'
 import ServiceProviderAppointmentConfirmation from '../emails/appointmentConfirmation/serviceProvider'
+import Customer from '../../types/Customer'
 
 type Props = {
   user: User
-  event: Event
+  appointmentType: AppointmentType
   startDateTime: Date
 }
 
 const ContactInformation: React.FunctionComponent<Props> = ({
   user,
-  event,
+  appointmentType,
   startDateTime,
 }) => {
   // Hook to force component rerender
@@ -44,9 +45,12 @@ const ContactInformation: React.FunctionComponent<Props> = ({
       throw "Environment variable 'SEND_EMAIL_API_URL' must be specified"
     }
 
-    const customerDetails = {
-      name: `${fieldsInformation.firstName.value} ${fieldsInformation.lastName.value}`,
+    const customer: Customer = {
+      firstName: fieldsInformation.firstName.value,
+      lastName: fieldsInformation.lastName.value,
       email: fieldsInformation.email.value,
+      phone: fieldsInformation.phone.value,
+      address: fieldsInformation.address.value,
     }
 
     const resources = [
@@ -59,12 +63,12 @@ const ContactInformation: React.FunctionComponent<Props> = ({
 
     // Send email to the customer
     await axios.post(process.env.SEND_EMAIL_API_URL, {
-      toAddresses: [fieldsInformation.email.value],
+      toAddresses: [customer.email],
       html: ReactDOMServer.renderToStaticMarkup(
         <CustomerAppointmentConfirmation
-          customerDetails={customerDetails}
+          customer={customer}
           user={user}
-          event={event}
+          appointmentType={appointmentType}
           startDateTime={startDateTime}
         />,
       ),
@@ -79,15 +83,16 @@ const ContactInformation: React.FunctionComponent<Props> = ({
       toAddresses: [user.email],
       html: ReactDOMServer.renderToStaticMarkup(
         <ServiceProviderAppointmentConfirmation
-          customerDetails={customerDetails}
+          customer={customer}
           user={user}
-          event={event}
+          appointmentType={appointmentType}
           startDateTime={startDateTime}
+          message={fieldsInformation.message.value}
         />,
       ),
-      subject: `Un nouveau rendez-vous à été pris par ${fieldsInformation.firstName.value} ${fieldsInformation.lastName.value}`,
+      subject: `Un nouveau rendez-vous à été pris par ${customer.firstName} ${customer.lastName}`,
       sender: 'petit.loan1@gmail.com',
-      replyToAddresses: [fieldsInformation.email.value],
+      replyToAddresses: [customer.email],
       resources: resources,
     })
 
@@ -103,7 +108,7 @@ const ContactInformation: React.FunctionComponent<Props> = ({
 
   const [formHelper] = React.useState(
     new FormHelper({
-      fields: ['firstName', 'lastName', 'email'],
+      fields: ['firstName', 'lastName', 'email', 'phone', 'address', 'message'],
       refreshComponent: forceUpdate,
       fieldsValidator: fieldsValidator,
       onSubmit: onSubmit,
@@ -113,63 +118,112 @@ const ContactInformation: React.FunctionComponent<Props> = ({
 
   return (
     <>
-      <h4 className="pb-6">Veuillez remplir les informations suivantes</h4>
+      <h4 className='pb-6'>Veuillez remplir les informations suivantes</h4>
 
       {/* Full Name */}
-      <div className="flex flex-row justify-between mb-3">
-        <div className="w-full mr-2">
-          <label className="block mb-2">Prénom</label>
+      <div className='flex flex-row justify-between mb-3'>
+        <div className='w-full mr-2'>
+          <label className='block mb-2'>Prénom</label>
           <input
-            type="text"
-            className="w-full p-3 placeholder-gray-400"
-            placeholder="Votre prénom"
+            type='text'
+            className='w-full p-3 placeholder-gray-400'
+            placeholder='Votre prénom'
             onChange={formHelper.handleInputChange.bind(formHelper)}
-            name="firstName"
+            name='firstName'
             value={formHelper.fieldsInformation.firstName.value}
             autoFocus
           />
-          <p className="form-field-error">
+          <p className='form-field-error'>
             {formHelper.fieldsInformation.firstName.error}
           </p>
         </div>
-        <div className="w-full ml-2">
-          <label className="block mb-2">Nom</label>
+        <div className='w-full ml-2'>
+          <label className='block mb-2'>Nom</label>
           <input
-            type="text"
-            className="w-full p-3 placeholder-gray-400"
-            placeholder="Votre nom"
+            type='text'
+            className='w-full p-3 placeholder-gray-400'
+            placeholder='Votre nom'
             onChange={formHelper.handleInputChange.bind(formHelper)}
-            name="lastName"
+            name='lastName'
             value={formHelper.fieldsInformation.lastName.value}
           />
-          <p className="form-field-error">
+          <p className='form-field-error'>
             {formHelper.fieldsInformation.lastName.error}
           </p>
         </div>
       </div>
 
       {/* Email */}
-      <div className="w-full mb-3">
-        <label className="block mb-2">E-mail</label>
+      <div className='w-full mb-3'>
+        <label className='block mb-2'>E-mail</label>
         <input
-          type="email"
-          className="w-full p-3 placeholder-gray-400"
-          placeholder="Votre e-mail"
+          type='email'
+          className='w-full p-3 placeholder-gray-400'
+          placeholder='Votre e-mail'
           onChange={formHelper.handleInputChange.bind(formHelper)}
-          name="email"
+          name='email'
           value={formHelper.fieldsInformation.email.value}
         />
-        <p className="form-field-error">
+        <p className='form-field-error'>
           {formHelper.fieldsInformation.email.error}
         </p>
       </div>
 
+      {/* Phone */}
+      <div className='w-full mb-3'>
+        <label className='block mb-2'>Téléphone</label>
+        <input
+          type='tel'
+          className='w-full p-3 placeholder-gray-400'
+          placeholder='Votre numéro de téléphone'
+          onChange={formHelper.handleInputChange.bind(formHelper)}
+          name='phone'
+          value={formHelper.fieldsInformation.phone.value}
+        />
+        <p className='form-field-error'>
+          {formHelper.fieldsInformation.phone.error}
+        </p>
+      </div>
+
+      {/* Address */}
+      <div className='w-full mb-3'>
+        <label className='block mb-2'>Adresse postale</label>
+        <input
+          type='text'
+          className='w-full p-3 placeholder-gray-400'
+          placeholder='Votre adresse'
+          onChange={formHelper.handleInputChange.bind(formHelper)}
+          name='address'
+          value={formHelper.fieldsInformation.address.value}
+        />
+        <p className='form-field-error'>
+          {formHelper.fieldsInformation.address.error}
+        </p>
+      </div>
+
+      {/* Message */}
+      <div className='w-full mb-3'>
+        <label className='block mb-2'>Message</label>
+        <textarea
+          rows={4}
+          cols={80}
+          className='w-full px-3 py-3 placeholder-gray-400'
+          placeholder='Votre message'
+          onChange={formHelper.handleInputChange.bind(formHelper)}
+          name='message'
+          value={formHelper.fieldsInformation.message.value}
+        />
+        <p className='form-field-error'>
+          {formHelper.fieldsInformation.message.error}
+        </p>
+      </div>
+
       {/* Submit information */}
-      <div className="mt-6">
+      <div className='mt-6'>
         {(() => {
           if (formHelper.submitStatus.response) {
             return (
-              <p className="text-sm italic text-green-500">
+              <p className='text-sm italic text-green-500'>
                 Le rendez-vous a bien été pris en compte. Vous allez recevoir un
                 email de confirmation.
               </p>
@@ -179,12 +233,12 @@ const ContactInformation: React.FunctionComponent<Props> = ({
           return (
             <>
               {formHelper.submitStatus.userFriendlyError.length ? (
-                <p className="pt-0 pb-4 form-submit-error">
+                <p className='pt-0 pb-4 form-submit-error'>
                   {formHelper.submitStatus.userFriendlyError}
                 </p>
               ) : null}
               <button
-                className="px-6 py-3 submit-button"
+                className='px-6 py-3 submit-button'
                 onClick={formHelper.handleSubmit.bind(formHelper)}
               >
                 Confirmer le rendez-vous

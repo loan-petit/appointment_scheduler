@@ -7,7 +7,9 @@ import { withApollo } from '../../../apollo/client'
 import ContactInformation from '../../../components/appointmentScheduler/ContactInformation'
 import LoadingOverlay from '../../../components/shared/LoadingOverlay'
 import User, { UserFragments } from '../../../models/User'
-import Event, { EventOperations } from '../../../models/Event'
+import AppointmentType, {
+  AppointmentTypeOperations,
+} from '../../../models/AppointmentType'
 import Layout from '../../../components/appointmentScheduler/Layout'
 import SelectAppointmentType from '../../../components/appointmentScheduler/SelectAppointmentType'
 import SelectDateTime from '../../../components/appointmentScheduler/SelectDateTime'
@@ -24,7 +26,9 @@ const UserQuery = gql`
 const AppointmentScheduler = () => {
   const router = useRouter()
 
-  const [selectedEvent, setSelectedEvent] = React.useState<Event>()
+  const [selectedAppointmentType, setSelectedAppointmentType] = React.useState<
+    AppointmentType
+  >()
   const [selectedDateTime, setSelectedDateTime] = React.useState<Date>()
 
   var [user, setUser] = React.useState<User>()
@@ -34,16 +38,19 @@ const AppointmentScheduler = () => {
     },
   })
 
-  const eventsQueryResult = useQuery(EventOperations.events, {
-    variables: { userId: user?.id },
-    skip: !user,
-  })
+  const appointmentTypesQueryResult = useQuery(
+    AppointmentTypeOperations.appointmentTypes,
+    {
+      variables: { userId: user?.id },
+      skip: !user,
+    },
+  )
 
   // Verify UserQuery result
   if (userQueryResult.loading) return <LoadingOverlay />
   else if (userQueryResult.error) {
     return (
-      <p className="error-message">
+      <p className='error-message'>
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
@@ -52,40 +59,43 @@ const AppointmentScheduler = () => {
     setUser(userQueryResult.data.user)
   }
 
-  // Verify EventsQuery result
-  if (eventsQueryResult.loading) return <LoadingOverlay />
-  else if (eventsQueryResult.error) {
+  // Verify AppointmentTypesQuery result
+  if (appointmentTypesQueryResult.loading) return <LoadingOverlay />
+  else if (appointmentTypesQueryResult.error) {
     return (
-      <p className="error-message">
+      <p className='error-message'>
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
-  } else if (!eventsQueryResult.data) {
+  } else if (!appointmentTypesQueryResult.data) {
     return <div />
   }
-  const events: Event[] = eventsQueryResult.data.user.events
+  const appointmentTypes: AppointmentType[] =
+    appointmentTypesQueryResult.data.user.appointmentTypes
 
   return (
     <Layout user={user}>
-      {!selectedEvent && (
+      {!selectedAppointmentType && (
         <SelectAppointmentType
-          events={events}
-          selectEvent={(eventId: number) =>
-            setSelectedEvent(events.find((v) => v.id == eventId))
+          appointmentTypes={appointmentTypes}
+          selectAppointmentType={(appointmentTypeId: number) =>
+            setSelectedAppointmentType(
+              appointmentTypes.find(v => v.id == appointmentTypeId),
+            )
           }
         />
       )}
-      {user && selectedEvent && !selectedDateTime && (
+      {user && selectedAppointmentType && !selectedDateTime && (
         <SelectDateTime
           user={user}
-          event={selectedEvent}
+          appointmentType={selectedAppointmentType}
           selectDateTime={setSelectedDateTime}
         />
       )}
-      {user && selectedEvent && selectedDateTime && (
+      {user && selectedAppointmentType && selectedDateTime && (
         <ContactInformation
           user={user}
-          event={selectedEvent}
+          appointmentType={selectedAppointmentType}
           startDateTime={selectedDateTime}
         />
       )}

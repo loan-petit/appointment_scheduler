@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 import User from './User'
 
-type Event = {
+type AppointmentType = {
   id: number
   name: string
   description?: string
@@ -12,9 +12,9 @@ type Event = {
   user?: User
 }
 
-export const EventFragments = {
+export const AppointmentTypeFragments = {
   fields: gql`
-    fragment EventFields on Event {
+    fragment AppointmentTypeFields on AppointmentType {
       __typename
       id
       name
@@ -26,18 +26,18 @@ export const EventFragments = {
   `,
 }
 
-export const EventOperations = {
-  events: gql`
-    query EventsQuery($userId: Int!) {
+export const AppointmentTypeOperations = {
+  appointmentTypes: gql`
+    query AppointmentTypesQuery($userId: Int!) {
       user(where: { id: $userId }) {
         __typename
-        events {
-          ...EventFields
+        appointmentTypes {
+          ...AppointmentTypeFields
         }
       }
     }
-    ${EventFragments.fields}
+    ${AppointmentTypeFragments.fields}
   `,
 }
 
-export default Event
+export default AppointmentType

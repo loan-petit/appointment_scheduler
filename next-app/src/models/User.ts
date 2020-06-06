@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-import Event from './Event'
+import AppointmentType from './AppointmentType'
 import RecurrentAvailability from './RecurrentAvailability'
 
 type User = {
@@ -10,9 +10,10 @@ type User = {
   firstName: string
   lastName: string
   websiteUrl?: string
+  phone?: string
   address?: string
   minScheduleNotice: number
-  events?: Event[]
+  appointmentTypes?: AppointmentType[]
   recurrentAvailabilities?: RecurrentAvailability[]
 }
 

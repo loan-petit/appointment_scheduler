@@ -59,7 +59,17 @@ const Layout: React.FunctionComponent<Props> = ({
           <div className='flex flex-col justify-center py-4 text-center bg-gray-100 rounded-t-lg md:rounded-l-lg md:w-1/3'>
             <h1>{`${user?.firstName} ${user?.lastName}`}</h1>
             {user?.websiteUrl && (
-              <h6 className='py-2'>Site web : {user?.websiteUrl}</h6>
+              <h6 className='py-2'>
+                Site web :
+                <a
+                  href={user.websiteUrl}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-gray-600 hover:text-gray-700'
+                >
+                  {` ${user.websiteUrl}`}
+                </a>
+              </h6>
             )}
           </div>
           <div className='w-full p-6'>{children}</div>

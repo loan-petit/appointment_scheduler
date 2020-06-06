@@ -5,8 +5,8 @@ export const DefaultQueries = queryType({
     t.crud.user()
     t.crud.users()
 
-    t.crud.event()
-    t.crud.events()
+    t.crud.appointmentType()
+    t.crud.appointmentTypes()
 
     t.crud.recurrentAvailability()
     t.crud.recurrentAvailabilities()

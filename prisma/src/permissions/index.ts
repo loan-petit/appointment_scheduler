@@ -30,8 +30,8 @@ const rules = {
     })
     return Number(userId) === user.id
   }),
-  isEventOwner: rule()(async (_parent, args, ctx) =>
-    isModelOwner(args, ctx.prisma.event, getUserId(ctx)),
+  isAppointmentTypeOwner: rule()(async (_parent, args, ctx) =>
+    isModelOwner(args, ctx.prisma.appointmentType, getUserId(ctx)),
   ),
   isRecurrentAvailabilityOwner: rule()((_parent, args, ctx) =>
     isModelOwner(args, ctx.prisma.recurrentAvailability, getUserId(ctx)),
@@ -50,11 +50,11 @@ export const permissions = shield({
     updateCurrentUser: rules.isAuthenticatedUser,
     deleteOneUser: rules.isCurrentUser,
 
-    // Event
-    createOneEvent: rules.isAuthenticatedUser,
-    updateOneEvent: rules.isEventOwner,
-    upsertOneEvent: rules.isEventOwner,
-    deleteOneEvent: rules.isEventOwner,
+    // AppointmentType
+    createOneAppointmentType: rules.isAuthenticatedUser,
+    updateOneAppointmentType: rules.isAppointmentTypeOwner,
+    upsertOneAppointmentType: rules.isAppointmentTypeOwner,
+    deleteOneAppointmentType: rules.isAppointmentTypeOwner,
 
     // RecurrentAvailability
     createOneRecurrentAvailability: rules.isAuthenticatedUser,

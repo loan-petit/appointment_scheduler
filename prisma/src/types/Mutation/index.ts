@@ -4,10 +4,10 @@ export const DefaultMutations = mutationType({
   definition (t) {
     t.crud.deleteOneUser()
 
-    t.crud.createOneEvent()
-    t.crud.updateOneEvent()
-    t.crud.upsertOneEvent()
-    t.crud.deleteOneEvent()
+    t.crud.createOneAppointmentType()
+    t.crud.updateOneAppointmentType()
+    t.crud.upsertOneAppointmentType()
+    t.crud.deleteOneAppointmentType()
 
     t.crud.createOneRecurrentAvailability()
     t.crud.updateOneRecurrentAvailability()

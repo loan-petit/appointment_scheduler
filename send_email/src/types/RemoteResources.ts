@@ -1,10 +1,10 @@
 export type RemoteResourceInfo = {
-  name: string;
-  url: string;
-  rel: string;
-};
+  name: string
+  url: string
+  rel: string
+}
 
 export type RemoteResource = {
-  info: RemoteResourceInfo;
-  content: string;
-};
+  info: RemoteResourceInfo
+  content: string
+}

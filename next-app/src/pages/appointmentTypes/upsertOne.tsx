@@ -8,7 +8,10 @@ import Layout from '../../components/adminSite/Layout'
 import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
 import LoadingOverlay from '../../components/shared/LoadingOverlay'
 import User from '../../models/User'
-import Event, { EventFragments, EventOperations } from '../../models/Event'
+import AppointmentType, {
+  AppointmentTypeFragments,
+  AppointmentTypeOperations,
+} from '../../models/AppointmentType'
 
 const CurrentUserQuery = gql`
   query CurrentUserQuery {
@@ -20,18 +23,18 @@ const CurrentUserQuery = gql`
   }
 `
 
-const EventQuery = gql`
-  query EventQuery($eventId: Int!) {
-    event(where: { id: $eventId }) {
-      ...EventFields
+const AppointmentTypeQuery = gql`
+  query AppointmentTypeQuery($appointmentTypeId: Int!) {
+    appointmentType(where: { id: $appointmentTypeId }) {
+      ...AppointmentTypeFields
     }
   }
-  ${EventFragments.fields}
+  ${AppointmentTypeFragments.fields}
 `
 
-const UpsertOneEventMutation = gql`
-  mutation UpsertOneEventMutation(
-    $eventId: Int!
+const UpsertOneAppointmentTypeMutation = gql`
+  mutation UpsertOneAppointmentTypeMutation(
+    $appointmentTypeId: Int!
     $name: String!
     $description: String
     $duration: Int!
@@ -39,7 +42,7 @@ const UpsertOneEventMutation = gql`
     $generateClientSheet: Boolean
     $userId: Int!
   ) {
-    upsertOneEvent(
+    upsertOneAppointmentType(
       create: {
         name: $name
         description: $description
@@ -55,15 +58,15 @@ const UpsertOneEventMutation = gql`
         price: $price
         generateClientSheet: $generateClientSheet
       }
-      where: { id: $eventId }
+      where: { id: $appointmentTypeId }
     ) {
-      ...EventFields
+      ...AppointmentTypeFields
     }
   }
-  ${EventFragments.fields}
+  ${AppointmentTypeFragments.fields}
 `
 
-const UpsertOneEvent = () => {
+const UpsertOneAppointmentType = () => {
   const router = useRouter()
 
   // Hook to force component rerender
@@ -71,34 +74,46 @@ const UpsertOneEvent = () => {
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
   const [currentUser, setCurrentUser] = React.useState<User>()
-  const [event, setEvent] = React.useState<Event>()
+  const [appointmentType, setAppointmentType] = React.useState<
+    AppointmentType
+  >()
 
   const currentUserQueryResult = useQuery(CurrentUserQuery)
-  const eventQueryResult = useQuery(EventQuery, {
-    variables: { eventId: Number(router.query.id) },
+  const appointmentTypeQueryResult = useQuery(AppointmentTypeQuery, {
+    variables: { appointmentTypeId: Number(router.query.id) },
     skip: !router.query.id,
   })
-  const [upsertOneEvent] = useMutation(UpsertOneEventMutation, {
-    update (cache, { data: { upsertOneEvent } }) {
-      const { user }: any = cache.readQuery({
-        query: EventOperations.events,
-        variables: { userId: currentUser?.id },
-      })
-      if (user.events.some((e: Event) => e.id == upsertOneEvent.id)) return
+  const [upsertOneAppointmentType] = useMutation(
+    UpsertOneAppointmentTypeMutation,
+    {
+      update (cache, { data: { upsertOneAppointmentType } }) {
+        const { user }: any = cache.readQuery({
+          query: AppointmentTypeOperations.appointmentTypes,
+          variables: { userId: currentUser?.id },
+        })
+        if (
+          user.appointmentTypes.some(
+            (e: AppointmentType) => e.id == upsertOneAppointmentType.id,
+          )
+        )
+          return
 
-      cache.writeQuery({
-        query: EventOperations.events,
-        variables: { userId: currentUser?.id },
-        data: {
-          __typename: 'User',
-          user: {
-            ...user,
-            events: user.events.concat([upsertOneEvent]),
+        cache.writeQuery({
+          query: AppointmentTypeOperations.appointmentTypes,
+          variables: { userId: currentUser?.id },
+          data: {
+            __typename: 'User',
+            user: {
+              ...user,
+              appointmentTypes: user.appointmentTypes.concat([
+                upsertOneAppointmentType,
+              ]),
+            },
           },
-        },
-      })
+        })
+      },
     },
-  })
+  )
 
   const fieldsValidator = (name: String, value: any) => {
     switch (name) {
@@ -117,7 +132,7 @@ const UpsertOneEvent = () => {
     fieldsInformation: FieldsInformation,
     additionalVariables: any,
   ) =>
-    upsertOneEvent({
+    upsertOneAppointmentType({
       variables: {
         name: fieldsInformation.name.value,
         description: fieldsInformation.description.value,
@@ -161,19 +176,21 @@ const UpsertOneEvent = () => {
     setCurrentUser(currentUserQueryResult.data.me.user)
   }
 
-  // Verify EventQuery result
+  // Verify AppointmentTypeQuery result
   if (router.query.id) {
-    if (eventQueryResult.loading) return <LoadingOverlay />
-    else if (eventQueryResult.error) {
+    if (appointmentTypeQueryResult.loading) return <LoadingOverlay />
+    else if (appointmentTypeQueryResult.error) {
       return (
         <p className='error-message'>
           Une erreur est survenue. Veuillez-réessayer.
         </p>
       )
     }
-    if (!event) {
-      formHelper.updateFieldValues(eventQueryResult.data.event)
-      setEvent(eventQueryResult.data.event)
+    if (!appointmentType) {
+      formHelper.updateFieldValues(
+        appointmentTypeQueryResult.data.appointmentType,
+      )
+      setAppointmentType(appointmentTypeQueryResult.data.appointmentType)
     }
   }
 
@@ -286,7 +303,7 @@ const UpsertOneEvent = () => {
             className='px-6 py-3 submit-button'
             onClick={e => {
               formHelper.handleSubmit.bind(formHelper)(e, {
-                eventId: Number(router.query.id) || -1,
+                appointmentTypeId: Number(router.query.id) || -1,
                 userId: currentUser?.id,
               })
             }}
@@ -299,4 +316,4 @@ const UpsertOneEvent = () => {
   )
 }
 
-export default withApollo(UpsertOneEvent)
+export default withApollo(UpsertOneAppointmentType)

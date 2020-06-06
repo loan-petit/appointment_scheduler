@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = "***"
+  url = "***"
   default  = true
 }
 
@@ -18,12 +18,12 @@ model User {
   websiteUrl              String?
   address                 String?
   minScheduleNotice       Int                     @default(0)
-  events                  Event[]
+  appointmentTypes        AppointmentType[]
   recurrentAvailabilities RecurrentAvailability[]
   availabilityModifiers   AvailabilityModifier[]
 }
 
-model Event {
+model AppointmentType {
   id                  Int     @default(autoincrement()) @id
   name                String
   description         String?

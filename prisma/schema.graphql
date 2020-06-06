@@ -2,6 +2,111 @@
 ### Do not make changes to this file directly
 
 
+type AppointmentType {
+  description: String
+  duration: Int!
+  generateClientSheet: Boolean!
+  id: Int!
+  name: String!
+  price: Float
+  user: User
+}
+
+input AppointmentTypeCreateInput {
+  description: String
+  duration: Int!
+  generateClientSheet: Boolean
+  name: String!
+  price: Float
+  user: UserCreateOneWithoutAppointmentTypesInput
+}
+
+input AppointmentTypeCreateManyWithoutUserInput {
+  connect: [AppointmentTypeWhereUniqueInput!]
+  create: [AppointmentTypeCreateWithoutUserInput!]
+}
+
+input AppointmentTypeCreateWithoutUserInput {
+  description: String
+  duration: Int!
+  generateClientSheet: Boolean
+  name: String!
+  price: Float
+}
+
+input AppointmentTypeScalarWhereInput {
+  AND: [AppointmentTypeScalarWhereInput!]
+  description: NullableStringFilter
+  duration: IntFilter
+  generateClientSheet: BooleanFilter
+  id: IntFilter
+  name: StringFilter
+  NOT: [AppointmentTypeScalarWhereInput!]
+  OR: [AppointmentTypeScalarWhereInput!]
+  price: NullableFloatFilter
+  userId: NullableIntFilter
+}
+
+input AppointmentTypeUpdateInput {
+  description: String
+  duration: Int
+  generateClientSheet: Boolean
+  id: Int
+  name: String
+  price: Float
+  user: UserUpdateOneWithoutAppointmentTypesInput
+}
+
+input AppointmentTypeUpdateManyDataInput {
+  description: String
+  duration: Int
+  generateClientSheet: Boolean
+  id: Int
+  name: String
+  price: Float
+}
+
+input AppointmentTypeUpdateManyWithoutUserInput {
+  connect: [AppointmentTypeWhereUniqueInput!]
+  create: [AppointmentTypeCreateWithoutUserInput!]
+  delete: [AppointmentTypeWhereUniqueInput!]
+  deleteMany: [AppointmentTypeScalarWhereInput!]
+  disconnect: [AppointmentTypeWhereUniqueInput!]
+  set: [AppointmentTypeWhereUniqueInput!]
+  update: [AppointmentTypeUpdateWithWhereUniqueWithoutUserInput!]
+  updateMany: [AppointmentTypeUpdateManyWithWhereNestedInput!]
+  upsert: [AppointmentTypeUpsertWithWhereUniqueWithoutUserInput!]
+}
+
+input AppointmentTypeUpdateManyWithWhereNestedInput {
+  data: AppointmentTypeUpdateManyDataInput!
+  where: AppointmentTypeScalarWhereInput!
+}
+
+input AppointmentTypeUpdateWithoutUserDataInput {
+  description: String
+  duration: Int
+  generateClientSheet: Boolean
+  id: Int
+  name: String
+  price: Float
+}
+
+input AppointmentTypeUpdateWithWhereUniqueWithoutUserInput {
+  data: AppointmentTypeUpdateWithoutUserDataInput!
+  where: AppointmentTypeWhereUniqueInput!
+}
+
+input AppointmentTypeUpsertWithWhereUniqueWithoutUserInput {
+  create: AppointmentTypeCreateWithoutUserInput!
+  update: AppointmentTypeUpdateWithoutUserDataInput!
+  where: AppointmentTypeWhereUniqueInput!
+}
+
+input AppointmentTypeWhereUniqueInput {
+  id: Int
+}
+
 type AuthPayload {
   expiresIn: Int!
   token: String!
@@ -127,111 +232,6 @@ enum Day {
   WEDNESDAY
 }
 
-type Event {
-  description: String
-  duration: Int!
-  generateClientSheet: Boolean!
-  id: Int!
-  name: String!
-  price: Float
-  user: User
-}
-
-input EventCreateInput {
-  description: String
-  duration: Int!
-  generateClientSheet: Boolean
-  name: String!
-  price: Float
-  user: UserCreateOneWithoutEventsInput
-}
-
-input EventCreateManyWithoutUserInput {
-  connect: [EventWhereUniqueInput!]
-  create: [EventCreateWithoutUserInput!]
-}
-
-input EventCreateWithoutUserInput {
-  description: String
-  duration: Int!
-  generateClientSheet: Boolean
-  name: String!
-  price: Float
-}
-
-input EventScalarWhereInput {
-  AND: [EventScalarWhereInput!]
-  description: NullableStringFilter
-  duration: IntFilter
-  generateClientSheet: BooleanFilter
-  id: IntFilter
-  name: StringFilter
-  NOT: [EventScalarWhereInput!]
-  OR: [EventScalarWhereInput!]
-  price: NullableFloatFilter
-  userId: NullableIntFilter
-}
-
-input EventUpdateInput {
-  description: String
-  duration: Int
-  generateClientSheet: Boolean
-  id: Int
-  name: String
-  price: Float
-  user: UserUpdateOneWithoutEventsInput
-}
-
-input EventUpdateManyDataInput {
-  description: String
-  duration: Int
-  generateClientSheet: Boolean
-  id: Int
-  name: String
-  price: Float
-}
-
-input EventUpdateManyWithoutUserInput {
-  connect: [EventWhereUniqueInput!]
-  create: [EventCreateWithoutUserInput!]
-  delete: [EventWhereUniqueInput!]
-  deleteMany: [EventScalarWhereInput!]
-  disconnect: [EventWhereUniqueInput!]
-  set: [EventWhereUniqueInput!]
-  update: [EventUpdateWithWhereUniqueWithoutUserInput!]
-  updateMany: [EventUpdateManyWithWhereNestedInput!]
-  upsert: [EventUpsertWithWhereUniqueWithoutUserInput!]
-}
-
-input EventUpdateManyWithWhereNestedInput {
-  data: EventUpdateManyDataInput!
-  where: EventScalarWhereInput!
-}
-
-input EventUpdateWithoutUserDataInput {
-  description: String
-  duration: Int
-  generateClientSheet: Boolean
-  id: Int
-  name: String
-  price: Float
-}
-
-input EventUpdateWithWhereUniqueWithoutUserInput {
-  data: EventUpdateWithoutUserDataInput!
-  where: EventWhereUniqueInput!
-}
-
-input EventUpsertWithWhereUniqueWithoutUserInput {
-  create: EventCreateWithoutUserInput!
-  update: EventUpdateWithoutUserDataInput!
-  where: EventWhereUniqueInput!
-}
-
-input EventWhereUniqueInput {
-  id: Int
-}
-
 input IntFilter {
   equals: Int
   gt: Int
@@ -244,21 +244,21 @@ input IntFilter {
 }
 
 type Mutation {
+  createOneAppointmentType(data: AppointmentTypeCreateInput!): AppointmentType!
   createOneAvailabilityModifier(data: AvailabilityModifierCreateInput!): AvailabilityModifier!
-  createOneEvent(data: EventCreateInput!): Event!
   createOneRecurrentAvailability(data: RecurrentAvailabilityCreateInput!): RecurrentAvailability!
+  deleteOneAppointmentType(where: AppointmentTypeWhereUniqueInput!): AppointmentType
   deleteOneAvailabilityModifier(where: AvailabilityModifierWhereUniqueInput!): AvailabilityModifier
-  deleteOneEvent(where: EventWhereUniqueInput!): Event
   deleteOneRecurrentAvailability(where: RecurrentAvailabilityWhereUniqueInput!): RecurrentAvailability
   deleteOneUser(where: UserWhereUniqueInput!): User
   signin(email: String!, password: String!): AuthPayload!
   signup(email: String!, firstName: String!, lastName: String!, password: String!, passwordConfirmation: String!): AuthPayload!
   updateCurrentUser(address: String, email: String, firstName: String, lastName: String, minScheduleNotice: Int, newPassword: String, newPasswordConfirmation: String, oldPassword: String, websiteUrl: String): User!
+  updateOneAppointmentType(data: AppointmentTypeUpdateInput!, where: AppointmentTypeWhereUniqueInput!): AppointmentType
   updateOneAvailabilityModifier(data: AvailabilityModifierUpdateInput!, where: AvailabilityModifierWhereUniqueInput!): AvailabilityModifier
-  updateOneEvent(data: EventUpdateInput!, where: EventWhereUniqueInput!): Event
   updateOneRecurrentAvailability(data: RecurrentAvailabilityUpdateInput!, where: RecurrentAvailabilityWhereUniqueInput!): RecurrentAvailability
+  upsertOneAppointmentType(create: AppointmentTypeCreateInput!, update: AppointmentTypeUpdateInput!, where: AppointmentTypeWhereUniqueInput!): AppointmentType!
   upsertOneAvailabilityModifier(create: AvailabilityModifierCreateInput!, update: AvailabilityModifierUpdateInput!, where: AvailabilityModifierWhereUniqueInput!): AvailabilityModifier!
-  upsertOneEvent(create: EventCreateInput!, update: EventUpdateInput!, where: EventWhereUniqueInput!): Event!
   upsertOneRecurrentAvailability(create: RecurrentAvailabilityCreateInput!, update: RecurrentAvailabilityUpdateInput!, where: RecurrentAvailabilityWhereUniqueInput!): RecurrentAvailability!
 }
 
@@ -299,10 +299,10 @@ input NullableStringFilter {
 }
 
 type Query {
+  appointmentType(where: AppointmentTypeWhereUniqueInput!): AppointmentType
+  appointmentTypes(skip: Int): [AppointmentType!]!
   availabilityModifier(where: AvailabilityModifierWhereUniqueInput!): AvailabilityModifier
   availabilityModifiers(skip: Int): [AvailabilityModifier!]!
-  event(where: EventWhereUniqueInput!): Event
-  events(skip: Int): [Event!]!
   me: AuthPayload!
   recurrentAvailabilities(skip: Int): [RecurrentAvailability!]!
   recurrentAvailability(where: RecurrentAvailabilityWhereUniqueInput!): RecurrentAvailability
@@ -417,9 +417,9 @@ input StringFilter {
 
 type User {
   address: String
+  appointmentTypes: [AppointmentType!]!
   availabilityModifiers: [AvailabilityModifier!]!
   email: String!
-  events: [Event!]!
   firstName: String!
   id: Int!
   lastName: String!
@@ -429,14 +429,14 @@ type User {
   websiteUrl: String
 }
 
+input UserCreateOneWithoutAppointmentTypesInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutAppointmentTypesInput
+}
+
 input UserCreateOneWithoutAvailabilityModifiersInput {
   connect: UserWhereUniqueInput
   create: UserCreateWithoutAvailabilityModifiersInput
-}
-
-input UserCreateOneWithoutEventsInput {
-  connect: UserWhereUniqueInput
-  create: UserCreateWithoutEventsInput
 }
 
 input UserCreateOneWithoutRecurrentAvailabilitiesInput {
@@ -444,10 +444,10 @@ input UserCreateOneWithoutRecurrentAvailabilitiesInput {
   create: UserCreateWithoutRecurrentAvailabilitiesInput
 }
 
-input UserCreateWithoutAvailabilityModifiersInput {
+input UserCreateWithoutAppointmentTypesInput {
   address: String
+  availabilityModifiers: AvailabilityModifierCreateManyWithoutUserInput
   email: String!
-  events: EventCreateManyWithoutUserInput
   firstName: String!
   lastName: String!
   minScheduleNotice: Int
@@ -457,9 +457,9 @@ input UserCreateWithoutAvailabilityModifiersInput {
   websiteUrl: String
 }
 
-input UserCreateWithoutEventsInput {
+input UserCreateWithoutAvailabilityModifiersInput {
   address: String
-  availabilityModifiers: AvailabilityModifierCreateManyWithoutUserInput
+  appointmentTypes: AppointmentTypeCreateManyWithoutUserInput
   email: String!
   firstName: String!
   lastName: String!
@@ -472,15 +472,24 @@ input UserCreateWithoutEventsInput {
 
 input UserCreateWithoutRecurrentAvailabilitiesInput {
   address: String
+  appointmentTypes: AppointmentTypeCreateManyWithoutUserInput
   availabilityModifiers: AvailabilityModifierCreateManyWithoutUserInput
   email: String!
-  events: EventCreateManyWithoutUserInput
   firstName: String!
   lastName: String!
   minScheduleNotice: Int
   password: String!
   username: String!
   websiteUrl: String
+}
+
+input UserUpdateOneWithoutAppointmentTypesInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutAppointmentTypesInput
+  delete: Boolean
+  disconnect: Boolean
+  update: UserUpdateWithoutAppointmentTypesDataInput
+  upsert: UserUpsertWithoutAppointmentTypesInput
 }
 
 input UserUpdateOneWithoutAvailabilityModifiersInput {
@@ -492,15 +501,6 @@ input UserUpdateOneWithoutAvailabilityModifiersInput {
   upsert: UserUpsertWithoutAvailabilityModifiersInput
 }
 
-input UserUpdateOneWithoutEventsInput {
-  connect: UserWhereUniqueInput
-  create: UserCreateWithoutEventsInput
-  delete: Boolean
-  disconnect: Boolean
-  update: UserUpdateWithoutEventsDataInput
-  upsert: UserUpsertWithoutEventsInput
-}
-
 input UserUpdateOneWithoutRecurrentAvailabilitiesInput {
   connect: UserWhereUniqueInput
   create: UserCreateWithoutRecurrentAvailabilitiesInput
@@ -510,10 +510,10 @@ input UserUpdateOneWithoutRecurrentAvailabilitiesInput {
   upsert: UserUpsertWithoutRecurrentAvailabilitiesInput
 }
 
-input UserUpdateWithoutAvailabilityModifiersDataInput {
+input UserUpdateWithoutAppointmentTypesDataInput {
   address: String
+  availabilityModifiers: AvailabilityModifierUpdateManyWithoutUserInput
   email: String
-  events: EventUpdateManyWithoutUserInput
   firstName: String
   id: Int
   lastName: String
@@ -524,9 +524,9 @@ input UserUpdateWithoutAvailabilityModifiersDataInput {
   websiteUrl: String
 }
 
-input UserUpdateWithoutEventsDataInput {
+input UserUpdateWithoutAvailabilityModifiersDataInput {
   address: String
-  availabilityModifiers: AvailabilityModifierUpdateManyWithoutUserInput
+  appointmentTypes: AppointmentTypeUpdateManyWithoutUserInput
   email: String
   firstName: String
   id: Int
@@ -540,9 +540,9 @@ input UserUpdateWithoutEventsDataInput {
 
 input UserUpdateWithoutRecurrentAvailabilitiesDataInput {
   address: String
+  appointmentTypes: AppointmentTypeUpdateManyWithoutUserInput
   availabilityModifiers: AvailabilityModifierUpdateManyWithoutUserInput
   email: String
-  events: EventUpdateManyWithoutUserInput
   firstName: String
   id: Int
   lastName: String
@@ -552,14 +552,14 @@ input UserUpdateWithoutRecurrentAvailabilitiesDataInput {
   websiteUrl: String
 }
 
+input UserUpsertWithoutAppointmentTypesInput {
+  create: UserCreateWithoutAppointmentTypesInput!
+  update: UserUpdateWithoutAppointmentTypesDataInput!
+}
+
 input UserUpsertWithoutAvailabilityModifiersInput {
   create: UserCreateWithoutAvailabilityModifiersInput!
   update: UserUpdateWithoutAvailabilityModifiersDataInput!
-}
-
-input UserUpsertWithoutEventsInput {
-  create: UserCreateWithoutEventsInput!
-  update: UserUpdateWithoutEventsDataInput!
 }
 
 input UserUpsertWithoutRecurrentAvailabilitiesInput {

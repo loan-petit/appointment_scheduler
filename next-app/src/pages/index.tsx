@@ -8,7 +8,7 @@ const IndexPage = () => {
   React.useEffect(() => {
     const token = Cookies.get('token')
     if (token) {
-      router.replace('/events')
+      router.replace('/appointmentTypes')
     } else {
       router.replace('/auth/signin')
     }

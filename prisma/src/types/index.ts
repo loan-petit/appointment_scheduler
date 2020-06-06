@@ -4,6 +4,6 @@ export { Mutation, Query }
 
 export * from './AuthPayload'
 export * from './AvailabilityModifier'
-export * from './Event'
+export * from './AppointmentType'
 export * from './RecurrentAvailability'
 export * from './User'

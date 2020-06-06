@@ -4,7 +4,7 @@ import moment, { Moment } from 'moment'
 import MomentLocaleUtils from 'react-day-picker/moment'
 
 import User from '../../models/User'
-import Event from '../../models/Event'
+import AppointmentType from '../../models/AppointmentType'
 import RecurrentAvailability, {
   RecurrentAvailabilityOperations,
   RecurrentAvailabilityHelpers,
@@ -22,13 +22,13 @@ import getSurroundingEvents, {
 
 type Props = {
   user: User
-  event: Event
+  appointmentType: AppointmentType
   selectDateTime: (date: Date) => void
 }
 
 const SelectDateTime: React.FunctionComponent<Props> = ({
   user,
-  event,
+  appointmentType,
   selectDateTime,
 }) => {
   const [selectedDate, setSelectedDate] = React.useState<Date>()
@@ -174,7 +174,9 @@ const SelectDateTime: React.FunctionComponent<Props> = ({
   if (selectedDate) {
     availabilityChunks = getAvailabilities(selectedDate).reduce(
       (obj: MomentInterval[], v) => {
-        return obj.concat(splitAvailabilityInChunks(v, event.duration))
+        return obj.concat(
+          splitAvailabilityInChunks(v, appointmentType.duration),
+        )
       },
       [],
     )

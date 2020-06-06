@@ -1,7 +1,7 @@
 import { objectType } from '@nexus/schema'
 
-export const Event = objectType({
-  name: 'Event',
+export const AppointmentType = objectType({
+  name: 'AppointmentType',
   definition (t) {
     t.model.id()
     t.model.name()
