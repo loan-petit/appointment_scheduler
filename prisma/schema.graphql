@@ -251,8 +251,8 @@ type Mutation {
   deleteOneAvailabilityModifier(where: AvailabilityModifierWhereUniqueInput!): AvailabilityModifier
   deleteOneRecurrentAvailability(where: RecurrentAvailabilityWhereUniqueInput!): RecurrentAvailability
   deleteOneUser(where: UserWhereUniqueInput!): User
-  signin(email: String!, password: String!): AuthPayload!
-  signup(email: String!, firstName: String!, lastName: String!, password: String!, passwordConfirmation: String!): AuthPayload!
+  signin(email: String, oAuthToken: OAuthTokenInput, password: String): AuthPayload!
+  signup(email: String!, firstName: String!, lastName: String!, oAuthToken: OAuthTokenInput, password: String, passwordConfirmation: String): AuthPayload!
   updateCurrentUser(address: String, email: String, firstName: String, lastName: String, minScheduleNotice: Int, newPassword: String, newPasswordConfirmation: String, oldPassword: String, websiteUrl: String): User!
   updateOneAppointmentType(data: AppointmentTypeUpdateInput!, where: AppointmentTypeWhereUniqueInput!): AppointmentType
   updateOneAvailabilityModifier(data: AvailabilityModifierUpdateInput!, where: AvailabilityModifierWhereUniqueInput!): AvailabilityModifier
@@ -296,6 +296,53 @@ input NullableStringFilter {
   not: String
   notIn: [String!]
   startsWith: String
+}
+
+type OAuthToken {
+  accessToken: String!
+  id: Int!
+  refreshToken: String
+  user: User!
+}
+
+input OAuthTokenCreateOneWithoutUserInput {
+  connect: OAuthTokenWhereUniqueInput
+  create: OAuthTokenCreateWithoutUserInput
+}
+
+input OAuthTokenCreateWithoutUserInput {
+  accessToken: String!
+  refreshToken: String
+}
+
+input OAuthTokenInput {
+  accessToken: String!
+  idToken: String!
+  refreshToken: String
+}
+
+input OAuthTokenUpdateOneWithoutUserInput {
+  connect: OAuthTokenWhereUniqueInput
+  create: OAuthTokenCreateWithoutUserInput
+  delete: Boolean
+  disconnect: Boolean
+  update: OAuthTokenUpdateWithoutUserDataInput
+  upsert: OAuthTokenUpsertWithoutUserInput
+}
+
+input OAuthTokenUpdateWithoutUserDataInput {
+  accessToken: String
+  id: Int
+  refreshToken: String
+}
+
+input OAuthTokenUpsertWithoutUserInput {
+  create: OAuthTokenCreateWithoutUserInput!
+  update: OAuthTokenUpdateWithoutUserDataInput!
+}
+
+input OAuthTokenWhereUniqueInput {
+  id: Int
 }
 
 type Query {
@@ -424,6 +471,7 @@ type User {
   id: Int!
   lastName: String!
   minScheduleNotice: Int!
+  phone: String
   recurrentAvailabilities: [RecurrentAvailability!]!
   username: String!
   websiteUrl: String
@@ -449,9 +497,12 @@ input UserCreateWithoutAppointmentTypesInput {
   availabilityModifiers: AvailabilityModifierCreateManyWithoutUserInput
   email: String!
   firstName: String!
+  googleId: String
   lastName: String!
   minScheduleNotice: Int
-  password: String!
+  oAuthToken: OAuthTokenCreateOneWithoutUserInput
+  password: String
+  phone: String
   recurrentAvailabilities: RecurrentAvailabilityCreateManyWithoutUserInput
   username: String!
   websiteUrl: String
@@ -462,9 +513,12 @@ input UserCreateWithoutAvailabilityModifiersInput {
   appointmentTypes: AppointmentTypeCreateManyWithoutUserInput
   email: String!
   firstName: String!
+  googleId: String
   lastName: String!
   minScheduleNotice: Int
-  password: String!
+  oAuthToken: OAuthTokenCreateOneWithoutUserInput
+  password: String
+  phone: String
   recurrentAvailabilities: RecurrentAvailabilityCreateManyWithoutUserInput
   username: String!
   websiteUrl: String
@@ -476,9 +530,12 @@ input UserCreateWithoutRecurrentAvailabilitiesInput {
   availabilityModifiers: AvailabilityModifierCreateManyWithoutUserInput
   email: String!
   firstName: String!
+  googleId: String
   lastName: String!
   minScheduleNotice: Int
-  password: String!
+  oAuthToken: OAuthTokenCreateOneWithoutUserInput
+  password: String
+  phone: String
   username: String!
   websiteUrl: String
 }
@@ -515,10 +572,13 @@ input UserUpdateWithoutAppointmentTypesDataInput {
   availabilityModifiers: AvailabilityModifierUpdateManyWithoutUserInput
   email: String
   firstName: String
+  googleId: String
   id: Int
   lastName: String
   minScheduleNotice: Int
+  oAuthToken: OAuthTokenUpdateOneWithoutUserInput
   password: String
+  phone: String
   recurrentAvailabilities: RecurrentAvailabilityUpdateManyWithoutUserInput
   username: String
   websiteUrl: String
@@ -529,10 +589,13 @@ input UserUpdateWithoutAvailabilityModifiersDataInput {
   appointmentTypes: AppointmentTypeUpdateManyWithoutUserInput
   email: String
   firstName: String
+  googleId: String
   id: Int
   lastName: String
   minScheduleNotice: Int
+  oAuthToken: OAuthTokenUpdateOneWithoutUserInput
   password: String
+  phone: String
   recurrentAvailabilities: RecurrentAvailabilityUpdateManyWithoutUserInput
   username: String
   websiteUrl: String
@@ -544,10 +607,13 @@ input UserUpdateWithoutRecurrentAvailabilitiesDataInput {
   availabilityModifiers: AvailabilityModifierUpdateManyWithoutUserInput
   email: String
   firstName: String
+  googleId: String
   id: Int
   lastName: String
   minScheduleNotice: Int
+  oAuthToken: OAuthTokenUpdateOneWithoutUserInput
   password: String
+  phone: String
   username: String
   websiteUrl: String
 }
@@ -569,6 +635,7 @@ input UserUpsertWithoutRecurrentAvailabilitiesInput {
 
 input UserWhereUniqueInput {
   email: String
+  googleId: String
   id: Int
   username: String
 }

@@ -1,8 +1,11 @@
 import { compare, hash } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
-import { mutationField, stringArg, intArg, idArg } from '@nexus/schema'
+import { mutationField, stringArg, intArg } from '@nexus/schema'
 
 import { JWT_SECRET, getUserId } from '../../utils/getUserId'
+import { User } from '@prisma/client'
+import { OAuthTokenInput } from '../OAuthToken'
+import verifyGoogleIdToken from '../../utils/OAuth/verifyGoogleIdToken'
 
 export const signup = mutationField('signup', {
   type: 'AuthPayload',
@@ -10,22 +13,25 @@ export const signup = mutationField('signup', {
     email: stringArg({ nullable: false }),
     firstName: stringArg({ nullable: false }),
     lastName: stringArg({ nullable: false }),
-    password: stringArg({ nullable: false }),
-    passwordConfirmation: stringArg({ nullable: false }),
+    password: stringArg(),
+    passwordConfirmation: stringArg(),
+    oAuthToken: OAuthTokenInput.asArg(),
   },
   resolve: async (
     _parent,
-    { email, firstName, lastName, password, passwordConfirmation },
+    { email, firstName, lastName, password, passwordConfirmation, oAuthToken },
     ctx,
   ) => {
-    if (password !== passwordConfirmation) {
-      throw new Error("'password' must match 'passwordConfirmation'")
+    if (!password && !oAuthToken) {
+      throw new Error(
+        "Signup must be made using credentials or OAuth. Therefore 'password' or 'oAuthToken' must be set.",
+      )
     }
 
-    const hashedPassword = await hash(password, 10)
-
-    var user
+    var user: User | null
     var username: string = `${firstName}${lastName}`.toLowerCase()
+
+    // Generate an unique username
     do {
       user = await ctx.prisma.user.findOne({
         where: { username: username },
@@ -41,15 +47,42 @@ export const signup = mutationField('signup', {
       }
     } while (user)
 
-    user = await ctx.prisma.user.create({
-      data: {
-        email,
-        username,
-        firstName,
-        lastName,
-        password: hashedPassword,
-      },
-    })
+    const data = {
+      email,
+      username,
+      firstName,
+      lastName,
+      password: password && (await hash(password, 10)),
+    }
+
+    if (password) {
+      if (password !== passwordConfirmation) {
+        throw new Error("'password' must match 'passwordConfirmation'")
+      }
+
+      user = await ctx.prisma.user.create({
+        data: {
+          ...data,
+          password: password && (await hash(password, 10)),
+        },
+      })
+    } else if (oAuthToken) {
+      const tokenPayload = await verifyGoogleIdToken(oAuthToken.idToken)
+
+      user = await ctx.prisma.user.create({
+        data: {
+          ...data,
+          googleId: tokenPayload.sub,
+          oAuthToken: {
+            create: { accessToken: oAuthToken.accessToken },
+          },
+        },
+      })
+    }
+
+    if (!user) {
+      throw Error('An unexpected error occurred')
+    }
 
     return {
       token: sign({ userId: user.id }, JWT_SECRET, {
@@ -64,23 +97,43 @@ export const signup = mutationField('signup', {
 export const signin = mutationField('signin', {
   type: 'AuthPayload',
   args: {
-    email: stringArg({ nullable: false }),
-    password: stringArg({ nullable: false }),
+    email: stringArg(),
+    password: stringArg(),
+    oAuthToken: OAuthTokenInput.asArg(),
   },
-  resolve: async (_parent, { email, password }, ctx) => {
-    const user = await ctx.prisma.user.findOne({
-      where: {
-        email,
-      },
-    })
+  resolve: async (_parent, { email, password, oAuthToken }, ctx) => {
+    var user: User | null = null
 
-    if (!user) {
-      throw new Error(`No user found for email: ${email}`)
+    if (email && password) {
+      user = await ctx.prisma.user.findOne({
+        where: {
+          email,
+        },
+      })
+
+      if (!user) {
+        throw new Error(`No user found for email: ${email}`)
+      }
+      if (!user.password) {
+        throw new Error('This user has no associated credentials.')
+      }
+
+      const passwordValid = await compare(password, user.password)
+      if (!passwordValid) {
+        throw new Error('Invalid password')
+      }
+    } else if (oAuthToken) {
+      const tokenPayload = await verifyGoogleIdToken(oAuthToken.idToken)
+
+      user = await ctx.prisma.user.findOne({
+        where: {
+          googleId: tokenPayload.sub,
+        },
+      })
     }
 
-    const passwordValid = await compare(password, user.password)
-    if (!passwordValid) {
-      throw new Error('Invalid password')
+    if (!user) {
+      throw new Error(`User not found`)
     }
 
     return {
@@ -99,9 +152,9 @@ export const updateCurrentUser = mutationField('updateCurrentUser', {
     email: stringArg(),
     firstName: stringArg(),
     lastName: stringArg(),
-    websiteUrl: stringArg({ nullable: true }),
-    address: stringArg({ nullable: true }),
-    minScheduleNotice: intArg({ nullable: true }),
+    websiteUrl: stringArg(),
+    address: stringArg(),
+    minScheduleNotice: intArg(),
     oldPassword: stringArg(),
     newPassword: stringArg(),
     newPasswordConfirmation: stringArg(),
@@ -133,7 +186,7 @@ export const updateCurrentUser = mutationField('updateCurrentUser', {
     }
 
     var hashedPassword
-    if (oldPassword && newPassword) {
+    if (user.password && oldPassword && newPassword) {
       if (newPassword !== newPasswordConfirmation) {
         throw new Error("'newPassword' must match 'newPasswordConfirmation'")
       }
@@ -150,12 +203,12 @@ export const updateCurrentUser = mutationField('updateCurrentUser', {
         id: user.id,
       },
       data: {
-        email,
-        firstName,
-        lastName,
+        email: email ?? undefined,
+        firstName: firstName ?? undefined,
+        lastName: lastName ?? undefined,
         websiteUrl,
         address,
-        minScheduleNotice,
+        minScheduleNotice: minScheduleNotice ?? undefined,
         password: hashedPassword,
       },
     })
