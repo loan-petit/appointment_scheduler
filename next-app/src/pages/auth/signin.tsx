@@ -1,6 +1,5 @@
 import React from 'react'
 import Link from 'next/link'
-import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
 import GoogleLogin, {
   GoogleLoginResponse,
@@ -11,38 +10,17 @@ import { withApollo } from '../../apollo/client'
 import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
 import FillMissingAccountInformation from '../../components/adminSite/FillMissingAccountInformation'
 import storeJWT from '../../utils/storeJWT'
-
-const CredentialsSigninMutation = gql`
-  mutation CredentialsSigninMutation($email: String!, $password: String!) {
-    signin(email: $email, password: $password) {
-      token
-      expiresIn
-      user {
-        id
-      }
-    }
-  }
-`
-
-const OAuthSigninMutation = gql`
-  mutation OAuthSigninMutation($oAuthToken: OAuthTokenInput!) {
-    signin(oAuthToken: $oAuthToken) {
-      token
-      expiresIn
-      user {
-        id
-      }
-    }
-  }
-`
+import { AuthPayloadOperations } from '../../models/AuthPayload'
 
 const Signin = () => {
   // Hook to force component rerender
   const [, updateState] = React.useState()
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
-  const [credentialsSignin] = useMutation(CredentialsSigninMutation)
-  const [oAuthSignin] = useMutation(OAuthSigninMutation)
+  const [credentialsSignin] = useMutation(
+    AuthPayloadOperations.credentialsSigninMutation,
+  )
+  const [oAuthSignin] = useMutation(AuthPayloadOperations.oAuthSigninMutation)
 
   const [googleUser, setGoogleUser] = React.useState<GoogleLoginResponse>()
   const [googleAuthError, setGoogleAuthError] = React.useState('')
@@ -156,7 +134,7 @@ const Signin = () => {
               />
               {googleAuthError && (
                 <p className="mt-4 form-submit-error">
-                  Une erreur est survenue
+                  Une erreur est survenue. Veuillez-réessayer.
                 </p>
               )}
             </div>

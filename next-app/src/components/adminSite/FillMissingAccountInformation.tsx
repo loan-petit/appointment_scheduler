@@ -1,32 +1,10 @@
 import * as React from 'react'
 import { GoogleLoginResponse } from 'react-google-login'
-import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
 
 import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
 import storeJWT from '../../utils/storeJWT'
-
-const OAuthSignupMutation = gql`
-  mutation OAuthSignupMutation(
-    $firstName: String!
-    $lastName: String!
-    $email: String!
-    $oAuthToken: OAuthTokenInput!
-  ) {
-    signup(
-      firstName: $firstName
-      lastName: $lastName
-      email: $email
-      oAuthToken: $oAuthToken
-    ) {
-      token
-      expiresIn
-      user {
-        id
-      }
-    }
-  }
-`
+import { AuthPayloadOperations } from '../../models/AuthPayload'
 
 type Props = {
   googleUser: GoogleLoginResponse
@@ -41,7 +19,7 @@ const FillMissingAccountInformation: React.FunctionComponent<Props> = ({
   const [, updateState] = React.useState()
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
-  const [signup] = useMutation(OAuthSignupMutation)
+  const [signup] = useMutation(AuthPayloadOperations.oAuthSignupMutation)
 
   const emailRegex = RegExp(
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,

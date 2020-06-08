@@ -1,44 +1,25 @@
 import React from 'react'
 import Link from 'next/link'
-import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
-import { GoogleLogin, GoogleLoginResponse } from 'react-google-login'
+import {
+  GoogleLogin,
+  GoogleLoginResponse,
+  GoogleLoginResponseOffline,
+} from 'react-google-login'
 
 import { withApollo } from '../../apollo/client'
 import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
 import FillMissingAccountInformation from '../../components/adminSite/FillMissingAccountInformation'
 import storeJWT from '../../utils/storeJWT'
-
-const CredentialsSignupMutation = gql`
-  mutation CredentialsSignupMutation(
-    $firstName: String!
-    $lastName: String!
-    $email: String!
-    $password: String!
-    $passwordConfirmation: String!
-  ) {
-    signup(
-      firstName: $firstName
-      lastName: $lastName
-      email: $email
-      password: $password
-      passwordConfirmation: $passwordConfirmation
-    ) {
-      token
-      expiresIn
-      user {
-        id
-      }
-    }
-  }
-`
+import { AuthPayloadOperations } from '../../models/AuthPayload'
 
 const Signup = () => {
   // Hook to force component rerender
   const [, updateState] = React.useState()
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
-  const [signup] = useMutation(CredentialsSignupMutation)
+  const [signup] = useMutation(AuthPayloadOperations.credentialsSignupMutation)
+  const [oAuthSignin] = useMutation(AuthPayloadOperations.oAuthSigninMutation)
 
   const [googleUser, setGoogleUser] = React.useState<GoogleLoginResponse>()
   const [googleAuthError, setGoogleAuthError] = React.useState('')
@@ -106,6 +87,22 @@ const Signup = () => {
     }),
   )
 
+  const onGoogleAuthSuccess = async (
+    res: GoogleLoginResponse | GoogleLoginResponseOffline,
+  ) => {
+    res = res as GoogleLoginResponse
+    try {
+      const response = await oAuthSignin({
+        variables: {
+          oAuthToken: { accessToken: res.accessToken, idToken: res.tokenId },
+        },
+      })
+      storeJWT(response.data.signin)
+    } catch (e) {
+      setGoogleUser(res)
+    }
+  }
+
   return (
     <div className="absolute flex flex-col justify-center w-full h-full p-4 bg-gray-100">
       {googleUser ? (
@@ -135,12 +132,12 @@ const Signup = () => {
                     Google
                   </button>
                 )}
-                onSuccess={(res) => setGoogleUser(res as GoogleLoginResponse)}
+                onSuccess={onGoogleAuthSuccess}
                 onFailure={setGoogleAuthError}
               />
               {googleAuthError && (
                 <p className="mt-4 form-submit-error">
-                  Une erreur est survenue
+                  Une erreur est survenue. Veuillez-réessayer.
                 </p>
               )}
             </div>

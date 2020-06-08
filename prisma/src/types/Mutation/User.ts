@@ -6,6 +6,7 @@ import { JWT_SECRET, getUserId } from '../../utils/getUserId'
 import { User } from '@prisma/client'
 import { OAuthTokenInput } from '../OAuthToken'
 import verifyGoogleIdToken from '../../utils/OAuth/verifyGoogleIdToken'
+import { TokenPayload } from 'google-auth-library'
 
 export const signup = mutationField('signup', {
   type: 'AuthPayload',
@@ -47,38 +48,30 @@ export const signup = mutationField('signup', {
       }
     } while (user)
 
-    const data = {
-      email,
-      username,
-      firstName,
-      lastName,
-      password: password && (await hash(password, 10)),
+    if (password !== passwordConfirmation) {
+      throw new Error("'password' must match 'passwordConfirmation'")
     }
 
-    if (password) {
-      if (password !== passwordConfirmation) {
-        throw new Error("'password' must match 'passwordConfirmation'")
-      }
+    const tokenPayload =
+      oAuthToken && (await verifyGoogleIdToken(oAuthToken.idToken))
 
-      user = await ctx.prisma.user.create({
-        data: {
-          ...data,
-          password: password && (await hash(password, 10)),
-        },
-      })
-    } else if (oAuthToken) {
-      const tokenPayload = await verifyGoogleIdToken(oAuthToken.idToken)
-
-      user = await ctx.prisma.user.create({
-        data: {
-          ...data,
-          googleId: tokenPayload.sub,
-          oAuthToken: {
-            create: { accessToken: oAuthToken.accessToken },
-          },
-        },
-      })
-    }
+    user = await ctx.prisma.user.create({
+      data: {
+        email,
+        username,
+        firstName,
+        lastName,
+        password: password && (await hash(password, 10)),
+        googleId: tokenPayload?.sub,
+        ...(oAuthToken
+          ? {
+              oAuthToken: {
+                create: { accessToken: oAuthToken.accessToken },
+              },
+            }
+          : {}),
+      },
+    })
 
     if (!user) {
       throw Error('An unexpected error occurred')
@@ -158,6 +151,7 @@ export const updateCurrentUser = mutationField('updateCurrentUser', {
     oldPassword: stringArg(),
     newPassword: stringArg(),
     newPasswordConfirmation: stringArg(),
+    oAuthToken: OAuthTokenInput.asArg(),
   },
   resolve: async (
     _parent,
@@ -171,6 +165,7 @@ export const updateCurrentUser = mutationField('updateCurrentUser', {
       oldPassword,
       newPassword,
       newPasswordConfirmation,
+      oAuthToken,
     },
     ctx,
   ) => {
@@ -198,7 +193,10 @@ export const updateCurrentUser = mutationField('updateCurrentUser', {
       hashedPassword = await hash(newPassword, 10)
     }
 
-    const updatedUser = await ctx.prisma.user.update({
+    var tokenPayload =
+      oAuthToken && (await verifyGoogleIdToken(oAuthToken.idToken))
+
+    return await ctx.prisma.user.update({
       where: {
         id: user.id,
       },
@@ -210,9 +208,15 @@ export const updateCurrentUser = mutationField('updateCurrentUser', {
         address,
         minScheduleNotice: minScheduleNotice ?? undefined,
         password: hashedPassword,
+        googleId: tokenPayload?.sub,
+        ...(oAuthToken
+          ? {
+              oAuthToken: {
+                create: { accessToken: oAuthToken.accessToken },
+              },
+            }
+          : {}),
       },
     })
-
-    return updatedUser
   },
 })

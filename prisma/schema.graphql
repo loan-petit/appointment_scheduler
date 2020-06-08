@@ -253,7 +253,7 @@ type Mutation {
   deleteOneUser(where: UserWhereUniqueInput!): User
   signin(email: String, oAuthToken: OAuthTokenInput, password: String): AuthPayload!
   signup(email: String!, firstName: String!, lastName: String!, oAuthToken: OAuthTokenInput, password: String, passwordConfirmation: String): AuthPayload!
-  updateCurrentUser(address: String, email: String, firstName: String, lastName: String, minScheduleNotice: Int, newPassword: String, newPasswordConfirmation: String, oldPassword: String, websiteUrl: String): User!
+  updateCurrentUser(address: String, email: String, firstName: String, lastName: String, minScheduleNotice: Int, newPassword: String, newPasswordConfirmation: String, oAuthToken: OAuthTokenInput, oldPassword: String, websiteUrl: String): User!
   updateOneAppointmentType(data: AppointmentTypeUpdateInput!, where: AppointmentTypeWhereUniqueInput!): AppointmentType
   updateOneAvailabilityModifier(data: AvailabilityModifierUpdateInput!, where: AvailabilityModifierWhereUniqueInput!): AvailabilityModifier
   updateOneRecurrentAvailability(data: RecurrentAvailabilityUpdateInput!, where: RecurrentAvailabilityWhereUniqueInput!): RecurrentAvailability
@@ -471,6 +471,7 @@ type User {
   id: Int!
   lastName: String!
   minScheduleNotice: Int!
+  password: String
   phone: String
   recurrentAvailabilities: [RecurrentAvailability!]!
   username: String!

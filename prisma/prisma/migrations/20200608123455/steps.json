@@ -131,6 +131,24 @@
     {
       "tag": "CreateField",
       "model": "User",
+      "field": "googleId",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "googleId"
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
       "field": "firstName",
       "type": "String",
       "arity": "Required"
@@ -147,12 +165,19 @@
       "model": "User",
       "field": "password",
       "type": "String",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",
       "model": "User",
       "field": "websiteUrl",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "phone",
       "type": "String",
       "arity": "Optional"
     },
@@ -198,8 +223,15 @@
     {
       "tag": "CreateField",
       "model": "User",
-      "field": "events",
-      "type": "Event",
+      "field": "oAuthToken",
+      "type": "OAuthToken",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "appointmentTypes",
+      "type": "AppointmentType",
       "arity": "List"
     },
     {
@@ -218,11 +250,11 @@
     },
     {
       "tag": "CreateModel",
-      "model": "Event"
+      "model": "OAuthToken"
     },
     {
       "tag": "CreateField",
-      "model": "Event",
+      "model": "OAuthToken",
       "field": "id",
       "type": "Int",
       "arity": "Required"
@@ -232,7 +264,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "Event",
+          "model": "OAuthToken",
           "field": "id"
         },
         "directive": "default"
@@ -244,7 +276,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "Event",
+          "model": "OAuthToken",
           "field": "id"
         },
         "directive": "default"
@@ -257,7 +289,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "Event",
+          "model": "OAuthToken",
           "field": "id"
         },
         "directive": "id"
@@ -265,77 +297,31 @@
     },
     {
       "tag": "CreateField",
-      "model": "Event",
-      "field": "name",
+      "model": "OAuthToken",
+      "field": "accessToken",
       "type": "String",
       "arity": "Required"
     },
     {
       "tag": "CreateField",
-      "model": "Event",
-      "field": "description",
+      "model": "OAuthToken",
+      "field": "refreshToken",
       "type": "String",
       "arity": "Optional"
     },
     {
       "tag": "CreateField",
-      "model": "Event",
-      "field": "duration",
-      "type": "Int",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Event",
-      "field": "price",
-      "type": "Float",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Event",
-      "field": "generateClientSheet",
-      "type": "Boolean",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Event",
-          "field": "generateClientSheet"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Event",
-          "field": "generateClientSheet"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "false"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Event",
+      "model": "OAuthToken",
       "field": "user",
       "type": "User",
-      "arity": "Optional"
+      "arity": "Required"
     },
     {
       "tag": "CreateDirective",
       "location": {
         "path": {
           "tag": "Field",
-          "model": "Event",
+          "model": "OAuthToken",
           "field": "user"
         },
         "directive": "relation"
@@ -347,7 +333,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "Event",
+          "model": "OAuthToken",
           "field": "user"
         },
         "directive": "relation"
@@ -361,7 +347,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "Event",
+          "model": "OAuthToken",
           "field": "user"
         },
         "directive": "relation"
@@ -371,7 +357,167 @@
     },
     {
       "tag": "CreateField",
-      "model": "Event",
+      "model": "OAuthToken",
+      "field": "userId",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "AppointmentType"
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentType",
+      "field": "id",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentType",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentType",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "autoincrement()"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentType",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentType",
+      "field": "name",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentType",
+      "field": "description",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentType",
+      "field": "duration",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentType",
+      "field": "price",
+      "type": "Float",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentType",
+      "field": "generateClientSheet",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentType",
+          "field": "generateClientSheet"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentType",
+          "field": "generateClientSheet"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "false"
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentType",
+      "field": "user",
+      "type": "User",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentType",
+          "field": "user"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentType",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[userId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "AppointmentType",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "AppointmentType",
       "field": "userId",
       "type": "Int",
       "arity": "Optional"
