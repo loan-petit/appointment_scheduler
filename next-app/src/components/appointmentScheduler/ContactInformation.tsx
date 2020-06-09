@@ -1,28 +1,90 @@
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import axios from 'axios'
+import gql from 'graphql-tag'
 
 import User from '../../models/User'
 import AppointmentType from '../../models/AppointmentType'
 import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
 import CustomerAppointmentConfirmation from '../emails/appointmentConfirmation/customer'
 import ServiceProviderAppointmentConfirmation from '../emails/appointmentConfirmation/serviceProvider'
-import Customer from '../../types/Customer'
+import Customer, { CustomerFragments } from '../../models/Customer'
+import Appointment, { AppointmentFragments } from '../../models/Appointment'
+import { useMutation } from '@apollo/react-hooks'
+
+const UpsertOneCustomerMutation = gql`
+  mutation UpsertOneCustomerMutation(
+    $email: String!
+    $firstName: String!
+    $lastName: String!
+    $phone: String
+    $address: String
+    $isBlackListed: Boolean
+  ) {
+    upsertOneCustomer(
+      create: {
+        email: $email
+        firstName: $firstName
+        lastName: $lastName
+        phone: $phone
+        address: $address
+        isBlackListed: $isBlackListed
+      }
+      update: {
+        firstName: $firstName
+        lastName: $lastName
+        phone: $phone
+        address: $address
+        isBlackListed: $isBlackListed
+      }
+      where: { email: $email }
+    ) {
+      ...CustomerFields
+    }
+  }
+  ${CustomerFragments.fields}
+`
+
+const CreateOneAppointmentMutation = gql`
+  mutation CreateOneAppointmentMutation(
+    $userId: Int!
+    $customerId: Int!
+    $start: DateTime!
+    $end: DateTime!
+  ) {
+    createOneAppointment(
+      data: {
+        start: $start
+        end: $end
+        user: { connect: { id: $userId } }
+        customer: { connect: { id: $customerId } }
+      }
+    ) {
+      ...AppointmentFields
+    }
+  }
+  ${AppointmentFragments.fields}
+`
 
 type Props = {
   user: User
   appointmentType: AppointmentType
-  startDateTime: Date
+  startDate: Date
+  endDate: Date
 }
 
 const ContactInformation: React.FunctionComponent<Props> = ({
   user,
   appointmentType,
-  startDateTime,
+  startDate,
+  endDate,
 }) => {
   // Hook to force component rerender
   const [, updateState] = React.useState()
   const forceUpdate = React.useCallback(() => updateState({}), [])
+
+  const [upsertOneCustomer] = useMutation(UpsertOneCustomerMutation)
+  const [createOneAppointment] = useMutation(CreateOneAppointmentMutation)
 
   const emailRegex = RegExp(
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -45,13 +107,26 @@ const ContactInformation: React.FunctionComponent<Props> = ({
       throw "Environment variable 'SEND_EMAIL_API_URL' must be specified"
     }
 
-    const customer: Customer = {
+    var customer: Customer = {
+      id: -1,
       firstName: fieldsInformation.firstName.value,
       lastName: fieldsInformation.lastName.value,
       email: fieldsInformation.email.value,
       phone: fieldsInformation.phone.value,
       address: fieldsInformation.address.value,
     }
+
+    customer = (await upsertOneCustomer({ variables: customer })).data
+      .upsertOneCustomer
+
+    await createOneAppointment({
+      variables: {
+        userId: user.id,
+        customerId: customer.id,
+        start: startDate,
+        end: endDate,
+      },
+    })
 
     const resources = [
       {
@@ -61,23 +136,6 @@ const ContactInformation: React.FunctionComponent<Props> = ({
       },
     ]
 
-    // Send email to the customer
-    await axios.post(process.env.SEND_EMAIL_API_URL, {
-      toAddresses: [customer.email],
-      html: ReactDOMServer.renderToStaticMarkup(
-        <CustomerAppointmentConfirmation
-          customer={customer}
-          user={user}
-          appointmentType={appointmentType}
-          startDateTime={startDateTime}
-        />,
-      ),
-      subject: `Vous avez pris rendez-vous avec ${user.firstName} ${user.lastName}`,
-      sender: user.email,
-      replyToAddresses: [user.email],
-      resources: resources,
-    })
-
     // Send email to the user
     await axios.post(process.env.SEND_EMAIL_API_URL, {
       toAddresses: [user.email],
@@ -86,13 +144,32 @@ const ContactInformation: React.FunctionComponent<Props> = ({
           customer={customer}
           user={user}
           appointmentType={appointmentType}
-          startDateTime={startDateTime}
+          startDate={startDate}
+          endDate={endDate}
           message={fieldsInformation.message.value}
         />,
       ),
       subject: `Un nouveau rendez-vous à été pris par ${customer.firstName} ${customer.lastName}`,
       sender: 'petit.loan1@gmail.com',
       replyToAddresses: [customer.email],
+      resources: resources,
+    })
+
+    // Send email to the customer
+    await axios.post(process.env.SEND_EMAIL_API_URL, {
+      toAddresses: [customer.email],
+      html: ReactDOMServer.renderToStaticMarkup(
+        <CustomerAppointmentConfirmation
+          customer={customer}
+          user={user}
+          appointmentType={appointmentType}
+          startDate={startDate}
+          endDate={endDate}
+        />,
+      ),
+      subject: `Vous avez pris rendez-vous avec ${user.firstName} ${user.lastName}`,
+      sender: user.email,
+      replyToAddresses: [user.email],
       resources: resources,
     })
 

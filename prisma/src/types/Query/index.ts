@@ -13,6 +13,12 @@ export const DefaultQueries = queryType({
 
     t.crud.availabilityModifier()
     t.crud.availabilityModifiers()
+
+    t.crud.customer()
+    t.crud.customers()
+
+    t.crud.appointment()
+    t.crud.appointments()
   },
 })
 

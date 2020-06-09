@@ -3,13 +3,14 @@ import React from 'react'
 import AppointmentType from '../../../models/AppointmentType'
 import User from '../../../models/User'
 import AppointmentDetails from './AppointmentDetails'
-import Customer from '../../../types/Customer'
+import Customer from '../../../models/Customer'
 
 type Props = {
   customer: Customer
   user: User
   appointmentType: AppointmentType
-  startDateTime: Date
+  startDate: Date
+  endDate: Date
   message: string
 }
 
@@ -17,7 +18,8 @@ const ServiceProviderAppointmentConfirmation: React.FunctionComponent<Props> = (
   customer,
   user,
   appointmentType,
-  startDateTime,
+  startDate,
+  endDate,
   message,
 }) => (
   <div className='p-8 text-gray-800'>
@@ -32,7 +34,8 @@ const ServiceProviderAppointmentConfirmation: React.FunctionComponent<Props> = (
 
     <AppointmentDetails
       appointmentType={appointmentType}
-      startDateTime={startDateTime}
+      startDate={startDate}
+      endDate={endDate}
     />
 
     <p>

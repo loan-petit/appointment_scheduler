@@ -2,6 +2,7 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
+import moment from 'moment'
 
 import { withApollo } from '../../../apollo/client'
 import ContactInformation from '../../../components/appointmentScheduler/ContactInformation'
@@ -96,7 +97,11 @@ const AppointmentScheduler = () => {
         <ContactInformation
           user={user}
           appointmentType={selectedAppointmentType}
-          startDateTime={selectedDateTime}
+          startDate={selectedDateTime}
+          endDate={moment(selectedDateTime)
+            .clone()
+            .add(selectedAppointmentType.duration, 'minutes')
+            .toDate()}
         />
       )}
     </Layout>

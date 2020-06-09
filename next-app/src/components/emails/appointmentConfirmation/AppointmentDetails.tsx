@@ -5,12 +5,14 @@ import AppointmentType from '../../../models/AppointmentType'
 
 type Props = {
   appointmentType: AppointmentType
-  startDateTime: Date
+  startDate: Date
+  endDate: Date
 }
 
 const AppointmentDetails: React.FunctionComponent<Props> = ({
   appointmentType,
-  startDateTime,
+  startDate,
+  endDate,
 }) => (
   <div className='p-4 my-4 border-l-4 border-gray-800'>
     <h4 className='font-bold'>{appointmentType.name}</h4>
@@ -18,11 +20,9 @@ const AppointmentDetails: React.FunctionComponent<Props> = ({
       <p className='pt-2'>{appointmentType.description}</p>
     ) : null}
     <p className='pt-2'>
-      Le {moment(startDateTime).format('dddd D MMMM YYYY')}, de{' '}
-      {moment(startDateTime).format('hh[h]mm')} à{' '}
-      {moment(startDateTime)
-        .add(appointmentType.duration, 'minutes')
-        .format('hh[h]mm[.]')}
+      Le {moment(startDate).format('dddd D MMMM YYYY')}, de{' '}
+      {moment(startDate).format('hh[h]mm')} à{' '}
+      {moment(endDate).format('hh[h]mm[.]')}
     </p>
     {appointmentType.price ? (
       <p className='pt-2'>Prix : {appointmentType.price}€</p>

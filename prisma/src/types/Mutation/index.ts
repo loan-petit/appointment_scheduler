@@ -18,6 +18,15 @@ export const DefaultMutations = mutationType({
     t.crud.updateOneAvailabilityModifier()
     t.crud.upsertOneAvailabilityModifier()
     t.crud.deleteOneAvailabilityModifier()
+
+    t.crud.createOneCustomer()
+    t.crud.updateOneCustomer()
+    t.crud.upsertOneCustomer()
+    t.crud.deleteOneCustomer()
+
+    t.crud.createOneAppointment()
+    t.crud.updateOneAppointment()
+    t.crud.deleteOneAppointment()
   },
 })
 

@@ -62,7 +62,7 @@ export const permissions = shield({
     upsertOneRecurrentAvailability: rules.isRecurrentAvailabilityOwner,
     deleteOneRecurrentAvailability: rules.isRecurrentAvailabilityOwner,
 
-    // Availability
+    // AvailabilityModifier
     createOneAvailabilityModifier: rules.isAuthenticatedUser,
     updateOneAvailabilityModifier: rules.isAvailabilityModifierOwner,
     upsertOneAvailabilityModifier: rules.isAvailabilityModifierOwner,

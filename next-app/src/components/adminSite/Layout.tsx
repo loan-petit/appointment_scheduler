@@ -35,7 +35,7 @@ const Layout: React.FunctionComponent<Props> = ({
   const routes = [
     {
       path: '/appointmentTypes',
-      name: 'Événements',
+      name: "Types d'événements",
     },
     {
       path: '/availabilities',
