@@ -5,7 +5,6 @@ import { useQuery } from '@apollo/react-hooks'
 import moment from 'moment'
 
 import { withApollo } from '../../../apollo/client'
-import ContactInformation from '../../../components/appointmentScheduler/ContactInformation'
 import LoadingOverlay from '../../../components/shared/LoadingOverlay'
 import User, { UserFragments } from '../../../models/User'
 import AppointmentType, {
@@ -14,6 +13,7 @@ import AppointmentType, {
 import Layout from '../../../components/appointmentScheduler/Layout'
 import SelectAppointmentType from '../../../components/appointmentScheduler/SelectAppointmentType'
 import SelectDateTime from '../../../components/appointmentScheduler/SelectDateTime'
+import ConfirmAppointment from '../../../components/appointmentScheduler/ConfirmAppointment'
 
 const UserQuery = gql`
   query UserQuery($username: String!) {
@@ -94,7 +94,7 @@ const AppointmentScheduler = () => {
         />
       )}
       {user && selectedAppointmentType && selectedDateTime && (
-        <ContactInformation
+        <ConfirmAppointment
           user={user}
           appointmentType={selectedAppointmentType}
           startDate={selectedDateTime}

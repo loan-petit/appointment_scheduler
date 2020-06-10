@@ -36,6 +36,8 @@ export const UserFragments = {
   publicFields: gql`
     fragment UserPublicFields on User {
       id
+      email
+      username
       firstName
       lastName
       websiteUrl

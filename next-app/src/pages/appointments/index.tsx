@@ -4,15 +4,13 @@ import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 
 import DynamicFullCalendar from '../../components/shared/fullCalendar/DynamicFullCalendar'
-import Appointment, { AppointmentFragments } from '../../models/Appointment'
+import Appointment, { AppointmentOperations } from '../../models/Appointment'
 import User from '../../models/User'
 import LoadingOverlay from '../../components/shared/LoadingOverlay'
 import isIntervalAllDay from '../../utils/isIntervalAllDay'
 import { withApollo } from '../../apollo/client'
 import Layout from '../../components/adminSite/Layout'
 import AppointmentModal from '../../components/adminSite/AppointmentModal'
-import { AppointmentTypeFragments } from '../../models/AppointmentType'
-import { CustomerFragments } from '../../models/Customer'
 
 const CurrentUserQuery = gql`
   query CurrentUserQuery {
@@ -24,25 +22,6 @@ const CurrentUserQuery = gql`
   }
 `
 
-const AppointmentsQuery = gql`
-  query AppointmentsQuery($userId: Int!) {
-    user(where: { id: $userId }) {
-      appointments {
-        ...AppointmentFields
-        appointmentType {
-          ...AppointmentTypeFields
-        }
-        customer {
-          ...CustomerFields
-        }
-      }
-    }
-  }
-  ${AppointmentFragments.fields}
-  ${AppointmentTypeFragments.fields}
-  ${CustomerFragments.fields}
-`
-
 const Appointments = () => {
   const [selectedAppointment, setSelectedAppointment] = React.useState<
     Appointment
@@ -51,7 +30,7 @@ const Appointments = () => {
   const [currentUser, setCurrentUser] = React.useState<User>()
 
   const currentUserQueryResult = useQuery(CurrentUserQuery)
-  const appointmentsQueryResult = useQuery(AppointmentsQuery, {
+  const appointmentsQueryResult = useQuery(AppointmentOperations.appointments, {
     variables: { userId: currentUser?.id },
     skip: !currentUser,
   })

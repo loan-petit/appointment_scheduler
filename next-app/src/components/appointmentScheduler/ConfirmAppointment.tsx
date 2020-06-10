@@ -78,7 +78,7 @@ type Props = {
   endDate: Date
 }
 
-const ContactInformation: React.FunctionComponent<Props> = ({
+const ConfirmAppointment: React.FunctionComponent<Props> = ({
   user,
   appointmentType,
   startDate,
@@ -334,4 +334,4 @@ const ContactInformation: React.FunctionComponent<Props> = ({
   )
 }
 
-export default ContactInformation
+export default ConfirmAppointment

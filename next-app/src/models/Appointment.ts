@@ -1,7 +1,7 @@
 import User from './User'
-import Customer from './Customer'
+import Customer, { CustomerFragments } from './Customer'
 import gql from 'graphql-tag'
-import AppointmentType from './AppointmentType'
+import AppointmentType, { AppointmentTypeFragments } from './AppointmentType'
 
 type Appointment = {
   id: number
@@ -22,6 +22,27 @@ export const AppointmentFragments = {
       end
       googleCalendarEventId
     }
+  `,
+}
+
+export const AppointmentOperations = {
+  appointments: gql`
+    query AppointmentsQuery($userId: Int!) {
+      user(where: { id: $userId }) {
+        appointments {
+          ...AppointmentFields
+          appointmentType {
+            ...AppointmentTypeFields
+          }
+          customer {
+            ...CustomerFields
+          }
+        }
+      }
+    }
+    ${AppointmentFragments.fields}
+    ${AppointmentTypeFragments.fields}
+    ${CustomerFragments.fields}
   `,
 }
 

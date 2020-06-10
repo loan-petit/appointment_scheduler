@@ -67,7 +67,7 @@ const AppointmentModal: React.FunctionComponent<Props> = ({
             <button
               className='px-3 py-2 mr-1 text-sm text-white bg-red-500 rounded hover:bg-red-600'
               onClick={() =>
-                Router.push(`/customer/${appointment.customer?.id}`)
+                Router.push(`/appointments/cancelOne?id=${appointment.id}`)
               }
             >
               Annuler le rendez-vous
@@ -75,9 +75,7 @@ const AppointmentModal: React.FunctionComponent<Props> = ({
             <button
               className='px-3 py-2 text-sm font-semibold text-gray-800 transition duration-150 hover:text-gray-900'
               onClick={() =>
-                Router.push(
-                  `/appointments/${appointment.customer?.id}?action=cancel`,
-                )
+                Router.push(`/customer/${appointment.customer?.id}`)
               }
             >
               Voir la fiche client

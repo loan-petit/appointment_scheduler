@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 
-import AppointmentType from '../../../models/AppointmentType'
+import AppointmentType from '../../models/AppointmentType'
 
 type Props = {
   appointmentType: AppointmentType

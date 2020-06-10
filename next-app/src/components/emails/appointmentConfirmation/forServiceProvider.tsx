@@ -2,7 +2,7 @@ import React from 'react'
 
 import AppointmentType from '../../../models/AppointmentType'
 import User from '../../../models/User'
-import AppointmentDetails from './AppointmentDetails'
+import AppointmentDetails from '../AppointmentDetails'
 import Customer from '../../../models/Customer'
 
 type Props = {
