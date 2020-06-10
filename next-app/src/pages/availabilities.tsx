@@ -2,6 +2,8 @@ import React from 'react'
 import Router from 'next/router'
 import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleDown, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 
 import { withApollo } from '../apollo/client'
 import LoadingOverlay from '../components/shared/LoadingOverlay'
@@ -12,8 +14,6 @@ import RecurrentAvailability, {
 } from '../models/RecurrentAvailability'
 import UpsertRecurrentAvailabilities from '../components/adminSite/availabilties/recurrentAvailability/UpsertRecurrentAvailaibilities'
 import AvailabilityCalendar from '../components/adminSite/availabilties/AvailabilityCalendar'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleDown, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 
 const CurrentUserQuery = gql`
   query CurrentUserQuery {

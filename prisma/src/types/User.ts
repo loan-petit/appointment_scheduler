@@ -13,6 +13,7 @@ export const User = objectType({
     t.model.phone()
     t.model.address()
     t.model.minScheduleNotice()
+    t.model.appointments({ pagination: false })
     t.model.appointmentTypes({ pagination: false })
     t.model.recurrentAvailabilities({ pagination: false })
     t.model.availabilityModifiers({ pagination: false })

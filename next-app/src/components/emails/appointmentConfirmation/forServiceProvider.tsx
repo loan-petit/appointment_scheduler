@@ -14,7 +14,7 @@ type Props = {
   message: string
 }
 
-const ServiceProviderAppointmentConfirmation: React.FunctionComponent<Props> = ({
+const AppointmentConfirmationForServiceProvider: React.FunctionComponent<Props> = ({
   customer,
   user,
   appointmentType,
@@ -77,4 +77,4 @@ const ServiceProviderAppointmentConfirmation: React.FunctionComponent<Props> = (
   </div>
 )
 
-export default ServiceProviderAppointmentConfirmation
+export default AppointmentConfirmationForServiceProvider

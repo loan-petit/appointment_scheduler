@@ -13,7 +13,7 @@ type Props = {
   endDate: Date
 }
 
-const CustomerAppointmentConfirmation: React.FunctionComponent<Props> = ({
+const AppointmentConfirmationForCustomer: React.FunctionComponent<Props> = ({
   customer,
   user,
   appointmentType,
@@ -72,4 +72,4 @@ const CustomerAppointmentConfirmation: React.FunctionComponent<Props> = ({
   </div>
 )
 
-export default CustomerAppointmentConfirmation
+export default AppointmentConfirmationForCustomer

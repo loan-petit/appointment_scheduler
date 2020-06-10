@@ -19,6 +19,7 @@ import isInBusinessHours, {
 import { convertSecondsToTimeString } from '../../../utils/timeStringHelper'
 import MomentInterval from '../../../types/MomentInterval'
 import getSurroundingEvents from '../../../utils/getSurroundingEvents'
+import isIntervalAllDay from '../../../utils/isIntervalAllDay'
 
 const UpsertOneAvailabilityModifierMutation = gql`
   mutation UpsertOneAvailabilityModifierMutation(
@@ -78,7 +79,7 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
   const [upsertOneAvailabilityModifier] = useMutation(
     UpsertOneAvailabilityModifierMutation,
     {
-      update (cache, { data: { upsertOneAvailabilityModifier } }) {
+      update(cache, { data: { upsertOneAvailabilityModifier } }) {
         const { user }: any = cache.readQuery({
           query: AvailabilityModifierOperations.availabilityModifiers,
           variables: { userId: currentUser.id },
@@ -111,7 +112,7 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
   const [deleteOneAvailabilityModifier] = useMutation(
     DeleteOneAvailabilityModifierMutation,
     {
-      update (cache, { data: { deleteOneAvailabilityModifier } }) {
+      update(cache, { data: { deleteOneAvailabilityModifier } }) {
         const { user }: any = cache.readQuery({
           query: AvailabilityModifierOperations.availabilityModifiers,
           variables: { userId: currentUser?.id },
@@ -143,7 +144,7 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
   if (loading) return <LoadingOverlay />
   else if (error) {
     return (
-      <p className='error-message'>
+      <p className="error-message">
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
@@ -152,8 +153,8 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
     data.user.availabilityModifiers
 
   const businessHours: BusinessHour[] = recurrentAvailabilities
-    .filter(v => v.startTime && v.endTime)
-    .map(v => {
+    .filter((v) => v.startTime && v.endTime)
+    .map((v) => {
       if (!v.startTime || !v.endTime) {
         throw Error('RecurrentAvailabilities startTime and endTime must be set')
       }
@@ -184,7 +185,7 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
 
     if (surroundings.equal.length) {
       surroundings.equal.forEach(
-        async v =>
+        async (v) =>
           await deleteOneAvailabilityModifier({
             variables: {
               availabilityModifierId: availabilityModifiers[v.index].id,
@@ -206,55 +207,44 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
   }
 
   return (
-    <>
-      <DynamicFullCalendar
-        defaultView='timeGridWeek'
-        header={{
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay',
-        }}
-        views={{
-          dayGrid: {
-            columnHeaderFormat: {
-              weekday: 'short',
-            },
+    <DynamicFullCalendar
+      defaultView="timeGridWeek"
+      header={{
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay',
+      }}
+      views={{
+        dayGrid: {
+          columnHeaderFormat: {
+            weekday: 'short',
           },
-          week: {
-            columnHeaderFormat: {
-              weekday: 'short',
-            },
+        },
+        week: {
+          columnHeaderFormat: {
+            weekday: 'short',
           },
-        }}
-        nowIndicator={true}
-        navLinks={true}
-        allDaySlot={false}
-        events={availabilityModifiers.map(v => {
-          const momentInterval: MomentInterval = {
-            start: moment(v.start),
-            end: moment(v.end),
-          }
+        },
+      }}
+      nowIndicator={true}
+      navLinks={true}
+      allDaySlot={false}
+      events={availabilityModifiers.map((v) => {
+        const isAllDay = isIntervalAllDay(v.start, v.end)
 
-          const isAllDay =
-            momentInterval.start.hours() == 0 &&
-            momentInterval.start.minutes() == 0 &&
-            momentInterval.end.hours() == 23 &&
-            momentInterval.end.minutes() == 59
-
-          return {
-            id: v.id,
-            title: v.id,
-            start: momentInterval.start.toDate(),
-            end: !isAllDay ? momentInterval.end.toDate() : undefined,
-            allDay: isAllDay,
-            rendering: 'background',
-            backgroundColor: v.isExclusive ? 'red' : 'green',
-          }
-        })}
-        dateClick={handleDateClick}
-        businessHours={businessHours}
-      />
-    </>
+        return {
+          id: v.id,
+          title: v.id,
+          start: v.start,
+          end: !isAllDay ? v.end : undefined,
+          allDay: isAllDay,
+          rendering: 'background',
+          backgroundColor: v.isExclusive ? 'red' : 'green',
+        }
+      })}
+      dateClick={handleDateClick}
+      businessHours={businessHours}
+    />
   )
 }
 
