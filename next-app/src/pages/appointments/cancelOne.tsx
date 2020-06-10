@@ -19,6 +19,15 @@ import AppointmentCancellationForCustomer from '../../components/emails/cancella
 import { AppointmentTypeFragments } from '../../models/AppointmentType'
 import { CustomerFragments } from '../../models/Customer'
 
+const UserQuery = gql`
+  query UserQuery($username: String!) {
+    user(where: { username: $username }) {
+      ...UserFields
+    }
+  }
+  ${UserFragments.fields}
+`
+
 const CurrentUserQuery = gql`
   query CurrentUserQuery {
     me {
@@ -56,11 +65,11 @@ const DeleteOneAppointmentMutation = gql`
   ${AppointmentFragments.fields}
 `
 
-const UpsertOneAppointmentType = () => {
+const CancelOneAppointment = () => {
   const router = useRouter()
   if (!router.query.id) {
     return (
-      <p className='error-message'>
+      <p className="error-message">
         An `id` must be specified in query params.
       </p>
     )
@@ -70,35 +79,37 @@ const UpsertOneAppointmentType = () => {
   const [, updateState] = React.useState()
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
-  const [currentUser, setCurrentUser] = React.useState<User>()
+  const [user, setUser] = React.useState<User>()
 
-  const currentUserQueryResult = useQuery(CurrentUserQuery)
+  const userQueryResult = router.query.username
+    ? useQuery(UserQuery)
+    : useQuery(CurrentUserQuery)
   const appointmentQueryResult = useQuery(AppointmentQuery, {
     variables: { appointmentId: Number(router.query.id) },
   })
   const [deleteOneAppointment] = useMutation(DeleteOneAppointmentMutation, {
-    update (cache, { data: { deleteOneAppointment } }) {
+    update(cache, { data: { deleteOneAppointment } }) {
       try {
-        const { user }: any = cache.readQuery({
+        const { userRes }: any = cache.readQuery({
           query: AppointmentOperations.appointments,
-          variables: { userId: currentUser?.id },
+          variables: { userId: user?.id },
         })
 
-        const removedAppointmentIndex = user.appointments.findIndex(
+        const removedAppointmentIndex = userRes.appointments.findIndex(
           (e: Appointment) => e.id == deleteOneAppointment.id,
         )
         if (removedAppointmentIndex > -1) {
-          user.appointments.splice(removedAppointmentIndex, 1)
+          userRes.appointments.splice(removedAppointmentIndex, 1)
         }
 
         cache.writeQuery({
           query: AppointmentOperations.appointments,
-          variables: { userId: currentUser?.id },
+          variables: { userId: user?.id },
           data: {
             __typename: 'User',
             user: {
-              ...user,
-              appointments: user.appointments,
+              ...userRes,
+              appointments: userRes.appointments,
             },
           },
         })
@@ -203,20 +214,20 @@ const UpsertOneAppointmentType = () => {
   )
 
   // Verify CurrentUserQuery result
-  if (currentUserQueryResult.loading) return <LoadingOverlay />
-  else if (currentUserQueryResult.error) {
+  if (userQueryResult.loading) return <LoadingOverlay />
+  else if (userQueryResult.error) {
     router.push('/auth/signin')
     return <div />
   }
-  if (!currentUser) {
-    setCurrentUser(currentUserQueryResult.data.me.user)
+  if (!user) {
+    setUser(userQueryResult.data.me.user)
   }
 
   // Verify AppointmentTypeQuery result
   if (appointmentQueryResult.loading) return <LoadingOverlay />
   else if (appointmentQueryResult.error) {
     return (
-      <p className='error-message'>
+      <p className="error-message">
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
@@ -225,51 +236,51 @@ const UpsertOneAppointmentType = () => {
 
   return (
     <Layout>
-      <div className='md:w-1/2'>
-        <header className='mb-6'>
+      <div className="md:w-1/2">
+        <header className="mb-6">
           <h5>Annuler un rendez-vous</h5>
         </header>
 
         {/* Message */}
-        <div className='w-full mb-3'>
-          <label className='block mb-2'>Message</label>
+        <div className="w-full mb-3">
+          <label className="block mb-2">Message</label>
           <textarea
             rows={4}
             cols={80}
-            className='w-full px-3 py-3 placeholder-gray-400'
-            placeholder='Votre message'
+            className="w-full px-3 py-3 placeholder-gray-400"
+            placeholder="Votre message"
             onChange={formHelper.handleInputChange.bind(formHelper)}
-            name='message'
+            name="message"
             value={formHelper.fieldsInformation.message.value}
           />
-          <p className='form-field-error'>
+          <p className="form-field-error">
             {formHelper.fieldsInformation.message.error}
           </p>
         </div>
 
         {/* Submit to change information */}
-        <div className='mt-6'>
+        <div className="mt-6">
           {(() => {
             if (formHelper.submitStatus.response) {
               return (
-                <p className='pt-0 pb-4 text-sm italic text-green-500'>
+                <p className="pt-0 pb-4 text-sm italic text-green-500">
                   Le rendez-vous a bien été annulé.
                 </p>
               )
             } else if (formHelper.submitStatus.userFriendlyError.length) {
               return (
-                <p className='pt-0 pb-4 form-submit-error'>
+                <p className="pt-0 pb-4 form-submit-error">
                   {formHelper.submitStatus.userFriendlyError}
                 </p>
               )
             } else return null
           })()}
           <button
-            className='px-6 py-3 submit-button'
-            onClick={e => {
+            className="px-6 py-3 submit-button"
+            onClick={(e) => {
               formHelper.handleSubmit.bind(formHelper)(e, {
                 appointment: appointment,
-                user: currentUser,
+                user: user,
                 fromCustomer: router.query.username ? true : false,
               })
             }}
@@ -282,4 +293,4 @@ const UpsertOneAppointmentType = () => {
   )
 }
 
-export default withApollo(UpsertOneAppointmentType)
+export default withApollo(CancelOneAppointment)

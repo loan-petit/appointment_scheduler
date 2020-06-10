@@ -16,6 +16,7 @@ require('axios').post(
 
 module.exports = {
   env: {
+    SITE_URL: process.env.SITE_URL,
     API_URL: process.env.API_URL,
     SEND_EMAIL_API_URL: process.env.SEND_EMAIL_API_URL,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,

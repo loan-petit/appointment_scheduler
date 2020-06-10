@@ -24,7 +24,7 @@ const AppointmentCancellationForServiceProvider: React.FunctionComponent<Props> 
   if (!customer || !appointmentType) {
     return (
       <>
-        <h2 className='text-xl font-semibold text-gray-900'>Bonjour,</h2>
+        <h2 className="text-xl font-semibold text-gray-900">Bonjour,</h2>
         <br />
         <p>
           Toute nous excuses, nous n'avons pas réussi à annuler votre
@@ -34,13 +34,19 @@ const AppointmentCancellationForServiceProvider: React.FunctionComponent<Props> 
           votre client et le contacter à l'aide des coordonnées qui y sont
           indiquées.
         </p>
+        <br />
+        <p>
+          Excellente journée à vous.
+          <br />
+          Cordialement.
+        </p>
       </>
     )
   }
 
   return (
-    <div className='p-8 text-gray-800'>
-      <h2 className='text-xl font-semibold text-gray-900'>
+    <div className="p-8 text-gray-800">
+      <h2 className="text-xl font-semibold text-gray-900">
         Bonjour {user.firstName} {user.lastName},
       </h2>
       <br />
@@ -51,11 +57,7 @@ const AppointmentCancellationForServiceProvider: React.FunctionComponent<Props> 
         Les détails de ce rendez-vous étaient les suivants :
       </p>
 
-      <AppointmentDetails
-        appointmentType={appointmentType}
-        startDate={appointment.start}
-        endDate={appointment.end}
-      />
+      <AppointmentDetails appointment={appointment} />
 
       {message && (
         <p>

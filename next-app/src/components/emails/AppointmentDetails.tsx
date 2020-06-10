@@ -1,31 +1,27 @@
 import React from 'react'
 import moment from 'moment'
 
-import AppointmentType from '../../models/AppointmentType'
+import Appointment from '../../models/Appointment'
 
 type Props = {
-  appointmentType: AppointmentType
-  startDate: Date
-  endDate: Date
+  appointment: Appointment
 }
 
 const AppointmentDetails: React.FunctionComponent<Props> = ({
-  appointmentType,
-  startDate,
-  endDate,
+  appointment,
 }) => (
-  <div className='p-4 my-4 border-l-4 border-gray-800'>
-    <h4 className='font-bold'>{appointmentType.name}</h4>
-    {appointmentType.description ? (
-      <p className='pt-2'>{appointmentType.description}</p>
+  <div className="p-4 my-4 border-l-4 border-gray-800">
+    <h4 className="font-bold">{appointment.appointmentType?.name}</h4>
+    {appointment.appointmentType?.description ? (
+      <p className="pt-2">{appointment.appointmentType.description}</p>
     ) : null}
-    <p className='pt-2'>
-      Le {moment(startDate).format('dddd D MMMM YYYY')}, de{' '}
-      {moment(startDate).format('hh[h]mm')} à{' '}
-      {moment(endDate).format('hh[h]mm[.]')}
+    <p className="pt-2">
+      Le {moment(appointment.start).format('dddd D MMMM YYYY')}, de{' '}
+      {moment(appointment.start).format('hh[h]mm')} à{' '}
+      {moment(appointment.end).format('hh[h]mm[.]')}
     </p>
-    {appointmentType.price ? (
-      <p className='pt-2'>Prix : {appointmentType.price}€</p>
+    {appointment.appointmentType?.price ? (
+      <p className="pt-2">Prix : {appointment.appointmentType.price}€</p>
     ) : null}
   </div>
 )
