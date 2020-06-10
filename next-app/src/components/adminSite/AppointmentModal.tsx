@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 
 import Appointment from '../../models/Appointment'
+import Router from 'next/router'
 
 type Props = {
   appointment: Appointment | undefined
@@ -18,26 +19,70 @@ const AppointmentModal: React.FunctionComponent<Props> = ({
   return (
     <>
       {/* Background greyed out */}
-      <div className="fixed inset-0 bg-gray-700 opacity-25" />
+      <div className='fixed inset-0 bg-gray-700 opacity-25' />
 
       {/* Modal */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center">
-        <div className="my-3 bg-white rounded-lg shadow-lg md:w-1/3 sm:w-full">
-          <div className="flex justify-between px-5 py-4 border-b border-gray-200">
-            <span className="text-lg font-bold text-gray-700">
+      <div className='fixed inset-0 z-50 flex items-center justify-center'>
+        <div className='my-3 bg-white rounded-lg shadow-lg'>
+          <div className='flex items-center justify-between px-5 py-4 border-b border-gray-200'>
+            <h4 className='text-xl font-semibold'>
               {appointment.appointmentType?.name}
-            </span>
+            </h4>
             <div>
               <button onClick={onClose}>
                 <FontAwesomeIcon
                   icon={faTimesCircle}
-                  className="text-red-500 hover:text-red-600"
+                  className='text-red-500 hover:text-red-600'
                 />
               </button>
             </div>
           </div>
 
-          <div className="px-10 py-5 text-gray-600">Hello</div>
+          <div className='flex flex-col p-5'>
+            <label className='text-sm'>Description</label>
+            <p className='mt-1 text-gray-600'>
+              {appointment.appointmentType?.description}
+            </p>
+            <br />
+
+            <label className='text-sm'>Durée</label>
+            <p className='mt-1 text-gray-600'>
+              {appointment.appointmentType?.duration} minutes
+            </p>
+            <br />
+
+            <label className='text-sm'>Prix</label>
+            <p className='mt-1 text-gray-600'>
+              {appointment.appointmentType?.price} €
+            </p>
+            <br />
+
+            <label className='text-sm'>Nom du client</label>
+            <p className='mt-1 text-gray-600'>
+              {appointment.customer?.firstName} {appointment.customer?.lastName}
+            </p>
+          </div>
+
+          <div className='flex justify-end p-4'>
+            <button
+              className='px-3 py-2 mr-1 text-sm text-white bg-red-500 rounded hover:bg-red-600'
+              onClick={() =>
+                Router.push(`/customer/${appointment.customer?.id}`)
+              }
+            >
+              Annuler le rendez-vous
+            </button>
+            <button
+              className='px-3 py-2 text-sm font-semibold text-gray-800 transition duration-150 hover:text-gray-900'
+              onClick={() =>
+                Router.push(
+                  `/appointments/${appointment.customer?.id}?action=cancel`,
+                )
+              }
+            >
+              Voir la fiche client
+            </button>
+          </div>
         </div>
       </div>
     </>

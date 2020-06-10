@@ -67,26 +67,26 @@ const Layout: React.FunctionComponent<Props> = ({
         <title>
           {`${title} - ${currentUser?.firstName} ${currentUser?.lastName}`}
         </title>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta charSet='utf-8' />
+        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       </Head>
 
-      <div className="flex-col w-full min-h-screen md:flex md:flex-row">
-        <div className="flex flex-col flex-shrink-0 w-full text-gray-700 bg-white md:w-64">
-          <div className="flex flex-row items-center justify-between flex-shrink-0 px-8 py-6">
-            <Link href="/">
-              <h1 className="tracking-widest rounded-lg cursor-pointer focus:outline-none focus:shadow-outline">
+      <div className='flex-col w-full min-h-screen md:flex md:flex-row'>
+        <div className='flex flex-col flex-shrink-0 w-full text-gray-700 bg-white md:w-64'>
+          <div className='flex flex-row items-center justify-between flex-shrink-0 px-8 py-6'>
+            <Link href='/'>
+              <h1 className='tracking-widest rounded-lg cursor-pointer focus:outline-none focus:shadow-outline'>
                 {`${currentUser?.firstName} ${currentUser?.lastName}`}
               </h1>
             </Link>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-1 text-gray-800 rounded-lg md:hidden focus:outline-none focus:shadow-outline"
+              className='p-1 text-gray-800 rounded-lg md:hidden focus:outline-none focus:shadow-outline'
             >
               {isOpen ? (
-                <FontAwesomeIcon icon={faTimes} size="lg" />
+                <FontAwesomeIcon icon={faTimes} size='lg' />
               ) : (
-                <FontAwesomeIcon icon={faBars} size="lg" />
+                <FontAwesomeIcon icon={faBars} size='lg' />
               )}
             </button>
           </div>
@@ -112,7 +112,7 @@ const Layout: React.FunctionComponent<Props> = ({
               </Link>
             ))}
             <a
-              className="text-red-500 nav-item hover:text-red-500 focus:text-red-500"
+              className='text-red-500 nav-item hover:text-red-500 focus:text-red-500'
               onClick={() => {
                 Cookies.remove('token')
                 router.push('/auth/signin')
@@ -122,7 +122,7 @@ const Layout: React.FunctionComponent<Props> = ({
             </a>
           </nav>
         </div>
-        <div className="w-full p-10 bg-gray-100">{children}</div>
+        <div className='w-full p-10 bg-gray-100'>{children}</div>
       </div>
     </>
   )

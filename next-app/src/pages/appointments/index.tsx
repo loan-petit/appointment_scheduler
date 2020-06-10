@@ -3,14 +3,16 @@ import Router from 'next/router'
 import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 
-import DynamicFullCalendar from '../components/shared/fullCalendar/DynamicFullCalendar'
-import Appointment, { AppointmentFragments } from '../models/Appointment'
-import User from '../models/User'
-import LoadingOverlay from '../components/shared/LoadingOverlay'
-import isIntervalAllDay from '../utils/isIntervalAllDay'
-import { withApollo } from '../apollo/client'
-import Layout from '../components/adminSite/Layout'
-import AppointmentModal from '../components/adminSite/AppointmentModal'
+import DynamicFullCalendar from '../../components/shared/fullCalendar/DynamicFullCalendar'
+import Appointment, { AppointmentFragments } from '../../models/Appointment'
+import User from '../../models/User'
+import LoadingOverlay from '../../components/shared/LoadingOverlay'
+import isIntervalAllDay from '../../utils/isIntervalAllDay'
+import { withApollo } from '../../apollo/client'
+import Layout from '../../components/adminSite/Layout'
+import AppointmentModal from '../../components/adminSite/AppointmentModal'
+import { AppointmentTypeFragments } from '../../models/AppointmentType'
+import { CustomerFragments } from '../../models/Customer'
 
 const CurrentUserQuery = gql`
   query CurrentUserQuery {
@@ -28,12 +30,17 @@ const AppointmentsQuery = gql`
       appointments {
         ...AppointmentFields
         appointmentType {
-          name
+          ...AppointmentTypeFields
+        }
+        customer {
+          ...CustomerFields
         }
       }
     }
   }
   ${AppointmentFragments.fields}
+  ${AppointmentTypeFragments.fields}
+  ${CustomerFragments.fields}
 `
 
 const Appointments = () => {
@@ -64,7 +71,7 @@ const Appointments = () => {
   if (appointmentsQueryResult.loading) return <LoadingOverlay />
   else if (appointmentsQueryResult.error) {
     return (
-      <p className="error-message">
+      <p className='error-message'>
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
@@ -77,7 +84,7 @@ const Appointments = () => {
   return (
     <Layout>
       <DynamicFullCalendar
-        defaultView="timeGridWeek"
+        defaultView='timeGridWeek'
         header={{
           left: 'prev,next today',
           center: 'title',
@@ -98,7 +105,7 @@ const Appointments = () => {
         nowIndicator={true}
         navLinks={true}
         allDaySlot={false}
-        events={appointments.map((v) => {
+        events={appointments.map(v => {
           const isAllDay = isIntervalAllDay(v.start, v.end)
 
           return {
@@ -110,7 +117,7 @@ const Appointments = () => {
           }
         })}
         eventClick={({ event }: any) =>
-          setSelectedAppointment(appointments.find((v) => event.id == v.id))
+          setSelectedAppointment(appointments.find(v => event.id == v.id))
         }
       />
       <AppointmentModal
