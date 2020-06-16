@@ -69,7 +69,7 @@ const CancelOneAppointment = () => {
   const router = useRouter()
   if (!router.query.id) {
     return (
-      <p className="error-message">
+      <p className='error-message'>
         An `id` must be specified in query params.
       </p>
     )
@@ -82,13 +82,13 @@ const CancelOneAppointment = () => {
   const [user, setUser] = React.useState<User>()
 
   const userQueryResult = router.query.username
-    ? useQuery(UserQuery)
+    ? useQuery(UserQuery, { variables: { username: router.query.username } })
     : useQuery(CurrentUserQuery)
   const appointmentQueryResult = useQuery(AppointmentQuery, {
     variables: { appointmentId: Number(router.query.id) },
   })
   const [deleteOneAppointment] = useMutation(DeleteOneAppointmentMutation, {
-    update(cache, { data: { deleteOneAppointment } }) {
+    update (cache, { data: { deleteOneAppointment } }) {
       try {
         const { userRes }: any = cache.readQuery({
           query: AppointmentOperations.appointments,
@@ -213,82 +213,94 @@ const CancelOneAppointment = () => {
     }),
   )
 
-  // Verify CurrentUserQuery result
+  // Verify UserQuery | CurrentUserQuery result
   if (userQueryResult.loading) return <LoadingOverlay />
   else if (userQueryResult.error) {
     router.push('/auth/signin')
     return <div />
   }
   if (!user) {
-    setUser(userQueryResult.data.me.user)
+    setUser(
+      router.query.username
+        ? userQueryResult.data.user
+        : userQueryResult.data.me.user,
+    )
   }
 
   // Verify AppointmentTypeQuery result
   if (appointmentQueryResult.loading) return <LoadingOverlay />
   else if (appointmentQueryResult.error) {
     return (
-      <p className="error-message">
+      <p className='error-message'>
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
   }
   const appointment: Appointment = appointmentQueryResult.data.appointment
 
-  return (
-    <Layout>
-      <div className="md:w-1/2">
-        <header className="mb-6">
-          <h5>Annuler un rendez-vous</h5>
-        </header>
+  const body = (
+    <>
+      <header className='mb-6'>
+        <h5>Annuler un rendez-vous</h5>
+      </header>
 
-        {/* Message */}
-        <div className="w-full mb-3">
-          <label className="block mb-2">Message</label>
-          <textarea
-            rows={4}
-            cols={80}
-            className="w-full px-3 py-3 placeholder-gray-400"
-            placeholder="Votre message"
-            onChange={formHelper.handleInputChange.bind(formHelper)}
-            name="message"
-            value={formHelper.fieldsInformation.message.value}
-          />
-          <p className="form-field-error">
-            {formHelper.fieldsInformation.message.error}
-          </p>
-        </div>
-
-        {/* Submit to change information */}
-        <div className="mt-6">
-          {(() => {
-            if (formHelper.submitStatus.response) {
-              return (
-                <p className="pt-0 pb-4 text-sm italic text-green-500">
-                  Le rendez-vous a bien été annulé.
-                </p>
-              )
-            } else if (formHelper.submitStatus.userFriendlyError.length) {
-              return (
-                <p className="pt-0 pb-4 form-submit-error">
-                  {formHelper.submitStatus.userFriendlyError}
-                </p>
-              )
-            } else return null
-          })()}
-          <button
-            className="px-6 py-3 submit-button"
-            onClick={(e) => {
-              formHelper.handleSubmit.bind(formHelper)(e, {
-                appointment: appointment,
-                user: user,
-                fromCustomer: router.query.username ? true : false,
-              })
-            }}
-          >
-            Valider
-          </button>
-        </div>
+      {/* Message */}
+      <div className='w-full mb-3'>
+        <label className='block mb-2'>Message</label>
+        <textarea
+          rows={4}
+          cols={80}
+          className='w-full px-3 py-3 placeholder-gray-400'
+          placeholder='Votre message'
+          onChange={formHelper.handleInputChange.bind(formHelper)}
+          name='message'
+          value={formHelper.fieldsInformation.message.value}
+        />
+        <p className='form-field-error'>
+          {formHelper.fieldsInformation.message.error}
+        </p>
       </div>
+
+      {/* Submit to change information */}
+      <div className='mt-6'>
+        {(() => {
+          if (formHelper.submitStatus.response) {
+            return (
+              <p className='pt-0 pb-4 text-sm italic text-green-500'>
+                Le rendez-vous a bien été annulé.
+              </p>
+            )
+          } else if (formHelper.submitStatus.userFriendlyError.length) {
+            return (
+              <p className='pt-0 pb-4 form-submit-error'>
+                {formHelper.submitStatus.userFriendlyError}
+              </p>
+            )
+          } else return null
+        })()}
+        <button
+          className='px-6 py-3 submit-button'
+          onClick={e => {
+            formHelper.handleSubmit.bind(formHelper)(e, {
+              appointment: appointment,
+              user: user,
+              fromCustomer: router.query.username ? true : false,
+            })
+          }}
+        >
+          Valider
+        </button>
+      </div>
+    </>
+  )
+
+  return router.query.username ? (
+    <div className='flex flex-col items-center p-6 m-4 bg-gray-200 rounded-lg shadow-lg md:mx-auto md:w-1/2'>
+      {body}
+    </div>
+  ) : (
+    <Layout>
+      <div className='md:w-1/2'>{body}</div>
     </Layout>
   )
 }

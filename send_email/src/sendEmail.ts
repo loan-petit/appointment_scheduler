@@ -1,35 +1,14 @@
 import * as AWS from 'aws-sdk'
-import * as juice from 'juice'
-import { comb } from 'email-comb'
-import { crush } from 'html-crush'
 
+import loadAWSConfig from './services/aws'
 import SendEmailBody from './types/SendEmailBody'
-import { RemoteResource } from './types/RemoteResources'
 
-const sendEmail = async (
-  body: SendEmailBody,
-  remoteResources: RemoteResource[]
-) => {
-  var html: string = body.html
+var isAWSInitiated = false
 
-  if (body.resources) {
-    var styles = ''
-
-    body.resources.forEach(resourceInfo => {
-      const resource = remoteResources.find(
-        v => v.info.name === resourceInfo.name
-      )
-
-      if (resource?.info.rel === 'stylesheet') {
-        styles += resource.content
-      }
-    })
-
-    styles = `<style>${styles}</style>`
-
-    html = juice(styles + html)
-    html = comb(html).result
-    html = crush(html, { removeLineBreaks: true }).result
+const sendEmail = async (body: SendEmailBody) => {
+  if (!isAWSInitiated) {
+    loadAWSConfig()
+    isAWSInitiated = true
   }
 
   var params = {
@@ -40,7 +19,7 @@ const sendEmail = async (
       Body: {
         Html: {
           Charset: 'UTF-8',
-          Data: html
+          Data: body.html
         }
       },
       Subject: {
@@ -52,8 +31,8 @@ const sendEmail = async (
     ReplyToAddresses: body.replyToAddresses
   }
 
-  // Create the promise and SES service object
-  return new AWS.SES().sendEmail(params).promise()
+  // Create SES service object and send the email
+  return await new AWS.SES().sendEmail(params).promise()
 }
 
 export default sendEmail

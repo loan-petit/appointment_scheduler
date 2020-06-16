@@ -20,36 +20,36 @@ const AppointmentConfirmationForCustomer: React.FunctionComponent<Props> = ({
     appointment.appointmentType
 
   const userInformation = (
-    <div className="p-4 my-4 border-l-4 border-gray-900">
-      <h4 className="font-bold">
+    <div className='p-4 my-4 border-l-4 border-gray-900'>
+      <h4 className='font-bold'>
         {user.firstName} {user.lastName}
       </h4>
-      <p className="pt-2">
+      <p className='pt-2'>
         E-mail :{' '}
         <a
           href={`mailto:${user.email}`}
-          target="_blank"
-          rel="noopener noreferrer"
+          target='_blank'
+          rel='noopener noreferrer'
         >
           {user.email}
         </a>
       </p>
       {user.websiteUrl && (
-        <p className="pt-2">
+        <p className='pt-2'>
           Site web :{' '}
-          <a href={user.websiteUrl} target="_blank" rel="noopener noreferrer">
+          <a href={user.websiteUrl} target='_blank' rel='noopener noreferrer'>
             {user.websiteUrl}
           </a>
         </p>
       )}
-      {user.phone && <p className="pt-2">Téléphone :{user.phone}</p>}
+      {user.phone && <p className='pt-2'>Téléphone :{user.phone}</p>}
     </div>
   )
 
   if (!customer || !appointmentType) {
     return (
       <>
-        <h2 className="text-xl font-semibold text-gray-900">Bonjour,</h2>
+        <h2 className='text-xl font-semibold text-gray-900'>Bonjour,</h2>
         <br />
         <p>
           Toute nous excuses, nous n'avons pas réussi à planifier votre
@@ -70,8 +70,8 @@ const AppointmentConfirmationForCustomer: React.FunctionComponent<Props> = ({
   }
 
   return (
-    <div className="text-gray-800">
-      <h2 className="text-xl font-semibold text-gray-900">
+    <div className='text-gray-800'>
+      <h2 className='text-xl font-semibold text-gray-900'>
         Bonjour {customer.firstName} {customer.lastName},
       </h2>
       <br />
@@ -89,13 +89,14 @@ const AppointmentConfirmationForCustomer: React.FunctionComponent<Props> = ({
 
       <p>
         Si vous souhaitez annuler ce rendez-vous, veuillez cliquez sur le lien
-        suivant :
+        suivant :{' '}
         <a
           href={`${process.env.SITE_URL}/appointments/cancelOne?id=${appointment.id}&username=${user.username}`}
-          className="font-semibold text-gray-600 hover:text-gray-700"
+          className='font-semibold text-gray-600 hover:text-gray-700'
         >
           Annuler le rendez-vous
         </a>
+        .
       </p>
       <br />
 

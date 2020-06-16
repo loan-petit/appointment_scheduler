@@ -3,19 +3,28 @@ import * as cors from '@koa/cors'
 import * as koaBody from 'koa-body'
 import * as Router from 'koa-router'
 import * as NodeCache from 'node-cache'
+import * as path from 'path'
+import * as Queue from 'bull'
 
-import loadAWSConfig from './services/aws'
-import sendEmail from './sendEmail'
-import SendEmailBody from './types/SendEmailBody'
+import SendEmailBody, { isSendEmailBody } from './types/SendEmailBody'
 import { RemoteResourceInfo, RemoteResource } from './types/RemoteResources'
 import fetchResources from './utils/fetchResources'
+
+require('dotenv').config({
+  path: `.${process.env.NODE_ENV}.env`
+})
+
+const port = 5000
 
 const app = (module.exports = new Koa())
 const router = new Router()
 
 const cache = new NodeCache()
 
-loadAWSConfig()
+const emailQueue = new Queue('email', process.env.REDIS_URL as string)
+emailQueue.process(
+  __dirname + '/emailQueueProcessor' + path.extname(__filename)
+)
 
 app.use(cors())
 app.use(koaBody())
@@ -32,7 +41,14 @@ app.use(async (ctx, next) => {
 })
 
 router.post('/', async ctx => {
-  const body: SendEmailBody = ctx.request.body
+  var body: SendEmailBody
+  if (isSendEmailBody(ctx.request.body)) {
+    body = ctx.request.body
+  } else {
+    throw Error(
+      "Body isn't correctly formatted and must be of type SendEmailBody"
+    )
+  }
 
   var remoteResources: RemoteResource[] = cache.get('remoteResources') ?? []
   if (body.resources) {
@@ -42,9 +58,11 @@ router.post('/', async ctx => {
     cache.set('remoteResources', remoteResources)
   }
 
-  const data = await sendEmail(body, remoteResources)
+  // Email sending and resource inlining takes is slow,
+  // so we use a queue instead of waiting for completion.
+  emailQueue.add({ body: body, remoteResources: remoteResources })
 
-  ctx.body = { messageId: data.MessageId }
+  ctx.body = { status: 'OK', message: 'Email will be send shortly' }
 })
 
 router.post('/prefetchRemoteResources', async ctx => {
@@ -64,4 +82,7 @@ app.use(router.routes())
 // makes sure a 405 Method Not Allowed is sent
 app.use(router.allowedMethods())
 
-if (!module.parent) app.listen(5000)
+if (!module.parent) {
+  console.log(`🚀 Server ready at: http://localhost:${port}`)
+  app.listen(port)
+}
