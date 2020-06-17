@@ -165,6 +165,7 @@ const CancelOneAppointment = () => {
               ? fieldsInformation.message.value
               : null
           }
+          isIssuedByUser={router.query.username === undefined}
         />,
       ),
       subject: `Votre rendez-vous avec ${appointment.customer.firstName} ${appointment.customer.lastName} a été annulé`,
@@ -185,6 +186,7 @@ const CancelOneAppointment = () => {
               ? null
               : fieldsInformation.message.value
           }
+          isIssuedByUser={router.query.username === undefined}
         />,
       ),
       subject: `Votre rendez-vous avec ${user.firstName} ${user.lastName} a été annulé`,

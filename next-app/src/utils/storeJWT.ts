@@ -7,7 +7,7 @@ const storeJWT = (authPayload: AuthPayload) => {
   Cookies.set('token', authPayload.token, {
     expires: Math.floor(authPayload.expiresIn / (3600 * 24)),
   })
-  Router.push('/')
+  Router.replace('/')
 }
 
 export default storeJWT

@@ -9,12 +9,14 @@ import Appointment from '../../../models/Appointment'
 type Props = {
   user: User
   appointment: Appointment
+  isIssuedByUser: boolean
   message?: string
 }
 
 const AppointmentCancellationForServiceProvider: React.FunctionComponent<Props> = ({
   user,
   appointment,
+  isIssuedByUser,
   message,
 }) => {
   const customer: Customer | undefined = appointment.customer
@@ -22,25 +24,8 @@ const AppointmentCancellationForServiceProvider: React.FunctionComponent<Props> 
     appointment.appointmentType
 
   if (!customer || !appointmentType) {
-    return (
-      <>
-        <h2 className='text-xl font-semibold text-gray-900'>Bonjour,</h2>
-        <br />
-        <p>
-          Toute nous excuses, nous n'avons pas réussi à annuler votre
-          rendez-vous. Veuillez réessayer.
-          <br />
-          Si le problème continue, veuillez contacter consulter le dossier de
-          votre client et le contacter à l'aide des coordonnées qui y sont
-          indiquées.
-        </p>
-        <br />
-        <p>
-          Excellente journée à vous.
-          <br />
-          Cordialement.
-        </p>
-      </>
+    throw Error(
+      'Appointment object is incomplete. Customer and appointmentType must be specified',
     )
   }
 
@@ -51,15 +36,16 @@ const AppointmentCancellationForServiceProvider: React.FunctionComponent<Props> 
       </h2>
       <br />
       <p>
-        Vous venez d'annuler un rendez-vous avec {customer.firstName}{' '}
-        {customer.lastName}.
+        Votre rendez-vous avec {customer.firstName} {customer.lastName} été
+        annulé.
+        <br />
         <br />
         Les détails de ce rendez-vous étaient les suivants :
       </p>
 
       <AppointmentDetails appointment={appointment} />
 
-      {message && (
+      {message && !isIssuedByUser && (
         <p>
           {customer.firstName} {customer.lastName} vous a laissé un message lors
           de l'annulation du rendez-vous :

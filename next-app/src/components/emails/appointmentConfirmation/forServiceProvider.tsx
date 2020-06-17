@@ -54,11 +54,13 @@ const AppointmentConfirmationForServiceProvider: React.FunctionComponent<Props> 
 
       <AppointmentDetails appointment={appointment} />
 
-      <p>
-        Un message vous a été laissé lorsque {customer.firstName}{' '}
-        {customer.lastName} a pris son rendez-vous :
-        <br />"{message}"
-      </p>
+      {message && (
+        <p>
+          Un message vous a été laissé lorsque {customer.firstName}{' '}
+          {customer.lastName} a pris son rendez-vous :
+          <br />"{message}"
+        </p>
+      )}
       <br />
 
       <p>
