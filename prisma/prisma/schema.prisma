@@ -21,9 +21,10 @@ model User {
   address                 String?
   minScheduleNotice       Int                     @default(0)
   oAuthToken              OAuthToken?
-  appointmentTypes        AppointmentType[]
   recurrentAvailabilities RecurrentAvailability[]
   availabilityModifiers   AvailabilityModifier[]
+  customers               Customer[]              @relation(references: [id])
+  appointmentTypes        AppointmentType[]
   appointments            Appointment[]
 }
 
@@ -73,6 +74,7 @@ model Customer {
   phone         String?
   address       String?
   isBlackListed Boolean       @default(false)
+  users         User[]        @relation(references: [id])
   appointments  Appointment[]
 }
 

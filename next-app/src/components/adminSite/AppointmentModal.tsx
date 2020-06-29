@@ -75,7 +75,7 @@ const AppointmentModal: React.FunctionComponent<Props> = ({
             <button
               className='px-3 py-2 text-sm font-semibold text-gray-800 transition duration-150 hover:text-gray-900'
               onClick={() =>
-                Router.push(`/customer/${appointment.customer?.id}`)
+                Router.push(`/customers?id=${appointment.customer?.id}`)
               }
             >
               Voir la fiche client

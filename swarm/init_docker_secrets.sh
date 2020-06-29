@@ -9,6 +9,8 @@ function usage() {
   echo "  --remote-destination    Remote server destination in user@host format"
   echo "  -u, --traefik-user      Username for secured authentication to Traefik dashboard"
   echo "  -p, --traefik-password  Password for secured authentication to Traefik dashboard"
+  echo "  --aws-access-key-id     AWS access key ID"
+  echo "  --aws-secret-access-key AWS secret access key"
   exit 1
 }
 
@@ -39,6 +41,14 @@ while [[ $# -gt 0 ]]; do
     ;;
   -p | --traefik-password)
     TRAEFIK_PASSWORD="$2"
+    shift 2
+    ;;
+  --aws-access-key-id)
+    AWS_ACCESS_KEY_ID="$2"
+    shift 2
+    ;;
+  --aws-secret-access-key)
+    AWS_SECRET_ACCESS_KEY="$2"
     shift 2
     ;;
   *)                   # unknown option

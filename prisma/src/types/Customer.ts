@@ -10,6 +10,7 @@ export const Customer = objectType({
     t.model.phone()
     t.model.address()
     t.model.isBlackListed()
+    t.model.users({ pagination: false })
     t.model.appointments({ pagination: false })
   },
 })

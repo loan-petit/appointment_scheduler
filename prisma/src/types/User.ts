@@ -2,7 +2,7 @@ import { objectType } from '@nexus/schema'
 
 export const User = objectType({
   name: 'User',
-  definition (t) {
+  definition(t) {
     t.model.id()
     t.model.email()
     t.model.password()
@@ -13,9 +13,10 @@ export const User = objectType({
     t.model.phone()
     t.model.address()
     t.model.minScheduleNotice()
-    t.model.appointments({ pagination: false })
-    t.model.appointmentTypes({ pagination: false })
     t.model.recurrentAvailabilities({ pagination: false })
     t.model.availabilityModifiers({ pagination: false })
+    t.model.customers({ pagination: false })
+    t.model.appointmentTypes({ pagination: false })
+    t.model.appointments({ pagination: false })
   },
 })
