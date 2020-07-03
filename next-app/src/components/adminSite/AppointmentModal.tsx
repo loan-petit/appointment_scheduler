@@ -6,7 +6,7 @@ import Appointment from '../../models/Appointment'
 import Router from 'next/router'
 
 type Props = {
-  appointment: Appointment | undefined
+  appointment?: Appointment
   onClose: () => void
 }
 
