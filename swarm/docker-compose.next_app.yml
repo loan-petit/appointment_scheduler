@@ -12,7 +12,7 @@ services:
         max_attempts: 3
       labels:
         - "traefik.enable=true"
-        - "traefik.http.services.next_app.loadbalancer.server.port=80"
+        - "traefik.http.services.next_app.loadbalancer.server.port=3000"
         - "traefik.http.routers.next_app.rule=HostRegexp(`{host:(?:www.)?appointment-scheduler.loanpetit.com}`)"
         - "traefik.http.routers.next_app.entrypoints=websecure"
         - "traefik.http.routers.next_app.tls.certresolver=default"
