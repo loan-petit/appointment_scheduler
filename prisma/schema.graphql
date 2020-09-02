@@ -60,23 +60,17 @@ input AppointmentCreateWithoutUserInput {
   start: DateTime!
 }
 
-input AppointmentFilter {
-  every: AppointmentWhereInput
-  none: AppointmentWhereInput
-  some: AppointmentWhereInput
-}
-
 input AppointmentScalarWhereInput {
   AND: [AppointmentScalarWhereInput!]
-  appointmentTypeId: NullableIntFilter
-  customerId: NullableIntFilter
+  appointmentTypeId: IntNullableFilter
+  customerId: IntNullableFilter
   end: DateTimeFilter
-  googleCalendarEventId: NullableStringFilter
+  googleCalendarEventId: StringNullableFilter
   id: IntFilter
   NOT: [AppointmentScalarWhereInput!]
   OR: [AppointmentScalarWhereInput!]
   start: DateTimeFilter
-  userId: NullableIntFilter
+  userId: IntNullableFilter
 }
 
 type AppointmentType {
@@ -127,44 +121,35 @@ input AppointmentTypeCreateWithoutUserInput {
   price: Float
 }
 
-input AppointmentTypeFilter {
-  every: AppointmentTypeWhereInput
-  none: AppointmentTypeWhereInput
-  some: AppointmentTypeWhereInput
-}
-
 input AppointmentTypeScalarWhereInput {
   AND: [AppointmentTypeScalarWhereInput!]
-  appointments: AppointmentFilter
-  description: NullableStringFilter
+  description: StringNullableFilter
   duration: IntFilter
-  generateClientSheet: BooleanFilter
+  generateClientSheet: BoolFilter
   id: IntFilter
   name: StringFilter
   NOT: [AppointmentTypeScalarWhereInput!]
   OR: [AppointmentTypeScalarWhereInput!]
-  price: NullableFloatFilter
-  userId: NullableIntFilter
+  price: FloatNullableFilter
+  userId: IntNullableFilter
 }
 
 input AppointmentTypeUpdateInput {
   appointments: AppointmentUpdateManyWithoutAppointmentTypeInput
-  description: String
-  duration: Int
-  generateClientSheet: Boolean
-  id: Int
-  name: String
-  price: Float
+  description: NullableStringFieldUpdateOperationsInput
+  duration: IntFieldUpdateOperationsInput
+  generateClientSheet: BoolFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  price: NullableFloatFieldUpdateOperationsInput
   user: UserUpdateOneWithoutAppointmentTypesInput
 }
 
 input AppointmentTypeUpdateManyDataInput {
-  description: String
-  duration: Int
-  generateClientSheet: Boolean
-  id: Int
-  name: String
-  price: Float
+  description: NullableStringFieldUpdateOperationsInput
+  duration: IntFieldUpdateOperationsInput
+  generateClientSheet: BoolFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  price: NullableFloatFieldUpdateOperationsInput
 }
 
 input AppointmentTypeUpdateManyWithoutUserInput {
@@ -194,23 +179,21 @@ input AppointmentTypeUpdateOneWithoutAppointmentsInput {
 }
 
 input AppointmentTypeUpdateWithoutAppointmentsDataInput {
-  description: String
-  duration: Int
-  generateClientSheet: Boolean
-  id: Int
-  name: String
-  price: Float
+  description: NullableStringFieldUpdateOperationsInput
+  duration: IntFieldUpdateOperationsInput
+  generateClientSheet: BoolFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  price: NullableFloatFieldUpdateOperationsInput
   user: UserUpdateOneWithoutAppointmentTypesInput
 }
 
 input AppointmentTypeUpdateWithoutUserDataInput {
   appointments: AppointmentUpdateManyWithoutAppointmentTypeInput
-  description: String
-  duration: Int
-  generateClientSheet: Boolean
-  id: Int
-  name: String
-  price: Float
+  description: NullableStringFieldUpdateOperationsInput
+  duration: IntFieldUpdateOperationsInput
+  generateClientSheet: BoolFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  price: NullableFloatFieldUpdateOperationsInput
 }
 
 input AppointmentTypeUpdateWithWhereUniqueWithoutUserInput {
@@ -229,21 +212,6 @@ input AppointmentTypeUpsertWithWhereUniqueWithoutUserInput {
   where: AppointmentTypeWhereUniqueInput!
 }
 
-input AppointmentTypeWhereInput {
-  AND: [AppointmentTypeWhereInput!]
-  appointments: AppointmentFilter
-  description: NullableStringFilter
-  duration: IntFilter
-  generateClientSheet: BooleanFilter
-  id: IntFilter
-  name: StringFilter
-  NOT: [AppointmentTypeWhereInput!]
-  OR: [AppointmentTypeWhereInput!]
-  price: NullableFloatFilter
-  user: UserWhereInput
-  userId: NullableIntFilter
-}
-
 input AppointmentTypeWhereUniqueInput {
   id: Int
 }
@@ -251,18 +219,16 @@ input AppointmentTypeWhereUniqueInput {
 input AppointmentUpdateInput {
   appointmentType: AppointmentTypeUpdateOneWithoutAppointmentsInput
   customer: CustomerUpdateOneWithoutAppointmentsInput
-  end: DateTime
-  googleCalendarEventId: String
-  id: Int
-  start: DateTime
+  end: DateTimeFieldUpdateOperationsInput
+  googleCalendarEventId: NullableStringFieldUpdateOperationsInput
+  start: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneWithoutAppointmentsInput
 }
 
 input AppointmentUpdateManyDataInput {
-  end: DateTime
-  googleCalendarEventId: String
-  id: Int
-  start: DateTime
+  end: DateTimeFieldUpdateOperationsInput
+  googleCalendarEventId: NullableStringFieldUpdateOperationsInput
+  start: DateTimeFieldUpdateOperationsInput
 }
 
 input AppointmentUpdateManyWithoutAppointmentTypeInput {
@@ -308,29 +274,26 @@ input AppointmentUpdateManyWithWhereNestedInput {
 
 input AppointmentUpdateWithoutAppointmentTypeDataInput {
   customer: CustomerUpdateOneWithoutAppointmentsInput
-  end: DateTime
-  googleCalendarEventId: String
-  id: Int
-  start: DateTime
+  end: DateTimeFieldUpdateOperationsInput
+  googleCalendarEventId: NullableStringFieldUpdateOperationsInput
+  start: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneWithoutAppointmentsInput
 }
 
 input AppointmentUpdateWithoutCustomerDataInput {
   appointmentType: AppointmentTypeUpdateOneWithoutAppointmentsInput
-  end: DateTime
-  googleCalendarEventId: String
-  id: Int
-  start: DateTime
+  end: DateTimeFieldUpdateOperationsInput
+  googleCalendarEventId: NullableStringFieldUpdateOperationsInput
+  start: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneWithoutAppointmentsInput
 }
 
 input AppointmentUpdateWithoutUserDataInput {
   appointmentType: AppointmentTypeUpdateOneWithoutAppointmentsInput
   customer: CustomerUpdateOneWithoutAppointmentsInput
-  end: DateTime
-  googleCalendarEventId: String
-  id: Int
-  start: DateTime
+  end: DateTimeFieldUpdateOperationsInput
+  googleCalendarEventId: NullableStringFieldUpdateOperationsInput
+  start: DateTimeFieldUpdateOperationsInput
 }
 
 input AppointmentUpdateWithWhereUniqueWithoutAppointmentTypeInput {
@@ -364,22 +327,6 @@ input AppointmentUpsertWithWhereUniqueWithoutUserInput {
   create: AppointmentCreateWithoutUserInput!
   update: AppointmentUpdateWithoutUserDataInput!
   where: AppointmentWhereUniqueInput!
-}
-
-input AppointmentWhereInput {
-  AND: [AppointmentWhereInput!]
-  appointmentType: AppointmentTypeWhereInput
-  appointmentTypeId: NullableIntFilter
-  customer: CustomerWhereInput
-  customerId: NullableIntFilter
-  end: DateTimeFilter
-  googleCalendarEventId: NullableStringFilter
-  id: IntFilter
-  NOT: [AppointmentWhereInput!]
-  OR: [AppointmentWhereInput!]
-  start: DateTimeFilter
-  user: UserWhereInput
-  userId: NullableIntFilter
 }
 
 input AppointmentWhereUniqueInput {
@@ -418,36 +365,28 @@ input AvailabilityModifierCreateWithoutUserInput {
   start: DateTime!
 }
 
-input AvailabilityModifierFilter {
-  every: AvailabilityModifierWhereInput
-  none: AvailabilityModifierWhereInput
-  some: AvailabilityModifierWhereInput
-}
-
 input AvailabilityModifierScalarWhereInput {
   AND: [AvailabilityModifierScalarWhereInput!]
   end: DateTimeFilter
   id: IntFilter
-  isExclusive: BooleanFilter
+  isExclusive: BoolFilter
   NOT: [AvailabilityModifierScalarWhereInput!]
   OR: [AvailabilityModifierScalarWhereInput!]
   start: DateTimeFilter
-  userId: NullableIntFilter
+  userId: IntNullableFilter
 }
 
 input AvailabilityModifierUpdateInput {
-  end: DateTime
-  id: Int
-  isExclusive: Boolean
-  start: DateTime
+  end: DateTimeFieldUpdateOperationsInput
+  isExclusive: BoolFieldUpdateOperationsInput
+  start: DateTimeFieldUpdateOperationsInput
   user: UserUpdateOneWithoutAvailabilityModifiersInput
 }
 
 input AvailabilityModifierUpdateManyDataInput {
-  end: DateTime
-  id: Int
-  isExclusive: Boolean
-  start: DateTime
+  end: DateTimeFieldUpdateOperationsInput
+  isExclusive: BoolFieldUpdateOperationsInput
+  start: DateTimeFieldUpdateOperationsInput
 }
 
 input AvailabilityModifierUpdateManyWithoutUserInput {
@@ -468,10 +407,9 @@ input AvailabilityModifierUpdateManyWithWhereNestedInput {
 }
 
 input AvailabilityModifierUpdateWithoutUserDataInput {
-  end: DateTime
-  id: Int
-  isExclusive: Boolean
-  start: DateTime
+  end: DateTimeFieldUpdateOperationsInput
+  isExclusive: BoolFieldUpdateOperationsInput
+  start: DateTimeFieldUpdateOperationsInput
 }
 
 input AvailabilityModifierUpdateWithWhereUniqueWithoutUserInput {
@@ -485,25 +423,17 @@ input AvailabilityModifierUpsertWithWhereUniqueWithoutUserInput {
   where: AvailabilityModifierWhereUniqueInput!
 }
 
-input AvailabilityModifierWhereInput {
-  AND: [AvailabilityModifierWhereInput!]
-  end: DateTimeFilter
-  id: IntFilter
-  isExclusive: BooleanFilter
-  NOT: [AvailabilityModifierWhereInput!]
-  OR: [AvailabilityModifierWhereInput!]
-  start: DateTimeFilter
-  user: UserWhereInput
-  userId: NullableIntFilter
-}
-
 input AvailabilityModifierWhereUniqueInput {
   id: Int
 }
 
-input BooleanFilter {
+input BoolFieldUpdateOperationsInput {
+  set: Boolean
+}
+
+input BoolFilter {
   equals: Boolean
-  not: Boolean
+  not: NestedBoolFilter
 }
 
 type Customer {
@@ -559,47 +489,37 @@ input CustomerCreateWithoutUsersInput {
   phone: String
 }
 
-input CustomerFilter {
-  every: CustomerWhereInput
-  none: CustomerWhereInput
-  some: CustomerWhereInput
-}
-
 input CustomerScalarWhereInput {
-  address: NullableStringFilter
+  address: StringNullableFilter
   AND: [CustomerScalarWhereInput!]
-  appointments: AppointmentFilter
   email: StringFilter
   firstName: StringFilter
   id: IntFilter
-  isBlackListed: BooleanFilter
+  isBlackListed: BoolFilter
   lastName: StringFilter
   NOT: [CustomerScalarWhereInput!]
   OR: [CustomerScalarWhereInput!]
-  phone: NullableStringFilter
-  users: UserFilter
+  phone: StringNullableFilter
 }
 
 input CustomerUpdateInput {
-  address: String
+  address: NullableStringFieldUpdateOperationsInput
   appointments: AppointmentUpdateManyWithoutCustomerInput
-  email: String
-  firstName: String
-  id: Int
-  isBlackListed: Boolean
-  lastName: String
-  phone: String
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  isBlackListed: BoolFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
   users: UserUpdateManyWithoutCustomersInput
 }
 
 input CustomerUpdateManyDataInput {
-  address: String
-  email: String
-  firstName: String
-  id: Int
-  isBlackListed: Boolean
-  lastName: String
-  phone: String
+  address: NullableStringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  isBlackListed: BoolFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
 }
 
 input CustomerUpdateManyWithoutUsersInput {
@@ -629,25 +549,23 @@ input CustomerUpdateOneWithoutAppointmentsInput {
 }
 
 input CustomerUpdateWithoutAppointmentsDataInput {
-  address: String
-  email: String
-  firstName: String
-  id: Int
-  isBlackListed: Boolean
-  lastName: String
-  phone: String
+  address: NullableStringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  isBlackListed: BoolFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
   users: UserUpdateManyWithoutCustomersInput
 }
 
 input CustomerUpdateWithoutUsersDataInput {
-  address: String
+  address: NullableStringFieldUpdateOperationsInput
   appointments: AppointmentUpdateManyWithoutCustomerInput
-  email: String
-  firstName: String
-  id: Int
-  isBlackListed: Boolean
-  lastName: String
-  phone: String
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  isBlackListed: BoolFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
 }
 
 input CustomerUpdateWithWhereUniqueWithoutUsersInput {
@@ -666,27 +584,16 @@ input CustomerUpsertWithWhereUniqueWithoutUsersInput {
   where: CustomerWhereUniqueInput!
 }
 
-input CustomerWhereInput {
-  address: NullableStringFilter
-  AND: [CustomerWhereInput!]
-  appointments: AppointmentFilter
-  email: StringFilter
-  firstName: StringFilter
-  id: IntFilter
-  isBlackListed: BooleanFilter
-  lastName: StringFilter
-  NOT: [CustomerWhereInput!]
-  OR: [CustomerWhereInput!]
-  phone: NullableStringFilter
-  users: UserFilter
-}
-
 input CustomerWhereUniqueInput {
   email: String
   id: Int
 }
 
 scalar DateTime
+
+input DateTimeFieldUpdateOperationsInput {
+  set: DateTime
+}
 
 input DateTimeFilter {
   equals: DateTime
@@ -695,7 +602,7 @@ input DateTimeFilter {
   in: [DateTime!]
   lt: DateTime
   lte: DateTime
-  not: DateTime
+  not: NestedDateTimeFilter
   notIn: [DateTime!]
 }
 
@@ -709,6 +616,25 @@ enum Day {
   WEDNESDAY
 }
 
+input EnumDayFieldUpdateOperationsInput {
+  set: Day
+}
+
+input FloatNullableFilter {
+  equals: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  not: NestedFloatNullableFilter
+  notIn: [Float!]
+}
+
+input IntFieldUpdateOperationsInput {
+  set: Int
+}
+
 input IntFilter {
   equals: Int
   gt: Int
@@ -716,7 +642,18 @@ input IntFilter {
   in: [Int!]
   lt: Int
   lte: Int
-  not: Int
+  not: NestedIntFilter
+  notIn: [Int!]
+}
+
+input IntNullableFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableFilter
   notIn: [Int!]
 }
 
@@ -746,29 +683,56 @@ type Mutation {
   upsertOneRecurrentAvailability(create: RecurrentAvailabilityCreateInput!, update: RecurrentAvailabilityUpdateInput!, where: RecurrentAvailabilityWhereUniqueInput!): RecurrentAvailability!
 }
 
-input NullableFloatFilter {
+input NestedBoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
+input NestedDateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeFilter
+  notIn: [DateTime!]
+}
+
+input NestedFloatNullableFilter {
   equals: Float
   gt: Float
   gte: Float
   in: [Float!]
   lt: Float
   lte: Float
-  not: Float
+  not: NestedFloatNullableFilter
   notIn: [Float!]
 }
 
-input NullableIntFilter {
+input NestedIntFilter {
   equals: Int
   gt: Int
   gte: Int
   in: [Int!]
   lt: Int
   lte: Int
-  not: Int
+  not: NestedIntFilter
   notIn: [Int!]
 }
 
-input NullableStringFilter {
+input NestedIntNullableFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableFilter
+  notIn: [Int!]
+}
+
+input NestedStringFilter {
   contains: String
   endsWith: String
   equals: String
@@ -777,9 +741,31 @@ input NullableStringFilter {
   in: [String!]
   lt: String
   lte: String
-  not: String
+  not: NestedStringFilter
   notIn: [String!]
   startsWith: String
+}
+
+input NestedStringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringNullableFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input NullableFloatFieldUpdateOperationsInput {
+  set: Float
+}
+
+input NullableStringFieldUpdateOperationsInput {
+  set: String
 }
 
 type OAuthToken {
@@ -815,25 +801,13 @@ input OAuthTokenUpdateOneWithoutUserInput {
 }
 
 input OAuthTokenUpdateWithoutUserDataInput {
-  accessToken: String
-  id: Int
-  refreshToken: String
+  accessToken: StringFieldUpdateOperationsInput
+  refreshToken: NullableStringFieldUpdateOperationsInput
 }
 
 input OAuthTokenUpsertWithoutUserInput {
   create: OAuthTokenCreateWithoutUserInput!
   update: OAuthTokenUpdateWithoutUserDataInput!
-}
-
-input OAuthTokenWhereInput {
-  accessToken: StringFilter
-  AND: [OAuthTokenWhereInput!]
-  id: IntFilter
-  NOT: [OAuthTokenWhereInput!]
-  OR: [OAuthTokenWhereInput!]
-  refreshToken: NullableStringFilter
-  user: UserWhereInput
-  userId: IntFilter
 }
 
 input OAuthTokenWhereUniqueInput {
@@ -842,18 +816,18 @@ input OAuthTokenWhereUniqueInput {
 
 type Query {
   appointment(where: AppointmentWhereUniqueInput!): Appointment
-  appointments(skip: Int): [Appointment!]!
+  appointments(after: AppointmentWhereUniqueInput, before: AppointmentWhereUniqueInput, first: Int, last: Int): [Appointment!]!
   appointmentType(where: AppointmentTypeWhereUniqueInput!): AppointmentType
-  appointmentTypes(skip: Int): [AppointmentType!]!
+  appointmentTypes(after: AppointmentTypeWhereUniqueInput, before: AppointmentTypeWhereUniqueInput, first: Int, last: Int): [AppointmentType!]!
   availabilityModifier(where: AvailabilityModifierWhereUniqueInput!): AvailabilityModifier
-  availabilityModifiers(skip: Int): [AvailabilityModifier!]!
+  availabilityModifiers(after: AvailabilityModifierWhereUniqueInput, before: AvailabilityModifierWhereUniqueInput, first: Int, last: Int): [AvailabilityModifier!]!
   customer(where: CustomerWhereUniqueInput!): Customer
-  customers(skip: Int): [Customer!]!
+  customers(after: CustomerWhereUniqueInput, before: CustomerWhereUniqueInput, first: Int, last: Int): [Customer!]!
   me: AuthPayload!
-  recurrentAvailabilities(skip: Int): [RecurrentAvailability!]!
+  recurrentAvailabilities(after: RecurrentAvailabilityWhereUniqueInput, before: RecurrentAvailabilityWhereUniqueInput, first: Int, last: Int): [RecurrentAvailability!]!
   recurrentAvailability(where: RecurrentAvailabilityWhereUniqueInput!): RecurrentAvailability
   user(where: UserWhereUniqueInput!): User
-  users(skip: Int): [User!]!
+  users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int): [User!]!
 }
 
 type RecurrentAvailability {
@@ -882,12 +856,6 @@ input RecurrentAvailabilityCreateWithoutUserInput {
   startTime: Int!
 }
 
-input RecurrentAvailabilityFilter {
-  every: RecurrentAvailabilityWhereInput
-  none: RecurrentAvailabilityWhereInput
-  some: RecurrentAvailabilityWhereInput
-}
-
 input RecurrentAvailabilityScalarWhereInput {
   AND: [RecurrentAvailabilityScalarWhereInput!]
   day: Day
@@ -896,22 +864,20 @@ input RecurrentAvailabilityScalarWhereInput {
   NOT: [RecurrentAvailabilityScalarWhereInput!]
   OR: [RecurrentAvailabilityScalarWhereInput!]
   startTime: IntFilter
-  userId: NullableIntFilter
+  userId: IntNullableFilter
 }
 
 input RecurrentAvailabilityUpdateInput {
   day: Day
-  endTime: Int
-  id: Int
-  startTime: Int
+  endTime: IntFieldUpdateOperationsInput
+  startTime: IntFieldUpdateOperationsInput
   user: UserUpdateOneWithoutRecurrentAvailabilitiesInput
 }
 
 input RecurrentAvailabilityUpdateManyDataInput {
-  day: Day
-  endTime: Int
-  id: Int
-  startTime: Int
+  day: EnumDayFieldUpdateOperationsInput
+  endTime: IntFieldUpdateOperationsInput
+  startTime: IntFieldUpdateOperationsInput
 }
 
 input RecurrentAvailabilityUpdateManyWithoutUserInput {
@@ -932,10 +898,9 @@ input RecurrentAvailabilityUpdateManyWithWhereNestedInput {
 }
 
 input RecurrentAvailabilityUpdateWithoutUserDataInput {
-  day: Day
-  endTime: Int
-  id: Int
-  startTime: Int
+  day: EnumDayFieldUpdateOperationsInput
+  endTime: IntFieldUpdateOperationsInput
+  startTime: IntFieldUpdateOperationsInput
 }
 
 input RecurrentAvailabilityUpdateWithWhereUniqueWithoutUserInput {
@@ -949,20 +914,12 @@ input RecurrentAvailabilityUpsertWithWhereUniqueWithoutUserInput {
   where: RecurrentAvailabilityWhereUniqueInput!
 }
 
-input RecurrentAvailabilityWhereInput {
-  AND: [RecurrentAvailabilityWhereInput!]
-  day: Day
-  endTime: IntFilter
-  id: IntFilter
-  NOT: [RecurrentAvailabilityWhereInput!]
-  OR: [RecurrentAvailabilityWhereInput!]
-  startTime: IntFilter
-  user: UserWhereInput
-  userId: NullableIntFilter
-}
-
 input RecurrentAvailabilityWhereUniqueInput {
   id: Int
+}
+
+input StringFieldUpdateOperationsInput {
+  set: String
 }
 
 input StringFilter {
@@ -974,7 +931,21 @@ input StringFilter {
   in: [String!]
   lt: String
   lte: String
-  not: String
+  not: NestedStringFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input StringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringNullableFilter
   notIn: [String!]
   startsWith: String
 }
@@ -1112,46 +1083,34 @@ input UserCreateWithoutRecurrentAvailabilitiesInput {
   websiteUrl: String
 }
 
-input UserFilter {
-  every: UserWhereInput
-  none: UserWhereInput
-  some: UserWhereInput
-}
-
 input UserScalarWhereInput {
-  address: NullableStringFilter
+  address: StringNullableFilter
   AND: [UserScalarWhereInput!]
-  appointments: AppointmentFilter
-  appointmentTypes: AppointmentTypeFilter
-  availabilityModifiers: AvailabilityModifierFilter
-  customers: CustomerFilter
   email: StringFilter
   firstName: StringFilter
-  googleId: NullableStringFilter
+  googleId: StringNullableFilter
   id: IntFilter
   lastName: StringFilter
   minScheduleNotice: IntFilter
   NOT: [UserScalarWhereInput!]
   OR: [UserScalarWhereInput!]
-  password: NullableStringFilter
-  phone: NullableStringFilter
-  recurrentAvailabilities: RecurrentAvailabilityFilter
+  password: StringNullableFilter
+  phone: StringNullableFilter
   username: StringFilter
-  websiteUrl: NullableStringFilter
+  websiteUrl: StringNullableFilter
 }
 
 input UserUpdateManyDataInput {
-  address: String
-  email: String
-  firstName: String
-  googleId: String
-  id: Int
-  lastName: String
-  minScheduleNotice: Int
-  password: String
-  phone: String
-  username: String
-  websiteUrl: String
+  address: NullableStringFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  googleId: NullableStringFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  minScheduleNotice: IntFieldUpdateOperationsInput
+  password: NullableStringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
+  username: StringFieldUpdateOperationsInput
+  websiteUrl: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateManyWithoutCustomersInput {
@@ -1208,98 +1167,93 @@ input UserUpdateOneWithoutRecurrentAvailabilitiesInput {
 }
 
 input UserUpdateWithoutAppointmentsDataInput {
-  address: String
+  address: NullableStringFieldUpdateOperationsInput
   appointmentTypes: AppointmentTypeUpdateManyWithoutUserInput
   availabilityModifiers: AvailabilityModifierUpdateManyWithoutUserInput
   customers: CustomerUpdateManyWithoutUsersInput
-  email: String
-  firstName: String
-  googleId: String
-  id: Int
-  lastName: String
-  minScheduleNotice: Int
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  googleId: NullableStringFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  minScheduleNotice: IntFieldUpdateOperationsInput
   oAuthToken: OAuthTokenUpdateOneWithoutUserInput
-  password: String
-  phone: String
+  password: NullableStringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
   recurrentAvailabilities: RecurrentAvailabilityUpdateManyWithoutUserInput
-  username: String
-  websiteUrl: String
+  username: StringFieldUpdateOperationsInput
+  websiteUrl: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateWithoutAppointmentTypesDataInput {
-  address: String
+  address: NullableStringFieldUpdateOperationsInput
   appointments: AppointmentUpdateManyWithoutUserInput
   availabilityModifiers: AvailabilityModifierUpdateManyWithoutUserInput
   customers: CustomerUpdateManyWithoutUsersInput
-  email: String
-  firstName: String
-  googleId: String
-  id: Int
-  lastName: String
-  minScheduleNotice: Int
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  googleId: NullableStringFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  minScheduleNotice: IntFieldUpdateOperationsInput
   oAuthToken: OAuthTokenUpdateOneWithoutUserInput
-  password: String
-  phone: String
+  password: NullableStringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
   recurrentAvailabilities: RecurrentAvailabilityUpdateManyWithoutUserInput
-  username: String
-  websiteUrl: String
+  username: StringFieldUpdateOperationsInput
+  websiteUrl: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateWithoutAvailabilityModifiersDataInput {
-  address: String
+  address: NullableStringFieldUpdateOperationsInput
   appointments: AppointmentUpdateManyWithoutUserInput
   appointmentTypes: AppointmentTypeUpdateManyWithoutUserInput
   customers: CustomerUpdateManyWithoutUsersInput
-  email: String
-  firstName: String
-  googleId: String
-  id: Int
-  lastName: String
-  minScheduleNotice: Int
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  googleId: NullableStringFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  minScheduleNotice: IntFieldUpdateOperationsInput
   oAuthToken: OAuthTokenUpdateOneWithoutUserInput
-  password: String
-  phone: String
+  password: NullableStringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
   recurrentAvailabilities: RecurrentAvailabilityUpdateManyWithoutUserInput
-  username: String
-  websiteUrl: String
+  username: StringFieldUpdateOperationsInput
+  websiteUrl: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateWithoutCustomersDataInput {
-  address: String
+  address: NullableStringFieldUpdateOperationsInput
   appointments: AppointmentUpdateManyWithoutUserInput
   appointmentTypes: AppointmentTypeUpdateManyWithoutUserInput
   availabilityModifiers: AvailabilityModifierUpdateManyWithoutUserInput
-  email: String
-  firstName: String
-  googleId: String
-  id: Int
-  lastName: String
-  minScheduleNotice: Int
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  googleId: NullableStringFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  minScheduleNotice: IntFieldUpdateOperationsInput
   oAuthToken: OAuthTokenUpdateOneWithoutUserInput
-  password: String
-  phone: String
+  password: NullableStringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
   recurrentAvailabilities: RecurrentAvailabilityUpdateManyWithoutUserInput
-  username: String
-  websiteUrl: String
+  username: StringFieldUpdateOperationsInput
+  websiteUrl: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateWithoutRecurrentAvailabilitiesDataInput {
-  address: String
+  address: NullableStringFieldUpdateOperationsInput
   appointments: AppointmentUpdateManyWithoutUserInput
   appointmentTypes: AppointmentTypeUpdateManyWithoutUserInput
   availabilityModifiers: AvailabilityModifierUpdateManyWithoutUserInput
   customers: CustomerUpdateManyWithoutUsersInput
-  email: String
-  firstName: String
-  googleId: String
-  id: Int
-  lastName: String
-  minScheduleNotice: Int
+  email: StringFieldUpdateOperationsInput
+  firstName: StringFieldUpdateOperationsInput
+  googleId: NullableStringFieldUpdateOperationsInput
+  lastName: StringFieldUpdateOperationsInput
+  minScheduleNotice: IntFieldUpdateOperationsInput
   oAuthToken: OAuthTokenUpdateOneWithoutUserInput
-  password: String
-  phone: String
-  username: String
-  websiteUrl: String
+  password: NullableStringFieldUpdateOperationsInput
+  phone: NullableStringFieldUpdateOperationsInput
+  username: StringFieldUpdateOperationsInput
+  websiteUrl: NullableStringFieldUpdateOperationsInput
 }
 
 input UserUpdateWithWhereUniqueWithoutCustomersInput {
@@ -1331,29 +1285,6 @@ input UserUpsertWithWhereUniqueWithoutCustomersInput {
   create: UserCreateWithoutCustomersInput!
   update: UserUpdateWithoutCustomersDataInput!
   where: UserWhereUniqueInput!
-}
-
-input UserWhereInput {
-  address: NullableStringFilter
-  AND: [UserWhereInput!]
-  appointments: AppointmentFilter
-  appointmentTypes: AppointmentTypeFilter
-  availabilityModifiers: AvailabilityModifierFilter
-  customers: CustomerFilter
-  email: StringFilter
-  firstName: StringFilter
-  googleId: NullableStringFilter
-  id: IntFilter
-  lastName: StringFilter
-  minScheduleNotice: IntFilter
-  NOT: [UserWhereInput!]
-  oAuthToken: OAuthTokenWhereInput
-  OR: [UserWhereInput!]
-  password: NullableStringFilter
-  phone: NullableStringFilter
-  recurrentAvailabilities: RecurrentAvailabilityFilter
-  username: StringFilter
-  websiteUrl: NullableStringFilter
 }
 
 input UserWhereUniqueInput {

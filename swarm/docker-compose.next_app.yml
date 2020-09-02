@@ -3,6 +3,8 @@ version: "3.7"
 services:
   next_app:
     image: petitloan/appointment_scheduler:next_app
+    secrets:
+      - GOOGLE_CLIENT_ID
     deploy:
       restart_policy:
         condition: on-failure
@@ -14,3 +16,7 @@ services:
         - "traefik.http.routers.next_app.rule=HostRegexp(`{host:(?:www.)?appointment-scheduler.loanpetit.com}`)"
         - "traefik.http.routers.next_app.entrypoints=websecure"
         - "traefik.http.routers.next_app.tls.certresolver=default"
+
+secrets:
+  GOOGLE_CLIENT_ID:
+    external: true

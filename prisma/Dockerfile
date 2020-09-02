@@ -1,6 +1,8 @@
 # syntax = docker/dockerfile:1.0-experimental
 FROM node:alpine
 
+RUN apk update && apk upgrade && apk add --no-cache git
+
 # Create Prisma Dir
 RUN mkdir /prisma
 WORKDIR /prisma

@@ -15,26 +15,25 @@
     "format": "prettier-standard --format"
   },
   "dependencies": {
-    "@nexus/schema": "0.14.0",
-    "@prisma/client": "2.0.0",
+    "@nexus/schema": "0.15.0",
+    "@prisma/client": "^2.6.0",
     "@types/bcryptjs": "2.4.2",
     "@types/jsonwebtoken": "8.5.0",
-    "@types/ws": "7.2.5",
+    "@types/ws": "7.2.6",
     "bcryptjs": "2.4.3",
-    "google-auth-library": "^6.0.1",
-    "graphql": "14.6.0",
-    "graphql-shield": "5.7.3",
+    "google-auth-library": "^6.0.6",
+    "graphql-middleware": "4.0.1",
+    "graphql-shield": "7.3.5",
     "graphql-yoga": "1.18.3",
     "jsonwebtoken": "8.5.1",
-    "nexus-prisma": "0.13.0",
+    "nexus-plugin-prisma": "0.17.0",
     "ts-node": "8.10.2",
-    "typescript": "3.9.5"
+    "typescript": "3.9.6"
   },
   "devDependencies": {
-    "@prisma/cli": "^2.0.0",
-    "@types/node": "14.0.12",
-    "prettier-standard": "^16.3.0",
-    "ts-node-dev": "1.0.0-pre.44"
+    "@types/node": "12.12.54",
+    "prettier-standard": "^16.4.1",
+    "ts-node-dev": "1.0.0-pre.50"
   },
   "prettier": {
     "singleQuote": true,
