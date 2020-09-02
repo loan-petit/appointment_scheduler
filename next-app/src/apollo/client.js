@@ -139,7 +139,7 @@ function createApolloClient (initialState = {}, cookie = '') {
 
 function createIsomorphLink (cookie = '') {
   const httpLink = new createHttpLink({
-    uri: 'http://localhost:4000/',
+    uri: process.env.API_URL,
   })
 
   const authLink = setContext((_, { headers }) => {
