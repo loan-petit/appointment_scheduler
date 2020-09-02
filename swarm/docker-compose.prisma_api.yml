@@ -5,6 +5,8 @@ services:
     image: petitloan/appointment_scheduler:prisma
     depends_on:
       - postgres
+    environment:
+      NODE_ENV: production
     deploy:
       labels:
         - "traefik.enable=true"
