@@ -59,7 +59,7 @@ for service in "${POSITIONAL[@]}"; do
   if [ "$service" == "prisma" ]; then
     # Build Docker image for 'prisma' service.
     DOCKER_BUILDKIT=1 docker build $NO_CACHE --tag petitloan/appointment_scheduler:prisma \
-      --build-arg POSTGRES_HOST=www.appointment_scheduler.loanpetit.com \
+      --build-arg POSTGRES_HOST=www.appointment-scheduler.loanpetit.com \
       --secret id=POSTGRES_PASSWORD,src=$SECRETS_DIR/POSTGRES_PASSWORD.txt \
       --secret id=JWT_SECRET,src=$SECRETS_DIR/JWT_SECRET.txt \
       $SOURCE_DIR/../prisma

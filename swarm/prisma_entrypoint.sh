@@ -38,5 +38,5 @@ done
 
 # Start Prisma API
 cd /prisma
-export POSTGRES_URL=postgresql://prisma:$POSTGRES_PASSWORD@$POSTGRES_HOST:5432/appointment_scheduler?schema=public
+export POSTGRES_URL=postgresql://prisma:$POSTGRES_PASSWORD@$POSTGRES_HOST:5432/appointment-scheduler?schema=public
 npm start

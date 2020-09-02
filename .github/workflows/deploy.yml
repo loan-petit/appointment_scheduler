@@ -36,5 +36,5 @@ jobs:
         run: ssh -o StrictHostKeyChecking=no -i ~/.aws_ec2_key.pem -fNL localhost:2376:/var/run/docker.sock ${{ secrets.AWS_EC2_DESTINATION }}
 
       - name: Deploy services to the remote swarm.
-        run: docker -H localhost:2376 stack deploy $(for f in docker-compose.*.yml; do echo -n "-c $f "; done) appointment_scheduler
+        run: docker -H localhost:2376 stack deploy --with-registry-auth $(for f in docker-compose.*.yml; do echo -n "-c $f "; done) appointment_scheduler
         working-directory: ./swarm/

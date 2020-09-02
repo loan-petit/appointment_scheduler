@@ -37,18 +37,18 @@ services:
       labels:
         - "traefik.enable=true"
         # Redirect HTTP to HTTPS
-        - "traefik.http.routers.httpsredirect.rule=HostRegexp(`{host:.*.?appointment_scheduler.loanpetit.com}`)"
+        - "traefik.http.routers.httpsredirect.rule=HostRegexp(`{host:.*.?appointment-scheduler.loanpetit.com}`)"
         - "traefik.http.routers.httpsredirect.entrypoints=web"
         - "traefik.http.routers.httpsredirect.middlewares=httpsredirect"
         - "traefik.http.middlewares.httpsredirect.redirectscheme.scheme=https"
         - "traefik.http.middlewares.httpsredirect.redirectscheme.permanent=true"
         # Expose secured dashboard
-        - "traefik.http.routers.api.rule=HostRegexp(`{host:(?:www.)?appointment_scheduler.loanpetit.com}`)"
+        - "traefik.http.routers.api.rule=HostRegexp(`{host:(?:www.)?appointment-scheduler.loanpetit.com}`)"
         - "traefik.http.routers.api.service=api@internal"
         - "traefik.http.routers.api.entrypoints=traefik"
         - "traefik.http.routers.api.tls.certresolver=default"
-        - "traefik.http.routers.api.tls.domains[0].main=appointment_scheduler.loanpetit.com"
-        - "traefik.http.routers.api.tls.domains[1].main=www.appointment_scheduler.loanpetit.com"
+        - "traefik.http.routers.api.tls.domains[0].main=appointment-scheduler.loanpetit.com"
+        - "traefik.http.routers.api.tls.domains[1].main=www.appointment-scheduler.loanpetit.com"
         - "traefik.http.routers.api.middlewares=auth"
         - "traefik.http.middlewares.auth.basicauth.usersfile=/run/secrets/TRAEFIK_USERS"
         - "traefik.http.services.dashboard.loadbalancer.server.port=8080"

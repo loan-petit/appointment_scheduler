@@ -10,7 +10,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.sendemail.loadbalancer.server.port=3000"
-        - "traefik.http.routers.sendemail.rule=HostRegexp(`{host:(?:www.)?appointment_scheduler.loanpetit.com}`) && PathPrefix(`/sendEmail`)"
+        - "traefik.http.routers.sendemail.rule=HostRegexp(`{host:(?:www.)?appointment-scheduler.loanpetit.com}`) && PathPrefix(`/sendEmail`)"
         - "traefik.http.routers.sendemail.entrypoints=backend-services"
         - "traefik.http.routers.sendemail.tls.certresolver=default"
         - "traefik.http.routers.sendemail.middlewares=sendemail-stripprefix"

@@ -80,56 +80,57 @@ const Settings = () => {
   return (
     <Layout>
       <section>
-        <header className='flex items-center mb-4'>
+        <header className="flex items-center mb-4">
           <h5>Reliez votre compte à :</h5>
         </header>
 
         <GoogleLogin
           clientId={process.env.GOOGLE_CLIENT_ID as string}
-          render={renderProps => (
+          render={(renderProps) => (
             <button
-              className='inline-flex items-center p-2 text-xs font-bold text-gray-800 bg-white rounded shadow outline-none focus:outline-none hover:shadow-md'
-              type='button'
+              className="inline-flex items-center p-2 text-xs font-bold text-gray-800 bg-white rounded shadow outline-none focus:outline-none hover:shadow-md"
+              type="button"
               onClick={renderProps.onClick}
               disabled={renderProps.disabled}
             >
               <img
-                alt='Google'
-                className='w-5 mr-1'
-                src='/svg/googleLogo.svg'
+                alt="Google"
+                className="w-5 mr-1"
+                src="/svg/googleLogo.svg"
               />
               Google
             </button>
           )}
           onSuccess={onGoogleAuthSuccess}
           onFailure={setGoogleAuthError}
+          cookiePolicy={'single_host_origin'}
         />
         {googleAuthError && (
-          <p className='mt-4 form-submit-error'>{googleAuthError}</p>
+          <p className="mt-4 form-submit-error">{googleAuthError}</p>
         )}
       </section>
 
-      <hr className='my-12 border-b-1' />
+      <hr className="my-12 border-b-1" />
 
       <section>
-        <header className='flex items-center mb-8'>
+        <header className="flex items-center mb-8">
           <h5>Vos informations</h5>
         </header>
 
-        <div className='md:w-1/2'>
+        <div className="md:w-1/2">
           <UpdateInformations currentUser={currentUser} />
         </div>
       </section>
 
-      <hr className='my-12 border-b-1' />
+      <hr className="my-12 border-b-1" />
 
       {currentUser.password && (
         <section>
-          <header className='flex items-center mb-8'>
+          <header className="flex items-center mb-8">
             <h5>Changer votre mot de passe</h5>
           </header>
 
-          <div className='md:w-1/2'>
+          <div className="md:w-1/2">
             <UpdatePassword />
           </div>
         </section>

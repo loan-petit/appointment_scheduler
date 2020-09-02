@@ -9,7 +9,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.services.prisma.loadbalancer.server.port=4000"
-        - "traefik.http.routers.prisma.rule=HostRegexp(`{host:(?:www.)?appointment_scheduler.loanpetit.com}`)"
+        - "traefik.http.routers.prisma.rule=HostRegexp(`{host:(?:www.)?appointment-scheduler.loanpetit.com}`)"
         - "traefik.http.routers.prisma.entrypoints=prisma"
         - "traefik.http.routers.prisma.tls.certresolver=default"
       restart_policy:
