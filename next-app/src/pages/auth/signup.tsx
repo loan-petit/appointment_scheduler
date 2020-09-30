@@ -92,9 +92,13 @@ const Signup = () => {
   ) => {
     res = res as GoogleLoginResponse
     try {
+      var authRes = res.getAuthResponse()
       const response = await oAuthSignin({
         variables: {
-          oAuthToken: { accessToken: res.accessToken, idToken: res.tokenId },
+          oAuthToken: {
+            accessToken: authRes.access_token,
+            idToken: authRes.id_token,
+          },
         },
       })
       storeJWT(response.data.signin)

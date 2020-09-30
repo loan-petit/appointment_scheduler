@@ -37,18 +37,20 @@ const FillMissingAccountInformation: React.FunctionComponent<Props> = ({
     }
   }
 
-  const onSubmit = (fieldsInformation: FieldsInformation) =>
-    signup({
+  const onSubmit = (fieldsInformation: FieldsInformation) => {
+    var authRes = googleUser.getAuthResponse()
+    return signup({
       variables: {
         firstName: fieldsInformation.firstName.value,
         lastName: fieldsInformation.lastName.value,
         email: fieldsInformation.email.value,
         oAuthToken: {
-          accessToken: googleUser.accessToken,
-          idToken: googleUser.tokenId,
+          accessToken: authRes.access_token,
+          idToken: authRes.id_token,
         },
       },
     })
+  }
 
   const onSubmitResult = ({ response, error }: any) => {
     if (error) {
@@ -82,76 +84,76 @@ const FillMissingAccountInformation: React.FunctionComponent<Props> = ({
   )
 
   return (
-    <div className='container flex flex-col w-full p-8 mx-auto break-words bg-gray-300 rounded-lg shadow-lg lg:w-5/12'>
-      <div className='mb-8 text-center'>
+    <div className="container flex flex-col w-full p-8 mx-auto break-words bg-gray-300 rounded-lg shadow-lg lg:w-5/12">
+      <div className="mb-8 text-center">
         {fromSignin && (
           <h6>Vous n'avez pas encore de compte, nous allons en créer un.</h6>
         )}
         <h6>
           {googleUser.profileObj.name && googleUser.profileObj.email
-            ? 'Confirmez-vous ces informations ? Elles seront visibles par vos clients. Bien sûr vous pourrez les modifier par la suite dans la section paramètres.'
+            ? 'Confirmez-vous ces informations ? Elles seront visibles par vos clients. Vous pourrez les modifier par la suite dans la section paramètres.'
             : 'Nous avons besoin de quelques informations supplémentaires pour créer votre compte...'}
         </h6>
       </div>
 
       {/* Full Name */}
-      <div className='flex flex-row justify-between mb-3'>
-        <div className='w-full mr-2'>
-          <label className='block mb-2'>Prénom</label>
+      <div className="flex flex-row justify-between mb-3">
+        <div className="w-full mr-2">
+          <label className="block mb-2">Prénom</label>
           <input
-            type='text'
-            className='w-full p-3 placeholder-gray-400'
-            placeholder='Votre prénom'
+            type="text"
+            className="w-full p-3 placeholder-gray-400"
+            placeholder="Votre prénom"
             onChange={formHelper.handleInputChange.bind(formHelper)}
-            name='firstName'
+            name="firstName"
             value={formHelper.fieldsInformation.firstName.value}
             autoFocus
           />
-          <p className='form-field-error'>
+          <p className="form-field-error">
             {formHelper.fieldsInformation.firstName.error}
           </p>
         </div>
-        <div className='w-full ml-2'>
-          <label className='block mb-2'>Nom</label>
+        <div className="w-full ml-2">
+          <label className="block mb-2">Nom</label>
           <input
-            type='text'
-            className='w-full p-3 placeholder-gray-400'
-            placeholder='Votre nom'
+            type="text"
+            className="w-full p-3 placeholder-gray-400"
+            placeholder="Votre nom"
             onChange={formHelper.handleInputChange.bind(formHelper)}
-            name='lastName'
+            name="lastName"
             value={formHelper.fieldsInformation.lastName.value}
           />
-          <p className='form-field-error'>
+          <p className="form-field-error">
             {formHelper.fieldsInformation.lastName.error}
           </p>
         </div>
       </div>
 
       {/* Email */}
-      <div className='w-full mb-3'>
-        <label className='block mb-2'>E-mail</label>
+      <div className="w-full mb-3">
+        <label className="block mb-2">E-mail</label>
         <input
-          type='email'
-          className='w-full p-3 placeholder-gray-400'
-          placeholder='Votre e-mail'
+          type="email"
+          className="w-full p-3 placeholder-gray-400"
+          placeholder="Votre e-mail"
           onChange={formHelper.handleInputChange.bind(formHelper)}
-          name='email'
+          name="email"
           value={formHelper.fieldsInformation.email.value}
         />
-        <p className='form-field-error'>
+        <p className="form-field-error">
           {formHelper.fieldsInformation.email.error}
         </p>
       </div>
 
       {/* Submit */}
-      <div className='mt-6 text-center'>
+      <div className="mt-6 text-center">
         {formHelper.submitStatus.userFriendlyError.length ? (
-          <p className='pt-0 pb-4 form-submit-error'>
+          <p className="pt-0 pb-4 form-submit-error">
             {formHelper.submitStatus.userFriendlyError}
           </p>
         ) : null}
         <button
-          className='px-6 py-3 submit-button'
+          className="px-6 py-3 submit-button"
           onClick={formHelper.handleSubmit.bind(formHelper)}
         >
           Créer mon compte

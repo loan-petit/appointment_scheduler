@@ -34,7 +34,7 @@
         "source": "db"
       },
       "argument": "url",
-      "value": "env(\"POSTGRES_URL\")"
+      "value": "\"***\""
     },
     {
       "tag": "CreateArgument",
@@ -230,13 +230,6 @@
     {
       "tag": "CreateField",
       "model": "User",
-      "field": "appointmentTypes",
-      "type": "AppointmentType",
-      "arity": "List"
-    },
-    {
-      "tag": "CreateField",
-      "model": "User",
       "field": "recurrentAvailabilities",
       "type": "RecurrentAvailability",
       "arity": "List"
@@ -246,6 +239,45 @@
       "model": "User",
       "field": "availabilityModifiers",
       "type": "AvailabilityModifier",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "customers",
+      "type": "Customer",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "customers"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "customers"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "appointmentTypes",
+      "type": "AppointmentType",
       "arity": "List"
     },
     {
@@ -902,6 +934,38 @@
       },
       "argument": "",
       "value": "false"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Customer",
+      "field": "users",
+      "type": "User",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Customer",
+          "field": "users"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Customer",
+          "field": "users"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
     },
     {
       "tag": "CreateField",

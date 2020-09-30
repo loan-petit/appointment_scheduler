@@ -41,31 +41,36 @@ const rules = {
   ),
 }
 
-export const permissions = shield({
-  Query: {
-    me: rules.isAuthenticatedUser,
-    users: rules.isAuthenticatedUser,
+export const permissions = shield(
+  {
+    Query: {
+      me: rules.isAuthenticatedUser,
+      users: rules.isAuthenticatedUser,
+    },
+    Mutation: {
+      updateCurrentUser: rules.isAuthenticatedUser,
+      deleteOneUser: rules.isCurrentUser,
+
+      // AppointmentType
+      createOneAppointmentType: rules.isAuthenticatedUser,
+      updateOneAppointmentType: rules.isAppointmentTypeOwner,
+      upsertOneAppointmentType: rules.isAppointmentTypeOwner,
+      deleteOneAppointmentType: rules.isAppointmentTypeOwner,
+
+      // RecurrentAvailability
+      createOneRecurrentAvailability: rules.isAuthenticatedUser,
+      updateOneRecurrentAvailability: rules.isRecurrentAvailabilityOwner,
+      upsertOneRecurrentAvailability: rules.isRecurrentAvailabilityOwner,
+      deleteOneRecurrentAvailability: rules.isRecurrentAvailabilityOwner,
+
+      // AvailabilityModifier
+      createOneAvailabilityModifier: rules.isAuthenticatedUser,
+      updateOneAvailabilityModifier: rules.isAvailabilityModifierOwner,
+      upsertOneAvailabilityModifier: rules.isAvailabilityModifierOwner,
+      deleteOneAvailabilityModifier: rules.isAvailabilityModifierOwner,
+    },
   },
-  Mutation: {
-    updateCurrentUser: rules.isAuthenticatedUser,
-    deleteOneUser: rules.isCurrentUser,
-
-    // AppointmentType
-    createOneAppointmentType: rules.isAuthenticatedUser,
-    updateOneAppointmentType: rules.isAppointmentTypeOwner,
-    upsertOneAppointmentType: rules.isAppointmentTypeOwner,
-    deleteOneAppointmentType: rules.isAppointmentTypeOwner,
-
-    // RecurrentAvailability
-    createOneRecurrentAvailability: rules.isAuthenticatedUser,
-    updateOneRecurrentAvailability: rules.isRecurrentAvailabilityOwner,
-    upsertOneRecurrentAvailability: rules.isRecurrentAvailabilityOwner,
-    deleteOneRecurrentAvailability: rules.isRecurrentAvailabilityOwner,
-
-    // AvailabilityModifier
-    createOneAvailabilityModifier: rules.isAuthenticatedUser,
-    updateOneAvailabilityModifier: rules.isAvailabilityModifierOwner,
-    upsertOneAvailabilityModifier: rules.isAvailabilityModifierOwner,
-    deleteOneAvailabilityModifier: rules.isAvailabilityModifierOwner,
+  {
+    allowExternalErrors: true,
   },
-})
+)

@@ -62,6 +62,7 @@ for service in "${POSITIONAL[@]}"; do
       --build-arg POSTGRES_HOST=www.appointment-scheduler.loanpetit.com \
       --secret id=POSTGRES_PASSWORD,src=$SECRETS_DIR/POSTGRES_PASSWORD.txt \
       --secret id=JWT_SECRET,src=$SECRETS_DIR/JWT_SECRET.txt \
+      --secret id=GOOGLE_CLIENT_ID,src=$SECRETS_DIR/GOOGLE_CLIENT_ID.txt \
       $SOURCE_DIR/../prisma
   fi
 

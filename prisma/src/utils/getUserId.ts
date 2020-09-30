@@ -1,21 +1,24 @@
+import * as fs from 'fs'
 import { verify } from 'jsonwebtoken'
+
 import { Context } from '../context'
 
 export const JWT_SECRET = (() => {
   if (process.env.NODE_ENV === 'production') {
-    if (!process.env.JWT_SECRET) {
+    const jwtSecret = fs.readFileSync('/run/secrets/JWT_SECRET').toString()
+    if (!jwtSecret) {
       throw Error('JWT_SECRET must be set in production.')
     }
-    return process.env.JWT_SECRET
+    return jwtSecret
   }
-  return 'prisma-secret'
+  return process.env.JWT_SECRET as string
 })()
 
 interface Token {
   userId: string
 }
 
-export function getUserId (context: Context) {
+export function getUserId(context: Context) {
   const Authorization = context.request.get('Authorization')
   if (Authorization) {
     const token = Authorization.replace('Bearer ', '')

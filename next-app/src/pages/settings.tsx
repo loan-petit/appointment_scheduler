@@ -55,9 +55,13 @@ const Settings = () => {
   ) => {
     res = res as GoogleLoginResponse
     try {
+      var authRes = res.getAuthResponse()
       await updateCurrentUserWithOAuth({
         variables: {
-          oAuthToken: { accessToken: res.accessToken, idToken: res.tokenId },
+          oAuthToken: {
+            accessToken: authRes.access_token,
+            idToken: authRes.id_token,
+          },
         },
       })
     } catch (error) {

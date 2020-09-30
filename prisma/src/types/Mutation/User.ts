@@ -6,7 +6,6 @@ import { JWT_SECRET, getUserId } from '../../utils/getUserId'
 import { User } from '@prisma/client'
 import { OAuthTokenInput } from '../OAuthToken'
 import verifyGoogleIdToken from '../../utils/OAuth/verifyGoogleIdToken'
-import { TokenPayload } from 'google-auth-library'
 
 export const signup = mutationField('signup', {
   type: 'AuthPayload',

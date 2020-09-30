@@ -22,11 +22,9 @@ COPY . .
 ARG POSTGRES_HOST
 RUN --mount=type=secret,id=POSTGRES_PASSWORD \
     --mount=type=secret,id=JWT_SECRET \
-    POSTGRES_URL=postgresql://prisma:$(cat /run/secrets/POSTGRES_PASSWORD)@${POSTGRES_HOST}:5432/appointment_scheduler?schema=public \
-    npm run generate
-
-# Build API for production
-RUN npm run build
+    --mount=type=secret,id=GOOGLE_CLIENT_ID \
+    (export POSTGRES_URL=postgresql://prisma:$(cat /run/secrets/POSTGRES_PASSWORD)@${POSTGRES_HOST}:5432/appointment_scheduler?schema=public && \
+    npm run generate && npm run build)
 
 # Start GraphQL API
 CMD ["npm", "start"]

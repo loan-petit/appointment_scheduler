@@ -5,8 +5,19 @@ services:
     image: petitloan/appointment_scheduler:prisma
     depends_on:
       - postgres
+    secrets:
+      - POSTGRES_PASSWORD
+      - JWT_SECRET
+      - GOOGLE_CLIENT_ID
     environment:
       NODE_ENV: production
+      POSTGRES_HOST: "www.appointment-scheduler.loanpetit.com"
+    configs:
+      - source: prisma_entrypoint
+        target: /usr/local/bin/docker-entrypoint.sh
+        uid: "1000"
+        gid: "1000"
+        mode: 0510
     deploy:
       labels:
         - "traefik.enable=true"
@@ -18,3 +29,15 @@ services:
         condition: on-failure
         delay: 5s
         max_attempts: 3
+
+configs:
+  prisma_entrypoint:
+    file: ./prisma_entrypoint.sh
+
+secrets:
+  POSTGRES_PASSWORD:
+    external: true
+  JWT_SECRET:
+    external: true
+  GOOGLE_CLIENT_ID:
+    external: true
