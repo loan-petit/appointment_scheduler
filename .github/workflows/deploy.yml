@@ -38,3 +38,6 @@ jobs:
       - name: Deploy services to the remote swarm.
         run: docker -H localhost:2376 stack deploy --with-registry-auth $(for f in docker-compose.*.yml; do echo -n "-c $f "; done) appointment_scheduler
         working-directory: ./swarm/
+
+      - name: Remove all unused containers, networks and images (both dangling and unreferenced).
+        run: docker -H localhost:2376 system prune -af
