@@ -16,7 +16,7 @@ const FillMissingAccountInformation: React.FunctionComponent<Props> = ({
   fromSignin = false,
 }) => {
   // Hook to force component rerender
-  const [, updateState] = React.useState()
+  const [, updateState] = React.useState<object>()
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
   const [signup] = useMutation(AuthPayloadOperations.oAuthSignupMutation)

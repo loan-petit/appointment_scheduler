@@ -142,17 +142,27 @@ function createIsomorphLink(cookie = '') {
     uri: process.env.API_URL,
   })
 
-  const authLink = setContext((_, { headers }) => {
-    cookie = cookie.length ? cookie : document.cookie
-    var token = cookie.replace(
-      /(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/,
-      '$1',
+  var getCookie = (cookieStr, key) => {
+    if (!cookieStr || !cookieStr.length) return ''
+    const regex = new RegExp(
+      `(?:(?:^|.*;\\s*)${key}\\s*\\=\\s*([^;]*).*$)|^.*$`,
     )
+    return cookieStr.replace(regex, '$1')
+  }
+
+  const authLink = setContext((_, { headers }) => {
+    var token = ''
+    if (document) {
+      token = getCookie(document.cookie, 'token')
+    }
+    if (!token || !token.length) {
+      token = getCookie(cookie, 'token')
+    }
 
     return {
       headers: {
         ...headers,
-        authorization: token ? `Bearer ${token}` : '',
+        authorization: token && token.length ? `Bearer ${token}` : '',
       },
     }
   })

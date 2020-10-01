@@ -15,7 +15,7 @@ import { AuthPayloadOperations } from '../../models/AuthPayload'
 
 const Signup = () => {
   // Hook to force component rerender
-  const [, updateState] = React.useState()
+  const [, updateState] = React.useState<object>()
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
   const [signup] = useMutation(AuthPayloadOperations.credentialsSignupMutation)

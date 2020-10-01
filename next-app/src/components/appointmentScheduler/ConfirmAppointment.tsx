@@ -95,7 +95,7 @@ const ConfirmAppointment: React.FunctionComponent<Props> = ({
   endDate,
 }) => {
   // Hook to force component rerender
-  const [, updateState] = React.useState()
+  const [, updateState] = React.useState<object>()
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
   const [upsertOneCustomer] = useMutation(UpsertOneCustomerMutation)

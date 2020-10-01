@@ -36,7 +36,7 @@ const UpdateInformations: React.FunctionComponent<Props> = ({
   currentUser,
 }) => {
   // Hook to force component rerender
-  const [, updateState] = React.useState()
+  const [, updateState] = React.useState<object>()
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
   const [updateCurrentUser] = useMutation(UpdateCurrentUserMutation)
