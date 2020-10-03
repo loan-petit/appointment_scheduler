@@ -26,14 +26,12 @@ export const AuthPayloadOperations = {
       $lastName: String!
       $email: String!
       $password: String!
-      $passwordConfirmation: String!
     ) {
       signup(
         firstName: $firstName
         lastName: $lastName
         email: $email
         password: $password
-        passwordConfirmation: $passwordConfirmation
       ) {
         ...AuthPayloadFields
       }

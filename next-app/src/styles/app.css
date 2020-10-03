@@ -57,11 +57,16 @@ label {
 }
 
 input,
-textarea {
+textarea,
+.password-input-container {
   @apply text-sm text-gray-700 bg-white rounded shadow;
 
   &:focus {
     @apply shadow-outline outline-none;
+  }
+
+  &:focus-within {
+    @apply shadow-outline;
   }
 }
 

@@ -15,12 +15,11 @@ export const signup = mutationField('signup', {
     firstName: stringArg({ nullable: false }),
     lastName: stringArg({ nullable: false }),
     password: stringArg(),
-    passwordConfirmation: stringArg(),
     oAuthToken: OAuthTokenInput.asArg(),
   },
   resolve: async (
     _parent,
-    { email, firstName, lastName, password, passwordConfirmation, oAuthToken },
+    { email, firstName, lastName, password, oAuthToken },
     ctx,
   ) => {
     if (!password && !oAuthToken) {
@@ -47,10 +46,6 @@ export const signup = mutationField('signup', {
         }
       }
     } while (user)
-
-    if (password !== passwordConfirmation) {
-      throw new ResolverError("'password' must match 'passwordConfirmation'")
-    }
 
     const tokenPayload =
       oAuthToken && (await verifyGoogleIdToken(oAuthToken.idToken))
@@ -150,7 +145,6 @@ export const updateCurrentUser = mutationField('updateCurrentUser', {
     minScheduleNotice: intArg(),
     oldPassword: stringArg(),
     newPassword: stringArg(),
-    newPasswordConfirmation: stringArg(),
     oAuthToken: OAuthTokenInput.asArg(),
   },
   resolve: async (
@@ -164,7 +158,6 @@ export const updateCurrentUser = mutationField('updateCurrentUser', {
       minScheduleNotice,
       oldPassword,
       newPassword,
-      newPasswordConfirmation,
       oAuthToken,
     },
     ctx,
@@ -182,10 +175,6 @@ export const updateCurrentUser = mutationField('updateCurrentUser', {
 
     var hashedPassword
     if (user.password && oldPassword && newPassword) {
-      if (newPassword !== newPasswordConfirmation) {
-        throw new ResolverError("'newPassword' must match 'newPasswordConfirmation'")
-      }
-
       const passwordValid = await compare(oldPassword, user.password)
       if (!passwordValid) {
         throw new ResolverError('Invalid password')

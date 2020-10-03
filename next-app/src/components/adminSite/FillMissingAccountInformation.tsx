@@ -5,6 +5,8 @@ import { useMutation } from '@apollo/react-hooks'
 import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
 import storeJWT from '../../utils/storeJWT'
 import { AuthPayloadOperations } from '../../models/AuthPayload'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 type Props = {
   googleUser: GoogleLoginResponse
@@ -25,6 +27,8 @@ const FillMissingAccountInformation: React.FunctionComponent<Props> = ({
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
   )
 
+  const [isPasswordVisible, setIsPasswordVisible] = React.useState(false)
+
   const fieldsValidator = (name: String, value: any) => {
     switch (name) {
       case 'firstName':
@@ -32,6 +36,10 @@ const FillMissingAccountInformation: React.FunctionComponent<Props> = ({
         return !value.length ? 'Ce champ est obligatoire.' : ''
       case 'email':
         return !emailRegex.test(value) ? 'Veuillez entrer un email valide.' : ''
+      case 'password':
+        return value.length < 8
+          ? 'Votre mot de passe doit contenir au minimum 8 caractères.'
+          : ''
       default:
         return ''
     }
@@ -44,6 +52,7 @@ const FillMissingAccountInformation: React.FunctionComponent<Props> = ({
         firstName: fieldsInformation.firstName.value,
         lastName: fieldsInformation.lastName.value,
         email: fieldsInformation.email.value,
+        password: fieldsInformation.password.value,
         oAuthToken: {
           accessToken: authRes.access_token,
           idToken: authRes.id_token,
@@ -75,6 +84,7 @@ const FillMissingAccountInformation: React.FunctionComponent<Props> = ({
         { name: 'firstName', value: googleUser.profileObj.givenName },
         { name: 'lastName', value: googleUser.profileObj.familyName },
         { name: 'email', value: googleUser.profileObj.email },
+        'password',
       ],
       refreshComponent: forceUpdate,
       fieldsValidator: fieldsValidator,
@@ -142,6 +152,35 @@ const FillMissingAccountInformation: React.FunctionComponent<Props> = ({
         />
         <p className="form-field-error">
           {formHelper.fieldsInformation.email.error}
+        </p>
+      </div>
+
+      {/* Password */}
+      <div className="relative w-full mb-3">
+        <label className="block mb-2">Mot de passe</label>
+        <div className="flex password-input-container">
+          <input
+            type={isPasswordVisible ? 'text' : 'password'}
+            className="w-full px-3 py-3 placeholder-gray-400 shadow-none focus:shadow-none"
+            placeholder="Votre mot de passe"
+            name="password"
+            onChange={formHelper.handleInputChange.bind(formHelper)}
+            value={formHelper.fieldsInformation.password.value}
+          />
+          <button
+            className="px-2 focus:outline-none"
+            onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+            tabIndex={-1}
+          >
+            {isPasswordVisible ? (
+              <FontAwesomeIcon icon={faEyeSlash} size="lg" />
+            ) : (
+              <FontAwesomeIcon icon={faEye} size="lg" />
+            )}
+          </button>
+        </div>
+        <p className="form-field-error">
+          {formHelper.fieldsInformation.password.error}
         </p>
       </div>
 
