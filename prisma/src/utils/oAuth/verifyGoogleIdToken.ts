@@ -1,5 +1,6 @@
 import * as fs from 'fs'
 import { OAuth2Client } from 'google-auth-library'
+import ResolverError from '../resolverError'
 
 const clientId = (() => {
   if (process.env.NODE_ENV === 'production') {
@@ -7,7 +8,7 @@ const clientId = (() => {
       .readFileSync('/run/secrets/GOOGLE_CLIENT_ID')
       .toString()
     if (!googleClientId) {
-      throw Error('GOOGLE_CLIENT_ID must be set in production.')
+      throw new ResolverError('GOOGLE_CLIENT_ID must be set in production.')
     }
     return googleClientId
   }
@@ -23,12 +24,12 @@ const verifyGoogleIdToken = async (token: string) => {
       audience: clientId,
     })
   } catch (e) {
-    throw Error('Invalid ID token')
+    throw new ResolverError('Invalid ID token')
   }
 
   const payload = ticket.getPayload()
   if (!payload) {
-    throw Error('Invalid ID token')
+    throw new ResolverError('Invalid ID token')
   }
 
   return payload

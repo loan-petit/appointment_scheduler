@@ -1,5 +1,6 @@
 import { rule, shield } from 'graphql-shield'
 import { getUserId } from '../utils/getUserId'
+import ResolverError from '../utils/resolverError'
 
 const isModelOwner = async (args: any, model: any, userId?: string) => {
   try {
@@ -71,6 +72,12 @@ export const permissions = shield(
     },
   },
   {
-    allowExternalErrors: true,
+    fallbackError: (thrownThing) => {
+      if (thrownThing instanceof ResolverError) {
+        return thrownThing
+      } else {
+        return new Error('Not Authorised!')
+      }
+    },
   },
 )

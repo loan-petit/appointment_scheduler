@@ -2,12 +2,13 @@ import * as fs from 'fs'
 import { verify } from 'jsonwebtoken'
 
 import { Context } from '../context'
+import ResolverError from './resolverError'
 
 export const JWT_SECRET = (() => {
   if (process.env.NODE_ENV === 'production') {
     const jwtSecret = fs.readFileSync('/run/secrets/JWT_SECRET').toString()
     if (!jwtSecret) {
-      throw Error('JWT_SECRET must be set in production.')
+      throw new ResolverError('JWT_SECRET must be set in production.')
     }
     return jwtSecret
   }

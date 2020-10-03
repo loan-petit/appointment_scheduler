@@ -3,6 +3,7 @@ import { queryField } from '@nexus/schema'
 import { sign } from 'jsonwebtoken'
 
 import { JWT_SECRET, getUserId } from '../../utils/getUserId'
+import ResolverError from '../../utils/resolverError'
 
 export const me = queryField('me', {
   type: 'AuthPayload',
@@ -15,7 +16,7 @@ export const me = queryField('me', {
     })
 
     if (!user) {
-      throw new Error('No user match this JWT.')
+      throw new ResolverError('No user match this JWT.')
     }
 
     return {

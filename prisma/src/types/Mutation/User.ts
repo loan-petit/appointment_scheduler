@@ -5,7 +5,8 @@ import { mutationField, stringArg, intArg } from '@nexus/schema'
 import { JWT_SECRET, getUserId } from '../../utils/getUserId'
 import { User } from '@prisma/client'
 import { OAuthTokenInput } from '../OAuthToken'
-import verifyGoogleIdToken from '../../utils/OAuth/verifyGoogleIdToken'
+import verifyGoogleIdToken from '../../utils/oAuth/verifyGoogleIdToken'
+import ResolverError from '../../utils/resolverError'
 
 export const signup = mutationField('signup', {
   type: 'AuthPayload',
@@ -23,7 +24,7 @@ export const signup = mutationField('signup', {
     ctx,
   ) => {
     if (!password && !oAuthToken) {
-      throw new Error(
+      throw new ResolverError(
         "Signup must be made using credentials or OAuth. Therefore 'password' or 'oAuthToken' must be set.",
       )
     }
@@ -48,7 +49,7 @@ export const signup = mutationField('signup', {
     } while (user)
 
     if (password !== passwordConfirmation) {
-      throw new Error("'password' must match 'passwordConfirmation'")
+      throw new ResolverError("'password' must match 'passwordConfirmation'")
     }
 
     const tokenPayload =
@@ -73,7 +74,7 @@ export const signup = mutationField('signup', {
     })
 
     if (!user) {
-      throw Error('An unexpected error occurred')
+      throw new ResolverError('An unexpected error occurred')
     }
 
     return {
@@ -104,15 +105,15 @@ export const signin = mutationField('signin', {
       })
 
       if (!user) {
-        throw new Error(`No user found for email: ${email}`)
+        throw new ResolverError(`No user found for email: ${email}`)
       }
       if (!user.password) {
-        throw new Error('This user has no associated credentials.')
+        throw new ResolverError('This user has no associated credentials.')
       }
 
       const passwordValid = await compare(password, user.password)
       if (!passwordValid) {
-        throw new Error('Invalid password')
+        throw new ResolverError('Invalid password')
       }
     } else if (oAuthToken) {
       const tokenPayload = await verifyGoogleIdToken(oAuthToken.idToken)
@@ -125,7 +126,7 @@ export const signin = mutationField('signin', {
     }
 
     if (!user) {
-      throw new Error(`User not found`)
+      throw new ResolverError(`User not found`)
     }
 
     return {
@@ -176,18 +177,18 @@ export const updateCurrentUser = mutationField('updateCurrentUser', {
     })
 
     if (!user) {
-      throw new Error('Could not authenticate user.')
+      throw new ResolverError('Could not authenticate user.')
     }
 
     var hashedPassword
     if (user.password && oldPassword && newPassword) {
       if (newPassword !== newPasswordConfirmation) {
-        throw new Error("'newPassword' must match 'newPasswordConfirmation'")
+        throw new ResolverError("'newPassword' must match 'newPasswordConfirmation'")
       }
 
       const passwordValid = await compare(oldPassword, user.password)
       if (!passwordValid) {
-        throw new Error('Invalid password')
+        throw new ResolverError('Invalid password')
       }
       hashedPassword = await hash(newPassword, 10)
     }
