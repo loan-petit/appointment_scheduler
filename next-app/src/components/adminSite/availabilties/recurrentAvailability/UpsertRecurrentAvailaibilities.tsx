@@ -31,7 +31,11 @@ const UpsertOneRecurrentAvailabilityMutation = gql`
         endTime: $endTime
         user: { connect: { id: $userId } }
       }
-      update: { day: $day, startTime: $startTime, endTime: $endTime }
+      update: {
+        day: { set: $day }
+        startTime: { set: $startTime }
+        endTime: { set: $endTime }
+      }
       where: { id: $recurrentAvailabilityId }
     ) {
       ...RecurrentAvailabilityFields
@@ -76,7 +80,7 @@ const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
   const [upsertOneRecurrentAvailability] = useMutation(
     UpsertOneRecurrentAvailabilityMutation,
     {
-      update (cache, { data: { upsertOneRecurrentAvailability } }) {
+      update(cache, { data: { upsertOneRecurrentAvailability } }) {
         const { user }: any = cache.readQuery({
           query: RecurrentAvailabilityOperations.recurrentAvailabilities,
           variables: { userId: currentUser.id },
@@ -109,7 +113,7 @@ const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
   const [deleteOneRecurrentAvailability] = useMutation(
     DeleteOneRecurrentAvailabilityMutation,
     {
-      update (cache, { data: { deleteOneRecurrentAvailability } }) {
+      update(cache, { data: { deleteOneRecurrentAvailability } }) {
         const { user }: any = cache.readQuery({
           query: RecurrentAvailabilityOperations.recurrentAvailabilities,
           variables: { userId: currentUser?.id },
@@ -192,7 +196,7 @@ const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
     var recurrentAvailabilitiesToUpsert: RecurrentAvailability[] = []
     invalidAvailabilityRanges = []
 
-    recurrentAvailabilities?.forEach(async v => {
+    recurrentAvailabilities?.forEach(async (v) => {
       if (!v.startTime && !v.endTime) {
         return
       } else if (!v.startTime || !v.endTime) {
@@ -205,7 +209,7 @@ const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
       return setInvalidAvailabilityRanges(invalidAvailabilityRanges)
     }
 
-    recurrentAvailabilitiesToUpsert.forEach(async v => {
+    recurrentAvailabilitiesToUpsert.forEach(async (v) => {
       try {
         await upsertOneRecurrentAvailability({
           variables: {
@@ -234,23 +238,23 @@ const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
       {/* Display recurrent availabilities grouped by day */}
       {Object.entries(recurrentAvailabilitiesGroupedByDay).map(
         ([key, group]) => (
-          <div key={key} className='mt-2 md:flex md:flex-row md:items-center'>
-            <label className='md:w-2/12'>{dayToUserFriendlyString(key)}</label>
+          <div key={key} className="mt-2 md:flex md:flex-row md:items-center">
+            <label className="md:w-2/12">{dayToUserFriendlyString(key)}</label>
 
-            <div className='p-2'>
+            <div className="p-2">
               {/* Update a recurrent availability */}
               {group?.map((recurrentAvailability, i) => {
                 if (!recurrentAvailabilities) return null
 
                 const index = recurrentAvailabilities.findIndex(
-                  v => v.id == recurrentAvailability.id,
+                  (v) => v.id == recurrentAvailability.id,
                 )
 
                 return (
                   <RecurrentAvailabilityTimePicker
                     key={i}
                     recurrentAvailability={recurrentAvailability}
-                    updateField={e => updateField(e, index)}
+                    updateField={(e) => updateField(e, index)}
                     remove={() => removeRecurrentAvailability(index)}
                     isRangeInvalid={invalidAvailabilityRanges.includes(
                       recurrentAvailability.id,
@@ -261,7 +265,7 @@ const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
 
               {/* Add a recurrent availability */}
               <a
-                className='flex flex-row items-center pt-2 pb-4 text-sm'
+                className="flex flex-row items-center pt-2 pb-4 text-sm"
                 onClick={() => {
                   if (!group) return
 
@@ -272,8 +276,8 @@ const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
                     addRecurrentAvailability(Day[Number(key) as Day])
                 }}
               >
-                <FontAwesomeIcon icon={faPlus} size='sm' />
-                <p className='pl-2'>Ajouter une disponibilité</p>
+                <FontAwesomeIcon icon={faPlus} size="sm" />
+                <p className="pl-2">Ajouter une disponibilité</p>
               </a>
             </div>
           </div>
@@ -284,21 +288,21 @@ const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
       {(() => {
         if (submitStatus.isSubmitted) {
           return (
-            <p className='pt-2 text-sm italic text-green-500'>
+            <p className="pt-2 text-sm italic text-green-500">
               Les créneaux de disponibilités enregistrés ont bien été pris en
               compte.
             </p>
           )
         } else if (submitStatus.userFriendlyError.length) {
           return (
-            <p className='pt-2 form-submit-error'>
+            <p className="pt-2 form-submit-error">
               {submitStatus.userFriendlyError}
             </p>
           )
         } else return null
       })()}
-      <div className='mt-6'>
-        <button className='px-6 py-3 submit-button' onClick={handleSubmit}>
+      <div className="mt-6">
+        <button className="px-6 py-3 submit-button" onClick={handleSubmit}>
           Sauvegarder
         </button>
       </div>

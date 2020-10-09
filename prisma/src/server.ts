@@ -1,3 +1,5 @@
+import 'dotenv/config'
+
 import { GraphQLServer } from 'graphql-yoga'
 import { permissions } from './permissions'
 import { schema } from './schema'

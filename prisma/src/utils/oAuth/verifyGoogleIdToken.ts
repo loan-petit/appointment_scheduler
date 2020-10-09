@@ -14,6 +14,7 @@ const clientId = (() => {
   }
   return process.env.GOOGLE_CLIENT_ID as string
 })()
+
 const client = new OAuth2Client(clientId)
 
 const verifyGoogleIdToken = async (token: string) => {

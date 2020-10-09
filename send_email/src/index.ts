@@ -1,3 +1,5 @@
+import 'dotenv/config'
+
 import * as Koa from 'koa'
 import * as cors from '@koa/cors'
 import * as koaBody from 'koa-body'
@@ -9,10 +11,6 @@ import * as Queue from 'bull'
 import SendEmailBody, { isSendEmailBody } from './types/SendEmailBody'
 import { RemoteResourceInfo, RemoteResource } from './types/RemoteResources'
 import fetchResources from './utils/fetchResources'
-
-require('dotenv').config({
-  path: `.${process.env.NODE_ENV}.env`
-})
 
 const port = 5000
 

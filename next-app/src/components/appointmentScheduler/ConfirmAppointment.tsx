@@ -35,11 +35,11 @@ const UpsertOneCustomerMutation = gql`
         users: { connect: { id: $userId } }
       }
       update: {
-        firstName: $firstName
-        lastName: $lastName
-        phone: $phone
-        address: $address
-        isBlackListed: $isBlackListed
+        firstName: { set: $firstName }
+        lastName: { set: $lastName }
+        phone: { set: $phone }
+        address: { set: $address }
+        isBlackListed: { set: $isBlackListed }
         users: { connect: { id: $userId } }
       }
       where: { email: $email }

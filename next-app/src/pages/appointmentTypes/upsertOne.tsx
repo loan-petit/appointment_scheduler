@@ -52,11 +52,11 @@ const UpsertOneAppointmentTypeMutation = gql`
         user: { connect: { id: $userId } }
       }
       update: {
-        name: $name
-        description: $description
-        duration: $duration
-        price: $price
-        generateClientSheet: $generateClientSheet
+        name: { set: $name }
+        description: { set: $description }
+        duration: { set: $duration }
+        price: { set: $price }
+        generateClientSheet: { set: $generateClientSheet }
       }
       where: { id: $appointmentTypeId }
     ) {
@@ -144,7 +144,6 @@ const UpsertOneAppointmentType = () => {
     })
 
   const onSubmitResult = ({ error }: any) => {
-    console.log(error)
     if (error) {
       return 'Une erreur est survenue. Veuillez-réessayer.'
     }

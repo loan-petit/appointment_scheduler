@@ -22,18 +22,18 @@ input AppointmentCreateInput {
 }
 
 input AppointmentCreateManyWithoutAppointmentTypeInput {
-  connect: [AppointmentWhereUniqueInput!]
-  create: [AppointmentCreateWithoutAppointmentTypeInput!]
+  connect: [AppointmentWhereUniqueInput]
+  create: [AppointmentCreateWithoutAppointmentTypeInput]
 }
 
 input AppointmentCreateManyWithoutCustomerInput {
-  connect: [AppointmentWhereUniqueInput!]
-  create: [AppointmentCreateWithoutCustomerInput!]
+  connect: [AppointmentWhereUniqueInput]
+  create: [AppointmentCreateWithoutCustomerInput]
 }
 
 input AppointmentCreateManyWithoutUserInput {
-  connect: [AppointmentWhereUniqueInput!]
-  create: [AppointmentCreateWithoutUserInput!]
+  connect: [AppointmentWhereUniqueInput]
+  create: [AppointmentCreateWithoutUserInput]
 }
 
 input AppointmentCreateWithoutAppointmentTypeInput {
@@ -61,14 +61,14 @@ input AppointmentCreateWithoutUserInput {
 }
 
 input AppointmentScalarWhereInput {
-  AND: [AppointmentScalarWhereInput!]
+  AND: [AppointmentScalarWhereInput]
   appointmentTypeId: IntNullableFilter
   customerId: IntNullableFilter
   end: DateTimeFilter
   googleCalendarEventId: StringNullableFilter
   id: IntFilter
-  NOT: [AppointmentScalarWhereInput!]
-  OR: [AppointmentScalarWhereInput!]
+  NOT: [AppointmentScalarWhereInput]
+  OR: [AppointmentScalarWhereInput]
   start: DateTimeFilter
   userId: IntNullableFilter
 }
@@ -94,8 +94,8 @@ input AppointmentTypeCreateInput {
 }
 
 input AppointmentTypeCreateManyWithoutUserInput {
-  connect: [AppointmentTypeWhereUniqueInput!]
-  create: [AppointmentTypeCreateWithoutUserInput!]
+  connect: [AppointmentTypeWhereUniqueInput]
+  create: [AppointmentTypeCreateWithoutUserInput]
 }
 
 input AppointmentTypeCreateOneWithoutAppointmentsInput {
@@ -122,14 +122,14 @@ input AppointmentTypeCreateWithoutUserInput {
 }
 
 input AppointmentTypeScalarWhereInput {
-  AND: [AppointmentTypeScalarWhereInput!]
+  AND: [AppointmentTypeScalarWhereInput]
   description: StringNullableFilter
   duration: IntFilter
   generateClientSheet: BoolFilter
   id: IntFilter
   name: StringFilter
-  NOT: [AppointmentTypeScalarWhereInput!]
-  OR: [AppointmentTypeScalarWhereInput!]
+  NOT: [AppointmentTypeScalarWhereInput]
+  OR: [AppointmentTypeScalarWhereInput]
   price: FloatNullableFilter
   userId: IntNullableFilter
 }
@@ -153,15 +153,15 @@ input AppointmentTypeUpdateManyDataInput {
 }
 
 input AppointmentTypeUpdateManyWithoutUserInput {
-  connect: [AppointmentTypeWhereUniqueInput!]
-  create: [AppointmentTypeCreateWithoutUserInput!]
-  delete: [AppointmentTypeWhereUniqueInput!]
-  deleteMany: [AppointmentTypeScalarWhereInput!]
-  disconnect: [AppointmentTypeWhereUniqueInput!]
-  set: [AppointmentTypeWhereUniqueInput!]
-  update: [AppointmentTypeUpdateWithWhereUniqueWithoutUserInput!]
-  updateMany: [AppointmentTypeUpdateManyWithWhereNestedInput!]
-  upsert: [AppointmentTypeUpsertWithWhereUniqueWithoutUserInput!]
+  connect: [AppointmentTypeWhereUniqueInput]
+  create: [AppointmentTypeCreateWithoutUserInput]
+  delete: [AppointmentTypeWhereUniqueInput]
+  deleteMany: [AppointmentTypeScalarWhereInput]
+  disconnect: [AppointmentTypeWhereUniqueInput]
+  set: [AppointmentTypeWhereUniqueInput]
+  update: [AppointmentTypeUpdateWithWhereUniqueWithoutUserInput]
+  updateMany: [AppointmentTypeUpdateManyWithWhereNestedInput]
+  upsert: [AppointmentTypeUpsertWithWhereUniqueWithoutUserInput]
 }
 
 input AppointmentTypeUpdateManyWithWhereNestedInput {
@@ -232,39 +232,39 @@ input AppointmentUpdateManyDataInput {
 }
 
 input AppointmentUpdateManyWithoutAppointmentTypeInput {
-  connect: [AppointmentWhereUniqueInput!]
-  create: [AppointmentCreateWithoutAppointmentTypeInput!]
-  delete: [AppointmentWhereUniqueInput!]
-  deleteMany: [AppointmentScalarWhereInput!]
-  disconnect: [AppointmentWhereUniqueInput!]
-  set: [AppointmentWhereUniqueInput!]
-  update: [AppointmentUpdateWithWhereUniqueWithoutAppointmentTypeInput!]
-  updateMany: [AppointmentUpdateManyWithWhereNestedInput!]
-  upsert: [AppointmentUpsertWithWhereUniqueWithoutAppointmentTypeInput!]
+  connect: [AppointmentWhereUniqueInput]
+  create: [AppointmentCreateWithoutAppointmentTypeInput]
+  delete: [AppointmentWhereUniqueInput]
+  deleteMany: [AppointmentScalarWhereInput]
+  disconnect: [AppointmentWhereUniqueInput]
+  set: [AppointmentWhereUniqueInput]
+  update: [AppointmentUpdateWithWhereUniqueWithoutAppointmentTypeInput]
+  updateMany: [AppointmentUpdateManyWithWhereNestedInput]
+  upsert: [AppointmentUpsertWithWhereUniqueWithoutAppointmentTypeInput]
 }
 
 input AppointmentUpdateManyWithoutCustomerInput {
-  connect: [AppointmentWhereUniqueInput!]
-  create: [AppointmentCreateWithoutCustomerInput!]
-  delete: [AppointmentWhereUniqueInput!]
-  deleteMany: [AppointmentScalarWhereInput!]
-  disconnect: [AppointmentWhereUniqueInput!]
-  set: [AppointmentWhereUniqueInput!]
-  update: [AppointmentUpdateWithWhereUniqueWithoutCustomerInput!]
-  updateMany: [AppointmentUpdateManyWithWhereNestedInput!]
-  upsert: [AppointmentUpsertWithWhereUniqueWithoutCustomerInput!]
+  connect: [AppointmentWhereUniqueInput]
+  create: [AppointmentCreateWithoutCustomerInput]
+  delete: [AppointmentWhereUniqueInput]
+  deleteMany: [AppointmentScalarWhereInput]
+  disconnect: [AppointmentWhereUniqueInput]
+  set: [AppointmentWhereUniqueInput]
+  update: [AppointmentUpdateWithWhereUniqueWithoutCustomerInput]
+  updateMany: [AppointmentUpdateManyWithWhereNestedInput]
+  upsert: [AppointmentUpsertWithWhereUniqueWithoutCustomerInput]
 }
 
 input AppointmentUpdateManyWithoutUserInput {
-  connect: [AppointmentWhereUniqueInput!]
-  create: [AppointmentCreateWithoutUserInput!]
-  delete: [AppointmentWhereUniqueInput!]
-  deleteMany: [AppointmentScalarWhereInput!]
-  disconnect: [AppointmentWhereUniqueInput!]
-  set: [AppointmentWhereUniqueInput!]
-  update: [AppointmentUpdateWithWhereUniqueWithoutUserInput!]
-  updateMany: [AppointmentUpdateManyWithWhereNestedInput!]
-  upsert: [AppointmentUpsertWithWhereUniqueWithoutUserInput!]
+  connect: [AppointmentWhereUniqueInput]
+  create: [AppointmentCreateWithoutUserInput]
+  delete: [AppointmentWhereUniqueInput]
+  deleteMany: [AppointmentScalarWhereInput]
+  disconnect: [AppointmentWhereUniqueInput]
+  set: [AppointmentWhereUniqueInput]
+  update: [AppointmentUpdateWithWhereUniqueWithoutUserInput]
+  updateMany: [AppointmentUpdateManyWithWhereNestedInput]
+  upsert: [AppointmentUpsertWithWhereUniqueWithoutUserInput]
 }
 
 input AppointmentUpdateManyWithWhereNestedInput {
@@ -334,9 +334,9 @@ input AppointmentWhereUniqueInput {
 }
 
 type AuthPayload {
-  expiresIn: Int!
-  token: String!
-  user: User!
+  expiresIn: Int
+  token: String
+  user: User
 }
 
 type AvailabilityModifier {
@@ -355,8 +355,8 @@ input AvailabilityModifierCreateInput {
 }
 
 input AvailabilityModifierCreateManyWithoutUserInput {
-  connect: [AvailabilityModifierWhereUniqueInput!]
-  create: [AvailabilityModifierCreateWithoutUserInput!]
+  connect: [AvailabilityModifierWhereUniqueInput]
+  create: [AvailabilityModifierCreateWithoutUserInput]
 }
 
 input AvailabilityModifierCreateWithoutUserInput {
@@ -366,12 +366,12 @@ input AvailabilityModifierCreateWithoutUserInput {
 }
 
 input AvailabilityModifierScalarWhereInput {
-  AND: [AvailabilityModifierScalarWhereInput!]
+  AND: [AvailabilityModifierScalarWhereInput]
   end: DateTimeFilter
   id: IntFilter
   isExclusive: BoolFilter
-  NOT: [AvailabilityModifierScalarWhereInput!]
-  OR: [AvailabilityModifierScalarWhereInput!]
+  NOT: [AvailabilityModifierScalarWhereInput]
+  OR: [AvailabilityModifierScalarWhereInput]
   start: DateTimeFilter
   userId: IntNullableFilter
 }
@@ -390,15 +390,15 @@ input AvailabilityModifierUpdateManyDataInput {
 }
 
 input AvailabilityModifierUpdateManyWithoutUserInput {
-  connect: [AvailabilityModifierWhereUniqueInput!]
-  create: [AvailabilityModifierCreateWithoutUserInput!]
-  delete: [AvailabilityModifierWhereUniqueInput!]
-  deleteMany: [AvailabilityModifierScalarWhereInput!]
-  disconnect: [AvailabilityModifierWhereUniqueInput!]
-  set: [AvailabilityModifierWhereUniqueInput!]
-  update: [AvailabilityModifierUpdateWithWhereUniqueWithoutUserInput!]
-  updateMany: [AvailabilityModifierUpdateManyWithWhereNestedInput!]
-  upsert: [AvailabilityModifierUpsertWithWhereUniqueWithoutUserInput!]
+  connect: [AvailabilityModifierWhereUniqueInput]
+  create: [AvailabilityModifierCreateWithoutUserInput]
+  delete: [AvailabilityModifierWhereUniqueInput]
+  deleteMany: [AvailabilityModifierScalarWhereInput]
+  disconnect: [AvailabilityModifierWhereUniqueInput]
+  set: [AvailabilityModifierWhereUniqueInput]
+  update: [AvailabilityModifierUpdateWithWhereUniqueWithoutUserInput]
+  updateMany: [AvailabilityModifierUpdateManyWithWhereNestedInput]
+  upsert: [AvailabilityModifierUpsertWithWhereUniqueWithoutUserInput]
 }
 
 input AvailabilityModifierUpdateManyWithWhereNestedInput {
@@ -460,8 +460,8 @@ input CustomerCreateInput {
 }
 
 input CustomerCreateManyWithoutUsersInput {
-  connect: [CustomerWhereUniqueInput!]
-  create: [CustomerCreateWithoutUsersInput!]
+  connect: [CustomerWhereUniqueInput]
+  create: [CustomerCreateWithoutUsersInput]
 }
 
 input CustomerCreateOneWithoutAppointmentsInput {
@@ -491,14 +491,14 @@ input CustomerCreateWithoutUsersInput {
 
 input CustomerScalarWhereInput {
   address: StringNullableFilter
-  AND: [CustomerScalarWhereInput!]
+  AND: [CustomerScalarWhereInput]
   email: StringFilter
   firstName: StringFilter
   id: IntFilter
   isBlackListed: BoolFilter
   lastName: StringFilter
-  NOT: [CustomerScalarWhereInput!]
-  OR: [CustomerScalarWhereInput!]
+  NOT: [CustomerScalarWhereInput]
+  OR: [CustomerScalarWhereInput]
   phone: StringNullableFilter
 }
 
@@ -523,15 +523,15 @@ input CustomerUpdateManyDataInput {
 }
 
 input CustomerUpdateManyWithoutUsersInput {
-  connect: [CustomerWhereUniqueInput!]
-  create: [CustomerCreateWithoutUsersInput!]
-  delete: [CustomerWhereUniqueInput!]
-  deleteMany: [CustomerScalarWhereInput!]
-  disconnect: [CustomerWhereUniqueInput!]
-  set: [CustomerWhereUniqueInput!]
-  update: [CustomerUpdateWithWhereUniqueWithoutUsersInput!]
-  updateMany: [CustomerUpdateManyWithWhereNestedInput!]
-  upsert: [CustomerUpsertWithWhereUniqueWithoutUsersInput!]
+  connect: [CustomerWhereUniqueInput]
+  create: [CustomerCreateWithoutUsersInput]
+  delete: [CustomerWhereUniqueInput]
+  deleteMany: [CustomerScalarWhereInput]
+  disconnect: [CustomerWhereUniqueInput]
+  set: [CustomerWhereUniqueInput]
+  update: [CustomerUpdateWithWhereUniqueWithoutUsersInput]
+  updateMany: [CustomerUpdateManyWithWhereNestedInput]
+  upsert: [CustomerUpsertWithWhereUniqueWithoutUsersInput]
 }
 
 input CustomerUpdateManyWithWhereNestedInput {
@@ -599,11 +599,11 @@ input DateTimeFilter {
   equals: DateTime
   gt: DateTime
   gte: DateTime
-  in: [DateTime!]
+  in: [DateTime]
   lt: DateTime
   lte: DateTime
   not: NestedDateTimeFilter
-  notIn: [DateTime!]
+  notIn: [DateTime]
 }
 
 enum Day {
@@ -620,11 +620,11 @@ input FloatNullableFilter {
   equals: Float
   gt: Float
   gte: Float
-  in: [Float!]
+  in: [Float]
   lt: Float
   lte: Float
   not: NestedFloatNullableFilter
-  notIn: [Float!]
+  notIn: [Float]
 }
 
 input IntFieldUpdateOperationsInput {
@@ -635,22 +635,22 @@ input IntFilter {
   equals: Int
   gt: Int
   gte: Int
-  in: [Int!]
+  in: [Int]
   lt: Int
   lte: Int
   not: NestedIntFilter
-  notIn: [Int!]
+  notIn: [Int]
 }
 
 input IntNullableFilter {
   equals: Int
   gt: Int
   gte: Int
-  in: [Int!]
+  in: [Int]
   lt: Int
   lte: Int
   not: NestedIntNullableFilter
-  notIn: [Int!]
+  notIn: [Int]
 }
 
 type Mutation {
@@ -665,9 +665,9 @@ type Mutation {
   deleteOneCustomer(where: CustomerWhereUniqueInput!): Customer
   deleteOneRecurrentAvailability(where: RecurrentAvailabilityWhereUniqueInput!): RecurrentAvailability
   deleteOneUser(where: UserWhereUniqueInput!): User
-  signin(email: String, oAuthToken: OAuthTokenInput, password: String): AuthPayload!
-  signup(email: String!, firstName: String!, lastName: String!, oAuthToken: OAuthTokenInput, password: String, passwordConfirmation: String): AuthPayload!
-  updateCurrentUser(address: String, email: String, firstName: String, lastName: String, minScheduleNotice: Int, newPassword: String, newPasswordConfirmation: String, oAuthToken: OAuthTokenInput, oldPassword: String, websiteUrl: String): User!
+  signin(email: String, oAuthToken: OAuthTokenInput, password: String): AuthPayload
+  signup(email: String!, firstName: String!, lastName: String!, oAuthToken: OAuthTokenInput, password: String): AuthPayload
+  updateCurrentUser(address: String, email: String, firstName: String, lastName: String, minScheduleNotice: Int, newPassword: String, oAuthToken: OAuthTokenInput, oldPassword: String, websiteUrl: String): User
   updateOneAppointment(data: AppointmentUpdateInput!, where: AppointmentWhereUniqueInput!): Appointment
   updateOneAppointmentType(data: AppointmentTypeUpdateInput!, where: AppointmentTypeWhereUniqueInput!): AppointmentType
   updateOneAvailabilityModifier(data: AvailabilityModifierUpdateInput!, where: AvailabilityModifierWhereUniqueInput!): AvailabilityModifier
@@ -688,44 +688,44 @@ input NestedDateTimeFilter {
   equals: DateTime
   gt: DateTime
   gte: DateTime
-  in: [DateTime!]
+  in: [DateTime]
   lt: DateTime
   lte: DateTime
   not: NestedDateTimeFilter
-  notIn: [DateTime!]
+  notIn: [DateTime]
 }
 
 input NestedFloatNullableFilter {
   equals: Float
   gt: Float
   gte: Float
-  in: [Float!]
+  in: [Float]
   lt: Float
   lte: Float
   not: NestedFloatNullableFilter
-  notIn: [Float!]
+  notIn: [Float]
 }
 
 input NestedIntFilter {
   equals: Int
   gt: Int
   gte: Int
-  in: [Int!]
+  in: [Int]
   lt: Int
   lte: Int
   not: NestedIntFilter
-  notIn: [Int!]
+  notIn: [Int]
 }
 
 input NestedIntNullableFilter {
   equals: Int
   gt: Int
   gte: Int
-  in: [Int!]
+  in: [Int]
   lt: Int
   lte: Int
   not: NestedIntNullableFilter
-  notIn: [Int!]
+  notIn: [Int]
 }
 
 input NestedStringFilter {
@@ -734,11 +734,11 @@ input NestedStringFilter {
   equals: String
   gt: String
   gte: String
-  in: [String!]
+  in: [String]
   lt: String
   lte: String
   not: NestedStringFilter
-  notIn: [String!]
+  notIn: [String]
   startsWith: String
 }
 
@@ -748,11 +748,11 @@ input NestedStringNullableFilter {
   equals: String
   gt: String
   gte: String
-  in: [String!]
+  in: [String]
   lt: String
   lte: String
   not: NestedStringNullableFilter
-  notIn: [String!]
+  notIn: [String]
   startsWith: String
 }
 
@@ -819,7 +819,7 @@ type Query {
   availabilityModifiers(after: AvailabilityModifierWhereUniqueInput, before: AvailabilityModifierWhereUniqueInput, first: Int, last: Int): [AvailabilityModifier!]!
   customer(where: CustomerWhereUniqueInput!): Customer
   customers(after: CustomerWhereUniqueInput, before: CustomerWhereUniqueInput, first: Int, last: Int): [Customer!]!
-  me: AuthPayload!
+  me: AuthPayload
   recurrentAvailabilities(after: RecurrentAvailabilityWhereUniqueInput, before: RecurrentAvailabilityWhereUniqueInput, first: Int, last: Int): [RecurrentAvailability!]!
   recurrentAvailability(where: RecurrentAvailabilityWhereUniqueInput!): RecurrentAvailability
   user(where: UserWhereUniqueInput!): User
@@ -842,8 +842,8 @@ input RecurrentAvailabilityCreateInput {
 }
 
 input RecurrentAvailabilityCreateManyWithoutUserInput {
-  connect: [RecurrentAvailabilityWhereUniqueInput!]
-  create: [RecurrentAvailabilityCreateWithoutUserInput!]
+  connect: [RecurrentAvailabilityWhereUniqueInput]
+  create: [RecurrentAvailabilityCreateWithoutUserInput]
 }
 
 input RecurrentAvailabilityCreateWithoutUserInput {
@@ -853,12 +853,12 @@ input RecurrentAvailabilityCreateWithoutUserInput {
 }
 
 input RecurrentAvailabilityScalarWhereInput {
-  AND: [RecurrentAvailabilityScalarWhereInput!]
+  AND: [RecurrentAvailabilityScalarWhereInput]
   day: Day
   endTime: IntFilter
   id: IntFilter
-  NOT: [RecurrentAvailabilityScalarWhereInput!]
-  OR: [RecurrentAvailabilityScalarWhereInput!]
+  NOT: [RecurrentAvailabilityScalarWhereInput]
+  OR: [RecurrentAvailabilityScalarWhereInput]
   startTime: IntFilter
   userId: IntNullableFilter
 }
@@ -877,15 +877,15 @@ input RecurrentAvailabilityUpdateManyDataInput {
 }
 
 input RecurrentAvailabilityUpdateManyWithoutUserInput {
-  connect: [RecurrentAvailabilityWhereUniqueInput!]
-  create: [RecurrentAvailabilityCreateWithoutUserInput!]
-  delete: [RecurrentAvailabilityWhereUniqueInput!]
-  deleteMany: [RecurrentAvailabilityScalarWhereInput!]
-  disconnect: [RecurrentAvailabilityWhereUniqueInput!]
-  set: [RecurrentAvailabilityWhereUniqueInput!]
-  update: [RecurrentAvailabilityUpdateWithWhereUniqueWithoutUserInput!]
-  updateMany: [RecurrentAvailabilityUpdateManyWithWhereNestedInput!]
-  upsert: [RecurrentAvailabilityUpsertWithWhereUniqueWithoutUserInput!]
+  connect: [RecurrentAvailabilityWhereUniqueInput]
+  create: [RecurrentAvailabilityCreateWithoutUserInput]
+  delete: [RecurrentAvailabilityWhereUniqueInput]
+  deleteMany: [RecurrentAvailabilityScalarWhereInput]
+  disconnect: [RecurrentAvailabilityWhereUniqueInput]
+  set: [RecurrentAvailabilityWhereUniqueInput]
+  update: [RecurrentAvailabilityUpdateWithWhereUniqueWithoutUserInput]
+  updateMany: [RecurrentAvailabilityUpdateManyWithWhereNestedInput]
+  upsert: [RecurrentAvailabilityUpsertWithWhereUniqueWithoutUserInput]
 }
 
 input RecurrentAvailabilityUpdateManyWithWhereNestedInput {
@@ -924,11 +924,11 @@ input StringFilter {
   equals: String
   gt: String
   gte: String
-  in: [String!]
+  in: [String]
   lt: String
   lte: String
   not: NestedStringFilter
-  notIn: [String!]
+  notIn: [String]
   startsWith: String
 }
 
@@ -938,11 +938,11 @@ input StringNullableFilter {
   equals: String
   gt: String
   gte: String
-  in: [String!]
+  in: [String]
   lt: String
   lte: String
   not: NestedStringNullableFilter
-  notIn: [String!]
+  notIn: [String]
   startsWith: String
 }
 
@@ -965,8 +965,8 @@ type User {
 }
 
 input UserCreateManyWithoutCustomersInput {
-  connect: [UserWhereUniqueInput!]
-  create: [UserCreateWithoutCustomersInput!]
+  connect: [UserWhereUniqueInput]
+  create: [UserCreateWithoutCustomersInput]
 }
 
 input UserCreateOneWithoutAppointmentsInput {
@@ -1081,15 +1081,15 @@ input UserCreateWithoutRecurrentAvailabilitiesInput {
 
 input UserScalarWhereInput {
   address: StringNullableFilter
-  AND: [UserScalarWhereInput!]
+  AND: [UserScalarWhereInput]
   email: StringFilter
   firstName: StringFilter
   googleId: StringNullableFilter
   id: IntFilter
   lastName: StringFilter
   minScheduleNotice: IntFilter
-  NOT: [UserScalarWhereInput!]
-  OR: [UserScalarWhereInput!]
+  NOT: [UserScalarWhereInput]
+  OR: [UserScalarWhereInput]
   password: StringNullableFilter
   phone: StringNullableFilter
   username: StringFilter
@@ -1110,15 +1110,15 @@ input UserUpdateManyDataInput {
 }
 
 input UserUpdateManyWithoutCustomersInput {
-  connect: [UserWhereUniqueInput!]
-  create: [UserCreateWithoutCustomersInput!]
-  delete: [UserWhereUniqueInput!]
-  deleteMany: [UserScalarWhereInput!]
-  disconnect: [UserWhereUniqueInput!]
-  set: [UserWhereUniqueInput!]
-  update: [UserUpdateWithWhereUniqueWithoutCustomersInput!]
-  updateMany: [UserUpdateManyWithWhereNestedInput!]
-  upsert: [UserUpsertWithWhereUniqueWithoutCustomersInput!]
+  connect: [UserWhereUniqueInput]
+  create: [UserCreateWithoutCustomersInput]
+  delete: [UserWhereUniqueInput]
+  deleteMany: [UserScalarWhereInput]
+  disconnect: [UserWhereUniqueInput]
+  set: [UserWhereUniqueInput]
+  update: [UserUpdateWithWhereUniqueWithoutCustomersInput]
+  updateMany: [UserUpdateManyWithWhereNestedInput]
+  upsert: [UserUpsertWithWhereUniqueWithoutCustomersInput]
 }
 
 input UserUpdateManyWithWhereNestedInput {
