@@ -152,7 +152,7 @@ function createIsomorphLink(cookie = '') {
 
   const authLink = setContext((_, { headers }) => {
     var token = ''
-    if (document) {
+    if (typeof document !== 'undefined' && document !== null && document) {
       token = getCookie(document.cookie, 'token')
     }
     if (!token || !token.length) {

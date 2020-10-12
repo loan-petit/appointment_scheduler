@@ -16,7 +16,11 @@ require('axios').post(
   ],
 )
 
-module.exports = {
+// for transpiling all ESM @fullcalendar/* packages
+// also, for piping fullcalendar thru babel (to learn why, see babel.config.js)
+const withTM = require('next-transpile-modules')(['@fullcalendar'])
+
+module.exports = withTM({
   env: {
     SITE_URL: process.env.SITE_URL,
     API_URL: process.env.API_URL,
@@ -26,4 +30,4 @@ module.exports = {
         ? fs.readFileSync('/run/secrets/GOOGLE_CLIENT_ID').toString()
         : process.env.GOOGLE_CLIENT_ID,
   },
-}
+})

@@ -57,7 +57,7 @@ const AppointmentTypes = () => {
   const [deleteOneAppointmentType] = useMutation(
     DeleteOneAppointmentTypeMutation,
     {
-      update (cache, { data: { deleteOneAppointmentType } }) {
+      update(cache, { data: { deleteOneAppointmentType } }) {
         const { user }: any = cache.readQuery({
           query: AppointmentTypeOperations.appointmentTypes,
           variables: { userId: currentUser?.id },
@@ -88,6 +88,7 @@ const AppointmentTypes = () => {
   // Verify CurrentUserQuery result
   if (currentUserQueryResult.loading) return <LoadingOverlay />
   else if (currentUserQueryResult.error) {
+    console.log(currentUserQueryResult.error)
     Router.push('/auth/signin')
     return <div />
   }
@@ -99,7 +100,7 @@ const AppointmentTypes = () => {
   if (appointmentTypesQueryResult.loading) return <LoadingOverlay />
   else if (appointmentTypesQueryResult.error) {
     return (
-      <p className='error-message'>
+      <p className="error-message">
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
@@ -111,30 +112,30 @@ const AppointmentTypes = () => {
 
   return (
     <Layout>
-      <div className='flex justify-center pb-2'>
-        <Link href='/appointmentTypes/upsertOne'>
-          <a className='flex flex-row items-center justify-center py-4 rounded-lg lg:w-1/2 hover:bg-gray-300'>
+      <div className="flex justify-center pb-2">
+        <Link href="/appointmentTypes/upsertOne">
+          <a className="flex flex-row items-center justify-center py-4 rounded-lg lg:w-1/2 hover:bg-gray-300">
             <FontAwesomeIcon icon={faPlus} />
-            <p className='pl-4 text-lg'>Créer un nouvel événement</p>
+            <p className="pl-4 text-lg">Créer un nouvel événement</p>
           </a>
         </Link>
       </div>
 
       {/* AppointmentTypes */}
-      <div className='flex flex-wrap'>
+      <div className="flex flex-wrap">
         {appointmentTypes.map((appointmentType, i) => (
           <div
             key={i}
-            className='flex justify-between w-full m-4 text-gray-800 bg-white rounded-lg shadow-lg md:w-4/12'
+            className="flex justify-between w-full m-4 text-gray-800 bg-white rounded-lg shadow-lg md:w-4/12"
           >
-            <div className='flex flex-col p-4 break-words'>
-              <h4 className='text-xl font-semibold'>{appointmentType.name}</h4>
-              <p className='mt-1 text-gray-600'>
+            <div className="flex flex-col p-4 break-words">
+              <h4 className="text-xl font-semibold">{appointmentType.name}</h4>
+              <p className="mt-1 text-gray-600">
                 {appointmentType.description}
               </p>
             </div>
 
-            <div className='relative m-4'>
+            <div className="relative m-4">
               <FontAwesomeIcon
                 icon={faEllipsisH}
                 onClick={() =>
@@ -145,7 +146,7 @@ const AppointmentTypes = () => {
                     ).map((x, j) => (i == j ? !x : false)),
                   )
                 }
-                className='cursor-pointer'
+                className="cursor-pointer"
               />
               <div
                 className={
@@ -159,10 +160,10 @@ const AppointmentTypes = () => {
                 <Link
                   href={`/appointmentTypes/upsertOne?id=${appointmentType.id}`}
                 >
-                  <a className='block p-2'>Éditer</a>
+                  <a className="block p-2">Éditer</a>
                 </Link>
                 <a
-                  className='block p-2 text-red-500 hover:text-red-600'
+                  className="block p-2 text-red-500 hover:text-red-600"
                   onClick={() =>
                     setAppointmentTypeToDeleteId(appointmentType.id)
                   }
@@ -176,7 +177,7 @@ const AppointmentTypes = () => {
       </div>
 
       <WarningModal
-        warningMessage='Vous êtes sur le point de supprimer un événement, confirmez-vous cette action ?'
+        warningMessage="Vous êtes sur le point de supprimer un événement, confirmez-vous cette action ?"
         onCancel={() => setAppointmentTypeToDeleteId(-1)}
         onConfirm={() => {
           deleteOneAppointmentType({

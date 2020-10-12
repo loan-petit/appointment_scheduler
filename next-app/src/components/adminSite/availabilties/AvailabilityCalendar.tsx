@@ -1,7 +1,7 @@
 import React from 'react'
 import gql from 'graphql-tag'
 import { useQuery, useMutation } from '@apollo/react-hooks'
-import { DateClickApi } from '@fullcalendar/core/Calendar'
+import { DateClickArg } from '@fullcalendar/interaction'
 import moment from 'moment'
 
 import LoadingOverlay from '../../shared/LoadingOverlay'
@@ -11,7 +11,6 @@ import AvailabilityModifier, {
   AvailabilityModifierOperations,
 } from '../../../models/AvailabilityModifier'
 import RecurrentAvailability from '../../../models/RecurrentAvailability'
-import DynamicFullCalendar from '../../shared/fullCalendar/DynamicFullCalendar'
 import Day from '../../../types/Day'
 import isInBusinessHours, {
   BusinessHour,
@@ -20,6 +19,7 @@ import { convertSecondsToTimeString } from '../../../utils/timeStringHelper'
 import MomentInterval from '../../../types/MomentInterval'
 import getSurroundingEvents from '../../../utils/getSurroundingEvents'
 import isIntervalAllDay from '../../../utils/isIntervalAllDay'
+import FullCalendarComponent from '../../shared/FullCalendar'
 
 const UpsertOneAvailabilityModifierMutation = gql`
   mutation UpsertOneAvailabilityModifierMutation(
@@ -170,7 +170,7 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
       }
     })
 
-  const handleDateClick = async (arg: DateClickApi) => {
+  const handleDateClick = async (arg: DateClickArg) => {
     var event: MomentInterval = {
       start: moment(arg.date),
       end: moment(arg.date).add(30, 'minutes'),
@@ -211,25 +211,26 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
   }
 
   return (
-    <DynamicFullCalendar
-      defaultView="timeGridWeek"
-      header={{
-        left: 'prev,next today',
+    <FullCalendarComponent
+      initialView="timeGridWeek"
+      headerToolbar={{
+        start: 'prev,next today',
         center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay',
+        end: 'dayGridMonth,timeGridWeek,timeGridDay',
       }}
       views={{
         dayGrid: {
-          columnHeaderFormat: {
+          dayHeaderFormat: {
             weekday: 'short',
           },
         },
         week: {
-          columnHeaderFormat: {
+          dayHeaderFormat: {
             weekday: 'short',
           },
         },
       }}
+      stickyHeaderDates="true"
       nowIndicator={true}
       navLinks={true}
       allDaySlot={false}
@@ -237,8 +238,8 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
         const isAllDay = isIntervalAllDay(v.start, v.end)
 
         return {
-          id: v.id,
-          title: v.id,
+          id: v.id.toString(),
+          title: v.id.toString(),
           start: v.start,
           end: !isAllDay ? v.end : undefined,
           allDay: isAllDay,

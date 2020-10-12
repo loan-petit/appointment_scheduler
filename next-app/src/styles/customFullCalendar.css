@@ -1,3 +1,9 @@
+@media (max-width: 768px) {
+  .fc-toolbar.fc-header-toolbar {
+    flex-direction: column;
+  }
+}
+
 /* Remove that awful yellow color and border from today in Schedule */
 .fc-today {
   background-color: inherit !important;
