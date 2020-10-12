@@ -164,7 +164,9 @@ const Signup: React.FunctionComponent = () => {
           {/* Full Name */}
           <div className="relative flex flex-row justify-between mb-3">
             <div className="w-full mr-2">
-              <label className="block mb-2">Prénom</label>
+              <label className="block mb-2">
+                Prénom <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 className="w-full px-3 py-3 placeholder-gray-400"
@@ -179,7 +181,9 @@ const Signup: React.FunctionComponent = () => {
               </p>
             </div>
             <div className="w-full ml-2">
-              <label className="block mb-2">Nom</label>
+              <label className="block mb-2">
+                Nom <span className="required">*</span>
+              </label>
               <input
                 type="text"
                 className="w-full px-3 py-3 placeholder-gray-400"
@@ -196,7 +200,9 @@ const Signup: React.FunctionComponent = () => {
 
           {/* Email */}
           <div className="relative w-full mb-3">
-            <label className="block mb-2">E-mail</label>
+            <label className="block mb-2">
+              E-mail <span className="required">*</span>
+            </label>
             <input
               type="email"
               className="w-full px-3 py-3 placeholder-gray-400"
@@ -212,7 +218,9 @@ const Signup: React.FunctionComponent = () => {
 
           {/* Password */}
           <div className="relative w-full mb-3">
-            <label className="block mb-2">Mot de passe</label>
+            <label className="block mb-2">
+              Mot de passe <span className="required">*</span>
+            </label>
             <div className="flex password-input-container">
               <input
                 type={isPasswordVisible ? 'text' : 'password'}

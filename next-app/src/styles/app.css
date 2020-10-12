@@ -107,3 +107,7 @@ textarea,
     @apply bg-gray-200;
   }
 }
+
+.required {
+  @apply text-red-500;
+}

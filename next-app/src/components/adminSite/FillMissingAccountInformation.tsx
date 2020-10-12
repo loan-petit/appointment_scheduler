@@ -109,7 +109,7 @@ const FillMissingAccountInformation: React.FunctionComponent<Props> = ({
       {/* Full Name */}
       <div className="flex flex-row justify-between mb-3">
         <div className="w-full mr-2">
-          <label className="block mb-2">Prénom</label>
+          <label className="block mb-2">Prénom <span className="required">*</span></label>
           <input
             type="text"
             className="w-full p-3 placeholder-gray-400"
@@ -124,7 +124,7 @@ const FillMissingAccountInformation: React.FunctionComponent<Props> = ({
           </p>
         </div>
         <div className="w-full ml-2">
-          <label className="block mb-2">Nom</label>
+          <label className="block mb-2">Nom <span className="required">*</span></label>
           <input
             type="text"
             className="w-full p-3 placeholder-gray-400"
@@ -141,7 +141,7 @@ const FillMissingAccountInformation: React.FunctionComponent<Props> = ({
 
       {/* Email */}
       <div className="w-full mb-3">
-        <label className="block mb-2">E-mail</label>
+        <label className="block mb-2">E-mail <span className="required">*</span></label>
         <input
           type="email"
           className="w-full p-3 placeholder-gray-400"
@@ -157,7 +157,7 @@ const FillMissingAccountInformation: React.FunctionComponent<Props> = ({
 
       {/* Password */}
       <div className="relative w-full mb-3">
-        <label className="block mb-2">Mot de passe</label>
+        <label className="block mb-2">Mot de passe <span className="required">*</span></label>
         <div className="flex password-input-container">
           <input
             type={isPasswordVisible ? 'text' : 'password'}

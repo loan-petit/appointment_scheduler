@@ -76,7 +76,6 @@ input AppointmentScalarWhereInput {
 type AppointmentType {
   description: String
   duration: Int!
-  generateClientSheet: Boolean!
   id: Int!
   name: String!
   price: Float
@@ -87,7 +86,6 @@ input AppointmentTypeCreateInput {
   appointments: AppointmentCreateManyWithoutAppointmentTypeInput
   description: String
   duration: Int!
-  generateClientSheet: Boolean
   name: String!
   price: Float
   user: UserCreateOneWithoutAppointmentTypesInput
@@ -106,7 +104,6 @@ input AppointmentTypeCreateOneWithoutAppointmentsInput {
 input AppointmentTypeCreateWithoutAppointmentsInput {
   description: String
   duration: Int!
-  generateClientSheet: Boolean
   name: String!
   price: Float
   user: UserCreateOneWithoutAppointmentTypesInput
@@ -116,7 +113,6 @@ input AppointmentTypeCreateWithoutUserInput {
   appointments: AppointmentCreateManyWithoutAppointmentTypeInput
   description: String
   duration: Int!
-  generateClientSheet: Boolean
   name: String!
   price: Float
 }
@@ -125,7 +121,6 @@ input AppointmentTypeScalarWhereInput {
   AND: [AppointmentTypeScalarWhereInput]
   description: StringNullableFilter
   duration: IntFilter
-  generateClientSheet: BoolFilter
   id: IntFilter
   name: StringFilter
   NOT: [AppointmentTypeScalarWhereInput]
@@ -138,7 +133,6 @@ input AppointmentTypeUpdateInput {
   appointments: AppointmentUpdateManyWithoutAppointmentTypeInput
   description: NullableStringFieldUpdateOperationsInput
   duration: IntFieldUpdateOperationsInput
-  generateClientSheet: BoolFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   price: NullableFloatFieldUpdateOperationsInput
   user: UserUpdateOneWithoutAppointmentTypesInput
@@ -147,7 +141,6 @@ input AppointmentTypeUpdateInput {
 input AppointmentTypeUpdateManyDataInput {
   description: NullableStringFieldUpdateOperationsInput
   duration: IntFieldUpdateOperationsInput
-  generateClientSheet: BoolFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   price: NullableFloatFieldUpdateOperationsInput
 }
@@ -181,7 +174,6 @@ input AppointmentTypeUpdateOneWithoutAppointmentsInput {
 input AppointmentTypeUpdateWithoutAppointmentsDataInput {
   description: NullableStringFieldUpdateOperationsInput
   duration: IntFieldUpdateOperationsInput
-  generateClientSheet: BoolFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   price: NullableFloatFieldUpdateOperationsInput
   user: UserUpdateOneWithoutAppointmentTypesInput
@@ -191,7 +183,6 @@ input AppointmentTypeUpdateWithoutUserDataInput {
   appointments: AppointmentUpdateManyWithoutAppointmentTypeInput
   description: NullableStringFieldUpdateOperationsInput
   duration: IntFieldUpdateOperationsInput
-  generateClientSheet: BoolFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
   price: NullableFloatFieldUpdateOperationsInput
 }

@@ -8,7 +8,6 @@ export const AppointmentType = objectType({
     t.model.description()
     t.model.duration()
     t.model.price()
-    t.model.generateClientSheet()
     t.model.user()
   },
 })

@@ -8,7 +8,6 @@ type AppointmentType = {
   description?: string
   duration: number
   price?: number
-  generateClientSheet?: boolean
   user?: User
 }
 
@@ -21,7 +20,6 @@ export const AppointmentTypeFragments = {
       description
       duration
       price
-      generateClientSheet
     }
   `,
 }

@@ -39,7 +39,6 @@ const UpsertOneAppointmentTypeMutation = gql`
     $description: String
     $duration: Int!
     $price: Float
-    $generateClientSheet: Boolean
     $userId: Int!
   ) {
     upsertOneAppointmentType(
@@ -48,7 +47,6 @@ const UpsertOneAppointmentTypeMutation = gql`
         description: $description
         duration: $duration
         price: $price
-        generateClientSheet: $generateClientSheet
         user: { connect: { id: $userId } }
       }
       update: {
@@ -56,7 +54,6 @@ const UpsertOneAppointmentTypeMutation = gql`
         description: { set: $description }
         duration: { set: $duration }
         price: { set: $price }
-        generateClientSheet: { set: $generateClientSheet }
       }
       where: { id: $appointmentTypeId }
     ) {
@@ -138,7 +135,6 @@ const UpsertOneAppointmentType = () => {
         description: fieldsInformation.description.value,
         duration: Number(fieldsInformation.duration.value),
         price: Number(fieldsInformation.price.value),
-        generateClientSheet: fieldsInformation.generateClientSheet.value,
         ...additionalVariables,
       },
     })
@@ -157,7 +153,6 @@ const UpsertOneAppointmentType = () => {
         'description',
         'duration',
         'price',
-        { name: 'generateClientSheet', value: false },
       ],
       refreshComponent: forceUpdate,
       fieldsValidator: fieldsValidator,
@@ -203,7 +198,9 @@ const UpsertOneAppointmentType = () => {
 
         {/* Name */}
         <div className="w-full mb-3">
-          <label className="block mb-2">Nom</label>
+          <label className="block mb-2">
+            Nom <span className="required">*</span>
+          </label>
           <input
             className="w-full px-3 py-3 placeholder-gray-400"
             placeholder="Nom de l'événement"
@@ -235,7 +232,9 @@ const UpsertOneAppointmentType = () => {
 
         {/* Duration */}
         <div className="w-full mb-3">
-          <label className="block mb-2">Durée (en minutes)</label>
+          <label className="block mb-2">
+            Durée (en minutes) <span className="required">*</span>
+          </label>
           <input
             type="number"
             className="w-full px-3 py-3 placeholder-gray-400"
@@ -264,20 +263,6 @@ const UpsertOneAppointmentType = () => {
           <p className="form-field-error">
             {formHelper.fieldsInformation.price.error}
           </p>
-        </div>
-
-        {/* Generate Client Sheet */}
-        <div className="mb-6">
-          <label className="text-gray-700 normal-case md:w-2/3">
-            <input
-              className="mr-2"
-              type="checkbox"
-              name="generateClientSheet"
-              onChange={formHelper.handleInputChange.bind(formHelper)}
-              checked={formHelper.fieldsInformation.generateClientSheet.value}
-            />
-            <span className="text-xs">Générer une fiche client</span>
-          </label>
         </div>
 
         {/* Submit to change information */}
