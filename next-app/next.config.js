@@ -5,16 +5,17 @@ require('dotenv').config({
 })
 
 // Prefetch remote resources for emails
-require('axios').post(
-  process.env.SEND_EMAIL_API_URL + '/prefetchRemoteResources',
-  [
+require('axios')
+  .post(process.env.SEND_EMAIL_API_URL + '/prefetchRemoteResources', [
     {
       name: 'tailwindcss',
       url: 'https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css',
       rel: 'stylesheet',
     },
-  ],
-)
+  ])
+  .catch((_) =>
+    console.warn("WARNING: The API responsible of sending emails couldn't fetch remote resources."),
+  )
 
 // for transpiling all ESM @fullcalendar/* packages
 // also, for piping fullcalendar thru babel (to learn why, see babel.config.js)
