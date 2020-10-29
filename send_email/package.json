@@ -10,27 +10,27 @@
     "format": "prettier-standard --format"
   },
   "dependencies": {
-    "@koa/cors": "^2.2.3",
-    "@types/bull": "^3.14.0",
-    "@types/koa": "^2.11.3",
+    "@koa/cors": "^3.1.0",
+    "@types/bull": "^3.14.4",
+    "@types/koa": "^2.11.6",
+    "@types/koa__cors": "^3.0.2",
     "@types/koa-router": "^7.4.1",
-    "@types/koa__cors": "^3.0.1",
-    "@types/node": "^14.6.2",
-    "aws-sdk": "^2.656.0",
-    "axios": "^0.19.2",
-    "bull": "^3.14.0",
+    "@types/node": "^14.14.6",
+    "aws-sdk": "^2.781.0",
+    "axios": "^0.21.0",
+    "bull": "^3.18.1",
     "dotenv": "^8.2.0",
-    "email-comb": "^3.9.18",
-    "html-crush": "^1.9.35",
-    "juice": "^6.0.0",
-    "koa": "^2.11.0",
-    "koa-body": "^4.1.1",
-    "koa-router": "^9.0.1",
-    "node-cache": "^5.1.0",
-    "typescript": "^3.8.3"
+    "email-comb": "^3.10.5",
+    "html-crush": "^2.0.9",
+    "juice": "^7.0.0",
+    "koa": "^2.13.0",
+    "koa-body": "^4.2.0",
+    "koa-router": "^9.4.0",
+    "node-cache": "^5.1.2",
+    "typescript": "^4.0.5"
   },
   "devDependencies": {
-    "prettier-standard": "^16.2.1",
-    "ts-node-dev": "^1.0.0-pre.44"
+    "prettier-standard": "^16.4.1",
+    "ts-node-dev": "^1.0.0"
   }
 }
