@@ -13,7 +13,7 @@ WORKDIR /prisma
 RUN mkdir ./prisma/
 COPY ./package.json ./
 COPY ./prisma/schema.prisma ./prisma/
-RUN npm install --legacy-peer-deps
+RUN npm install --legacy-peer-deps --ignore-scripts
 
 # Copy code resources
 COPY . .

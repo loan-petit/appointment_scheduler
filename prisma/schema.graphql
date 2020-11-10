@@ -23,17 +23,35 @@ input AppointmentCreateInput {
 
 input AppointmentCreateManyWithoutAppointmentTypeInput {
   connect: [AppointmentWhereUniqueInput!]
+  connectOrCreate: [AppointmentCreateOrConnectWithoutappointmentTypeInput!]
   create: [AppointmentCreateWithoutAppointmentTypeInput!]
 }
 
 input AppointmentCreateManyWithoutCustomerInput {
   connect: [AppointmentWhereUniqueInput!]
+  connectOrCreate: [AppointmentCreateOrConnectWithoutcustomerInput!]
   create: [AppointmentCreateWithoutCustomerInput!]
 }
 
 input AppointmentCreateManyWithoutUserInput {
   connect: [AppointmentWhereUniqueInput!]
+  connectOrCreate: [AppointmentCreateOrConnectWithoutuserInput!]
   create: [AppointmentCreateWithoutUserInput!]
+}
+
+input AppointmentCreateOrConnectWithoutappointmentTypeInput {
+  create: AppointmentCreateWithoutAppointmentTypeInput!
+  where: AppointmentWhereUniqueInput!
+}
+
+input AppointmentCreateOrConnectWithoutcustomerInput {
+  create: AppointmentCreateWithoutCustomerInput!
+  where: AppointmentWhereUniqueInput!
+}
+
+input AppointmentCreateOrConnectWithoutuserInput {
+  create: AppointmentCreateWithoutUserInput!
+  where: AppointmentWhereUniqueInput!
 }
 
 input AppointmentCreateWithoutAppointmentTypeInput {
@@ -93,12 +111,24 @@ input AppointmentTypeCreateInput {
 
 input AppointmentTypeCreateManyWithoutUserInput {
   connect: [AppointmentTypeWhereUniqueInput!]
+  connectOrCreate: [AppointmentTypeCreateOrConnectWithoutuserInput!]
   create: [AppointmentTypeCreateWithoutUserInput!]
 }
 
 input AppointmentTypeCreateOneWithoutAppointmentsInput {
   connect: AppointmentTypeWhereUniqueInput
+  connectOrCreate: AppointmentTypeCreateOrConnectWithoutappointmentsInput
   create: AppointmentTypeCreateWithoutAppointmentsInput
+}
+
+input AppointmentTypeCreateOrConnectWithoutappointmentsInput {
+  create: AppointmentTypeCreateWithoutAppointmentsInput!
+  where: AppointmentTypeWhereUniqueInput!
+}
+
+input AppointmentTypeCreateOrConnectWithoutuserInput {
+  create: AppointmentTypeCreateWithoutUserInput!
+  where: AppointmentTypeWhereUniqueInput!
 }
 
 input AppointmentTypeCreateWithoutAppointmentsInput {
@@ -138,7 +168,7 @@ input AppointmentTypeUpdateInput {
   user: UserUpdateOneWithoutAppointmentTypesInput
 }
 
-input AppointmentTypeUpdateManyDataInput {
+input AppointmentTypeUpdateManyMutationInput {
   description: NullableStringFieldUpdateOperationsInput
   duration: IntFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
@@ -147,31 +177,33 @@ input AppointmentTypeUpdateManyDataInput {
 
 input AppointmentTypeUpdateManyWithoutUserInput {
   connect: [AppointmentTypeWhereUniqueInput!]
+  connectOrCreate: [AppointmentTypeCreateOrConnectWithoutuserInput!]
   create: [AppointmentTypeCreateWithoutUserInput!]
   delete: [AppointmentTypeWhereUniqueInput!]
   deleteMany: [AppointmentTypeScalarWhereInput!]
   disconnect: [AppointmentTypeWhereUniqueInput!]
   set: [AppointmentTypeWhereUniqueInput!]
   update: [AppointmentTypeUpdateWithWhereUniqueWithoutUserInput!]
-  updateMany: [AppointmentTypeUpdateManyWithWhereNestedInput!]
+  updateMany: [AppointmentTypeUpdateManyWithWhereWithoutUserInput!]
   upsert: [AppointmentTypeUpsertWithWhereUniqueWithoutUserInput!]
 }
 
-input AppointmentTypeUpdateManyWithWhereNestedInput {
-  data: AppointmentTypeUpdateManyDataInput!
+input AppointmentTypeUpdateManyWithWhereWithoutUserInput {
+  data: AppointmentTypeUpdateManyMutationInput!
   where: AppointmentTypeScalarWhereInput!
 }
 
 input AppointmentTypeUpdateOneWithoutAppointmentsInput {
   connect: AppointmentTypeWhereUniqueInput
+  connectOrCreate: AppointmentTypeCreateOrConnectWithoutappointmentsInput
   create: AppointmentTypeCreateWithoutAppointmentsInput
   delete: Boolean
   disconnect: Boolean
-  update: AppointmentTypeUpdateWithoutAppointmentsDataInput
+  update: AppointmentTypeUpdateWithoutAppointmentsInput
   upsert: AppointmentTypeUpsertWithoutAppointmentsInput
 }
 
-input AppointmentTypeUpdateWithoutAppointmentsDataInput {
+input AppointmentTypeUpdateWithoutAppointmentsInput {
   description: NullableStringFieldUpdateOperationsInput
   duration: IntFieldUpdateOperationsInput
   name: StringFieldUpdateOperationsInput
@@ -179,7 +211,7 @@ input AppointmentTypeUpdateWithoutAppointmentsDataInput {
   user: UserUpdateOneWithoutAppointmentTypesInput
 }
 
-input AppointmentTypeUpdateWithoutUserDataInput {
+input AppointmentTypeUpdateWithoutUserInput {
   appointments: AppointmentUpdateManyWithoutAppointmentTypeInput
   description: NullableStringFieldUpdateOperationsInput
   duration: IntFieldUpdateOperationsInput
@@ -188,18 +220,18 @@ input AppointmentTypeUpdateWithoutUserDataInput {
 }
 
 input AppointmentTypeUpdateWithWhereUniqueWithoutUserInput {
-  data: AppointmentTypeUpdateWithoutUserDataInput!
+  data: AppointmentTypeUpdateWithoutUserInput!
   where: AppointmentTypeWhereUniqueInput!
 }
 
 input AppointmentTypeUpsertWithoutAppointmentsInput {
   create: AppointmentTypeCreateWithoutAppointmentsInput!
-  update: AppointmentTypeUpdateWithoutAppointmentsDataInput!
+  update: AppointmentTypeUpdateWithoutAppointmentsInput!
 }
 
 input AppointmentTypeUpsertWithWhereUniqueWithoutUserInput {
   create: AppointmentTypeCreateWithoutUserInput!
-  update: AppointmentTypeUpdateWithoutUserDataInput!
+  update: AppointmentTypeUpdateWithoutUserInput!
   where: AppointmentTypeWhereUniqueInput!
 }
 
@@ -216,7 +248,7 @@ input AppointmentUpdateInput {
   user: UserUpdateOneWithoutAppointmentsInput
 }
 
-input AppointmentUpdateManyDataInput {
+input AppointmentUpdateManyMutationInput {
   end: DateTimeFieldUpdateOperationsInput
   googleCalendarEventId: NullableStringFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
@@ -224,46 +256,59 @@ input AppointmentUpdateManyDataInput {
 
 input AppointmentUpdateManyWithoutAppointmentTypeInput {
   connect: [AppointmentWhereUniqueInput!]
+  connectOrCreate: [AppointmentCreateOrConnectWithoutappointmentTypeInput!]
   create: [AppointmentCreateWithoutAppointmentTypeInput!]
   delete: [AppointmentWhereUniqueInput!]
   deleteMany: [AppointmentScalarWhereInput!]
   disconnect: [AppointmentWhereUniqueInput!]
   set: [AppointmentWhereUniqueInput!]
   update: [AppointmentUpdateWithWhereUniqueWithoutAppointmentTypeInput!]
-  updateMany: [AppointmentUpdateManyWithWhereNestedInput!]
+  updateMany: [AppointmentUpdateManyWithWhereWithoutAppointmentTypeInput!]
   upsert: [AppointmentUpsertWithWhereUniqueWithoutAppointmentTypeInput!]
 }
 
 input AppointmentUpdateManyWithoutCustomerInput {
   connect: [AppointmentWhereUniqueInput!]
+  connectOrCreate: [AppointmentCreateOrConnectWithoutcustomerInput!]
   create: [AppointmentCreateWithoutCustomerInput!]
   delete: [AppointmentWhereUniqueInput!]
   deleteMany: [AppointmentScalarWhereInput!]
   disconnect: [AppointmentWhereUniqueInput!]
   set: [AppointmentWhereUniqueInput!]
   update: [AppointmentUpdateWithWhereUniqueWithoutCustomerInput!]
-  updateMany: [AppointmentUpdateManyWithWhereNestedInput!]
+  updateMany: [AppointmentUpdateManyWithWhereWithoutCustomerInput!]
   upsert: [AppointmentUpsertWithWhereUniqueWithoutCustomerInput!]
 }
 
 input AppointmentUpdateManyWithoutUserInput {
   connect: [AppointmentWhereUniqueInput!]
+  connectOrCreate: [AppointmentCreateOrConnectWithoutuserInput!]
   create: [AppointmentCreateWithoutUserInput!]
   delete: [AppointmentWhereUniqueInput!]
   deleteMany: [AppointmentScalarWhereInput!]
   disconnect: [AppointmentWhereUniqueInput!]
   set: [AppointmentWhereUniqueInput!]
   update: [AppointmentUpdateWithWhereUniqueWithoutUserInput!]
-  updateMany: [AppointmentUpdateManyWithWhereNestedInput!]
+  updateMany: [AppointmentUpdateManyWithWhereWithoutUserInput!]
   upsert: [AppointmentUpsertWithWhereUniqueWithoutUserInput!]
 }
 
-input AppointmentUpdateManyWithWhereNestedInput {
-  data: AppointmentUpdateManyDataInput!
+input AppointmentUpdateManyWithWhereWithoutAppointmentTypeInput {
+  data: AppointmentUpdateManyMutationInput!
   where: AppointmentScalarWhereInput!
 }
 
-input AppointmentUpdateWithoutAppointmentTypeDataInput {
+input AppointmentUpdateManyWithWhereWithoutCustomerInput {
+  data: AppointmentUpdateManyMutationInput!
+  where: AppointmentScalarWhereInput!
+}
+
+input AppointmentUpdateManyWithWhereWithoutUserInput {
+  data: AppointmentUpdateManyMutationInput!
+  where: AppointmentScalarWhereInput!
+}
+
+input AppointmentUpdateWithoutAppointmentTypeInput {
   customer: CustomerUpdateOneWithoutAppointmentsInput
   end: DateTimeFieldUpdateOperationsInput
   googleCalendarEventId: NullableStringFieldUpdateOperationsInput
@@ -271,7 +316,7 @@ input AppointmentUpdateWithoutAppointmentTypeDataInput {
   user: UserUpdateOneWithoutAppointmentsInput
 }
 
-input AppointmentUpdateWithoutCustomerDataInput {
+input AppointmentUpdateWithoutCustomerInput {
   appointmentType: AppointmentTypeUpdateOneWithoutAppointmentsInput
   end: DateTimeFieldUpdateOperationsInput
   googleCalendarEventId: NullableStringFieldUpdateOperationsInput
@@ -279,7 +324,7 @@ input AppointmentUpdateWithoutCustomerDataInput {
   user: UserUpdateOneWithoutAppointmentsInput
 }
 
-input AppointmentUpdateWithoutUserDataInput {
+input AppointmentUpdateWithoutUserInput {
   appointmentType: AppointmentTypeUpdateOneWithoutAppointmentsInput
   customer: CustomerUpdateOneWithoutAppointmentsInput
   end: DateTimeFieldUpdateOperationsInput
@@ -288,35 +333,35 @@ input AppointmentUpdateWithoutUserDataInput {
 }
 
 input AppointmentUpdateWithWhereUniqueWithoutAppointmentTypeInput {
-  data: AppointmentUpdateWithoutAppointmentTypeDataInput!
+  data: AppointmentUpdateWithoutAppointmentTypeInput!
   where: AppointmentWhereUniqueInput!
 }
 
 input AppointmentUpdateWithWhereUniqueWithoutCustomerInput {
-  data: AppointmentUpdateWithoutCustomerDataInput!
+  data: AppointmentUpdateWithoutCustomerInput!
   where: AppointmentWhereUniqueInput!
 }
 
 input AppointmentUpdateWithWhereUniqueWithoutUserInput {
-  data: AppointmentUpdateWithoutUserDataInput!
+  data: AppointmentUpdateWithoutUserInput!
   where: AppointmentWhereUniqueInput!
 }
 
 input AppointmentUpsertWithWhereUniqueWithoutAppointmentTypeInput {
   create: AppointmentCreateWithoutAppointmentTypeInput!
-  update: AppointmentUpdateWithoutAppointmentTypeDataInput!
+  update: AppointmentUpdateWithoutAppointmentTypeInput!
   where: AppointmentWhereUniqueInput!
 }
 
 input AppointmentUpsertWithWhereUniqueWithoutCustomerInput {
   create: AppointmentCreateWithoutCustomerInput!
-  update: AppointmentUpdateWithoutCustomerDataInput!
+  update: AppointmentUpdateWithoutCustomerInput!
   where: AppointmentWhereUniqueInput!
 }
 
 input AppointmentUpsertWithWhereUniqueWithoutUserInput {
   create: AppointmentCreateWithoutUserInput!
-  update: AppointmentUpdateWithoutUserDataInput!
+  update: AppointmentUpdateWithoutUserInput!
   where: AppointmentWhereUniqueInput!
 }
 
@@ -347,7 +392,13 @@ input AvailabilityModifierCreateInput {
 
 input AvailabilityModifierCreateManyWithoutUserInput {
   connect: [AvailabilityModifierWhereUniqueInput!]
+  connectOrCreate: [AvailabilityModifierCreateOrConnectWithoutuserInput!]
   create: [AvailabilityModifierCreateWithoutUserInput!]
+}
+
+input AvailabilityModifierCreateOrConnectWithoutuserInput {
+  create: AvailabilityModifierCreateWithoutUserInput!
+  where: AvailabilityModifierWhereUniqueInput!
 }
 
 input AvailabilityModifierCreateWithoutUserInput {
@@ -374,7 +425,7 @@ input AvailabilityModifierUpdateInput {
   user: UserUpdateOneWithoutAvailabilityModifiersInput
 }
 
-input AvailabilityModifierUpdateManyDataInput {
+input AvailabilityModifierUpdateManyMutationInput {
   end: DateTimeFieldUpdateOperationsInput
   isExclusive: BoolFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
@@ -382,35 +433,36 @@ input AvailabilityModifierUpdateManyDataInput {
 
 input AvailabilityModifierUpdateManyWithoutUserInput {
   connect: [AvailabilityModifierWhereUniqueInput!]
+  connectOrCreate: [AvailabilityModifierCreateOrConnectWithoutuserInput!]
   create: [AvailabilityModifierCreateWithoutUserInput!]
   delete: [AvailabilityModifierWhereUniqueInput!]
   deleteMany: [AvailabilityModifierScalarWhereInput!]
   disconnect: [AvailabilityModifierWhereUniqueInput!]
   set: [AvailabilityModifierWhereUniqueInput!]
   update: [AvailabilityModifierUpdateWithWhereUniqueWithoutUserInput!]
-  updateMany: [AvailabilityModifierUpdateManyWithWhereNestedInput!]
+  updateMany: [AvailabilityModifierUpdateManyWithWhereWithoutUserInput!]
   upsert: [AvailabilityModifierUpsertWithWhereUniqueWithoutUserInput!]
 }
 
-input AvailabilityModifierUpdateManyWithWhereNestedInput {
-  data: AvailabilityModifierUpdateManyDataInput!
+input AvailabilityModifierUpdateManyWithWhereWithoutUserInput {
+  data: AvailabilityModifierUpdateManyMutationInput!
   where: AvailabilityModifierScalarWhereInput!
 }
 
-input AvailabilityModifierUpdateWithoutUserDataInput {
+input AvailabilityModifierUpdateWithoutUserInput {
   end: DateTimeFieldUpdateOperationsInput
   isExclusive: BoolFieldUpdateOperationsInput
   start: DateTimeFieldUpdateOperationsInput
 }
 
 input AvailabilityModifierUpdateWithWhereUniqueWithoutUserInput {
-  data: AvailabilityModifierUpdateWithoutUserDataInput!
+  data: AvailabilityModifierUpdateWithoutUserInput!
   where: AvailabilityModifierWhereUniqueInput!
 }
 
 input AvailabilityModifierUpsertWithWhereUniqueWithoutUserInput {
   create: AvailabilityModifierCreateWithoutUserInput!
-  update: AvailabilityModifierUpdateWithoutUserDataInput!
+  update: AvailabilityModifierUpdateWithoutUserInput!
   where: AvailabilityModifierWhereUniqueInput!
 }
 
@@ -452,12 +504,24 @@ input CustomerCreateInput {
 
 input CustomerCreateManyWithoutUsersInput {
   connect: [CustomerWhereUniqueInput!]
+  connectOrCreate: [CustomerCreateOrConnectWithoutusersInput!]
   create: [CustomerCreateWithoutUsersInput!]
 }
 
 input CustomerCreateOneWithoutAppointmentsInput {
   connect: CustomerWhereUniqueInput
+  connectOrCreate: CustomerCreateOrConnectWithoutappointmentsInput
   create: CustomerCreateWithoutAppointmentsInput
+}
+
+input CustomerCreateOrConnectWithoutappointmentsInput {
+  create: CustomerCreateWithoutAppointmentsInput!
+  where: CustomerWhereUniqueInput!
+}
+
+input CustomerCreateOrConnectWithoutusersInput {
+  create: CustomerCreateWithoutUsersInput!
+  where: CustomerWhereUniqueInput!
 }
 
 input CustomerCreateWithoutAppointmentsInput {
@@ -504,7 +568,7 @@ input CustomerUpdateInput {
   users: UserUpdateManyWithoutCustomersInput
 }
 
-input CustomerUpdateManyDataInput {
+input CustomerUpdateManyMutationInput {
   address: NullableStringFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   firstName: StringFieldUpdateOperationsInput
@@ -515,31 +579,33 @@ input CustomerUpdateManyDataInput {
 
 input CustomerUpdateManyWithoutUsersInput {
   connect: [CustomerWhereUniqueInput!]
+  connectOrCreate: [CustomerCreateOrConnectWithoutusersInput!]
   create: [CustomerCreateWithoutUsersInput!]
   delete: [CustomerWhereUniqueInput!]
   deleteMany: [CustomerScalarWhereInput!]
   disconnect: [CustomerWhereUniqueInput!]
   set: [CustomerWhereUniqueInput!]
   update: [CustomerUpdateWithWhereUniqueWithoutUsersInput!]
-  updateMany: [CustomerUpdateManyWithWhereNestedInput!]
+  updateMany: [CustomerUpdateManyWithWhereWithoutUsersInput!]
   upsert: [CustomerUpsertWithWhereUniqueWithoutUsersInput!]
 }
 
-input CustomerUpdateManyWithWhereNestedInput {
-  data: CustomerUpdateManyDataInput!
+input CustomerUpdateManyWithWhereWithoutUsersInput {
+  data: CustomerUpdateManyMutationInput!
   where: CustomerScalarWhereInput!
 }
 
 input CustomerUpdateOneWithoutAppointmentsInput {
   connect: CustomerWhereUniqueInput
+  connectOrCreate: CustomerCreateOrConnectWithoutappointmentsInput
   create: CustomerCreateWithoutAppointmentsInput
   delete: Boolean
   disconnect: Boolean
-  update: CustomerUpdateWithoutAppointmentsDataInput
+  update: CustomerUpdateWithoutAppointmentsInput
   upsert: CustomerUpsertWithoutAppointmentsInput
 }
 
-input CustomerUpdateWithoutAppointmentsDataInput {
+input CustomerUpdateWithoutAppointmentsInput {
   address: NullableStringFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   firstName: StringFieldUpdateOperationsInput
@@ -549,7 +615,7 @@ input CustomerUpdateWithoutAppointmentsDataInput {
   users: UserUpdateManyWithoutCustomersInput
 }
 
-input CustomerUpdateWithoutUsersDataInput {
+input CustomerUpdateWithoutUsersInput {
   address: NullableStringFieldUpdateOperationsInput
   appointments: AppointmentUpdateManyWithoutCustomerInput
   email: StringFieldUpdateOperationsInput
@@ -560,18 +626,18 @@ input CustomerUpdateWithoutUsersDataInput {
 }
 
 input CustomerUpdateWithWhereUniqueWithoutUsersInput {
-  data: CustomerUpdateWithoutUsersDataInput!
+  data: CustomerUpdateWithoutUsersInput!
   where: CustomerWhereUniqueInput!
 }
 
 input CustomerUpsertWithoutAppointmentsInput {
   create: CustomerCreateWithoutAppointmentsInput!
-  update: CustomerUpdateWithoutAppointmentsDataInput!
+  update: CustomerUpdateWithoutAppointmentsInput!
 }
 
 input CustomerUpsertWithWhereUniqueWithoutUsersInput {
   create: CustomerCreateWithoutUsersInput!
-  update: CustomerUpdateWithoutUsersDataInput!
+  update: CustomerUpdateWithoutUsersInput!
   where: CustomerWhereUniqueInput!
 }
 
@@ -790,7 +856,13 @@ type OAuthToken {
 
 input OAuthTokenCreateOneWithoutUserInput {
   connect: OAuthTokenWhereUniqueInput
+  connectOrCreate: OAuthTokenCreateOrConnectWithoutuserInput
   create: OAuthTokenCreateWithoutUserInput
+}
+
+input OAuthTokenCreateOrConnectWithoutuserInput {
+  create: OAuthTokenCreateWithoutUserInput!
+  where: OAuthTokenWhereUniqueInput!
 }
 
 input OAuthTokenCreateWithoutUserInput {
@@ -806,21 +878,22 @@ input OAuthTokenInput {
 
 input OAuthTokenUpdateOneWithoutUserInput {
   connect: OAuthTokenWhereUniqueInput
+  connectOrCreate: OAuthTokenCreateOrConnectWithoutuserInput
   create: OAuthTokenCreateWithoutUserInput
   delete: Boolean
   disconnect: Boolean
-  update: OAuthTokenUpdateWithoutUserDataInput
+  update: OAuthTokenUpdateWithoutUserInput
   upsert: OAuthTokenUpsertWithoutUserInput
 }
 
-input OAuthTokenUpdateWithoutUserDataInput {
+input OAuthTokenUpdateWithoutUserInput {
   accessToken: StringFieldUpdateOperationsInput
   refreshToken: NullableStringFieldUpdateOperationsInput
 }
 
 input OAuthTokenUpsertWithoutUserInput {
   create: OAuthTokenCreateWithoutUserInput!
-  update: OAuthTokenUpdateWithoutUserDataInput!
+  update: OAuthTokenUpdateWithoutUserInput!
 }
 
 input OAuthTokenWhereUniqueInput {
@@ -865,7 +938,13 @@ input RecurrentAvailabilityCreateInput {
 
 input RecurrentAvailabilityCreateManyWithoutUserInput {
   connect: [RecurrentAvailabilityWhereUniqueInput!]
+  connectOrCreate: [RecurrentAvailabilityCreateOrConnectWithoutuserInput!]
   create: [RecurrentAvailabilityCreateWithoutUserInput!]
+}
+
+input RecurrentAvailabilityCreateOrConnectWithoutuserInput {
+  create: RecurrentAvailabilityCreateWithoutUserInput!
+  where: RecurrentAvailabilityWhereUniqueInput!
 }
 
 input RecurrentAvailabilityCreateWithoutUserInput {
@@ -892,7 +971,7 @@ input RecurrentAvailabilityUpdateInput {
   user: UserUpdateOneWithoutRecurrentAvailabilitiesInput
 }
 
-input RecurrentAvailabilityUpdateManyDataInput {
+input RecurrentAvailabilityUpdateManyMutationInput {
   day: EnumDayFieldUpdateOperationsInput
   endTime: IntFieldUpdateOperationsInput
   startTime: IntFieldUpdateOperationsInput
@@ -900,35 +979,36 @@ input RecurrentAvailabilityUpdateManyDataInput {
 
 input RecurrentAvailabilityUpdateManyWithoutUserInput {
   connect: [RecurrentAvailabilityWhereUniqueInput!]
+  connectOrCreate: [RecurrentAvailabilityCreateOrConnectWithoutuserInput!]
   create: [RecurrentAvailabilityCreateWithoutUserInput!]
   delete: [RecurrentAvailabilityWhereUniqueInput!]
   deleteMany: [RecurrentAvailabilityScalarWhereInput!]
   disconnect: [RecurrentAvailabilityWhereUniqueInput!]
   set: [RecurrentAvailabilityWhereUniqueInput!]
   update: [RecurrentAvailabilityUpdateWithWhereUniqueWithoutUserInput!]
-  updateMany: [RecurrentAvailabilityUpdateManyWithWhereNestedInput!]
+  updateMany: [RecurrentAvailabilityUpdateManyWithWhereWithoutUserInput!]
   upsert: [RecurrentAvailabilityUpsertWithWhereUniqueWithoutUserInput!]
 }
 
-input RecurrentAvailabilityUpdateManyWithWhereNestedInput {
-  data: RecurrentAvailabilityUpdateManyDataInput!
+input RecurrentAvailabilityUpdateManyWithWhereWithoutUserInput {
+  data: RecurrentAvailabilityUpdateManyMutationInput!
   where: RecurrentAvailabilityScalarWhereInput!
 }
 
-input RecurrentAvailabilityUpdateWithoutUserDataInput {
+input RecurrentAvailabilityUpdateWithoutUserInput {
   day: EnumDayFieldUpdateOperationsInput
   endTime: IntFieldUpdateOperationsInput
   startTime: IntFieldUpdateOperationsInput
 }
 
 input RecurrentAvailabilityUpdateWithWhereUniqueWithoutUserInput {
-  data: RecurrentAvailabilityUpdateWithoutUserDataInput!
+  data: RecurrentAvailabilityUpdateWithoutUserInput!
   where: RecurrentAvailabilityWhereUniqueInput!
 }
 
 input RecurrentAvailabilityUpsertWithWhereUniqueWithoutUserInput {
   create: RecurrentAvailabilityCreateWithoutUserInput!
-  update: RecurrentAvailabilityUpdateWithoutUserDataInput!
+  update: RecurrentAvailabilityUpdateWithoutUserInput!
   where: RecurrentAvailabilityWhereUniqueInput!
 }
 
@@ -990,27 +1070,57 @@ type User {
 
 input UserCreateManyWithoutCustomersInput {
   connect: [UserWhereUniqueInput!]
+  connectOrCreate: [UserCreateOrConnectWithoutcustomersInput!]
   create: [UserCreateWithoutCustomersInput!]
 }
 
 input UserCreateOneWithoutAppointmentsInput {
   connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutappointmentsInput
   create: UserCreateWithoutAppointmentsInput
 }
 
 input UserCreateOneWithoutAppointmentTypesInput {
   connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutappointmentTypesInput
   create: UserCreateWithoutAppointmentTypesInput
 }
 
 input UserCreateOneWithoutAvailabilityModifiersInput {
   connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutavailabilityModifiersInput
   create: UserCreateWithoutAvailabilityModifiersInput
 }
 
 input UserCreateOneWithoutRecurrentAvailabilitiesInput {
   connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutrecurrentAvailabilitiesInput
   create: UserCreateWithoutRecurrentAvailabilitiesInput
+}
+
+input UserCreateOrConnectWithoutappointmentsInput {
+  create: UserCreateWithoutAppointmentsInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutappointmentTypesInput {
+  create: UserCreateWithoutAppointmentTypesInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutavailabilityModifiersInput {
+  create: UserCreateWithoutAvailabilityModifiersInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutcustomersInput {
+  create: UserCreateWithoutCustomersInput!
+  where: UserWhereUniqueInput!
+}
+
+input UserCreateOrConnectWithoutrecurrentAvailabilitiesInput {
+  create: UserCreateWithoutRecurrentAvailabilitiesInput!
+  where: UserWhereUniqueInput!
 }
 
 input UserCreateWithoutAppointmentsInput {
@@ -1120,7 +1230,7 @@ input UserScalarWhereInput {
   websiteUrl: StringNullableFilter
 }
 
-input UserUpdateManyDataInput {
+input UserUpdateManyMutationInput {
   address: NullableStringFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   firstName: StringFieldUpdateOperationsInput
@@ -1135,58 +1245,63 @@ input UserUpdateManyDataInput {
 
 input UserUpdateManyWithoutCustomersInput {
   connect: [UserWhereUniqueInput!]
+  connectOrCreate: [UserCreateOrConnectWithoutcustomersInput!]
   create: [UserCreateWithoutCustomersInput!]
   delete: [UserWhereUniqueInput!]
   deleteMany: [UserScalarWhereInput!]
   disconnect: [UserWhereUniqueInput!]
   set: [UserWhereUniqueInput!]
   update: [UserUpdateWithWhereUniqueWithoutCustomersInput!]
-  updateMany: [UserUpdateManyWithWhereNestedInput!]
+  updateMany: [UserUpdateManyWithWhereWithoutCustomersInput!]
   upsert: [UserUpsertWithWhereUniqueWithoutCustomersInput!]
 }
 
-input UserUpdateManyWithWhereNestedInput {
-  data: UserUpdateManyDataInput!
+input UserUpdateManyWithWhereWithoutCustomersInput {
+  data: UserUpdateManyMutationInput!
   where: UserScalarWhereInput!
 }
 
 input UserUpdateOneWithoutAppointmentsInput {
   connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutappointmentsInput
   create: UserCreateWithoutAppointmentsInput
   delete: Boolean
   disconnect: Boolean
-  update: UserUpdateWithoutAppointmentsDataInput
+  update: UserUpdateWithoutAppointmentsInput
   upsert: UserUpsertWithoutAppointmentsInput
 }
 
 input UserUpdateOneWithoutAppointmentTypesInput {
   connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutappointmentTypesInput
   create: UserCreateWithoutAppointmentTypesInput
   delete: Boolean
   disconnect: Boolean
-  update: UserUpdateWithoutAppointmentTypesDataInput
+  update: UserUpdateWithoutAppointmentTypesInput
   upsert: UserUpsertWithoutAppointmentTypesInput
 }
 
 input UserUpdateOneWithoutAvailabilityModifiersInput {
   connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutavailabilityModifiersInput
   create: UserCreateWithoutAvailabilityModifiersInput
   delete: Boolean
   disconnect: Boolean
-  update: UserUpdateWithoutAvailabilityModifiersDataInput
+  update: UserUpdateWithoutAvailabilityModifiersInput
   upsert: UserUpsertWithoutAvailabilityModifiersInput
 }
 
 input UserUpdateOneWithoutRecurrentAvailabilitiesInput {
   connect: UserWhereUniqueInput
+  connectOrCreate: UserCreateOrConnectWithoutrecurrentAvailabilitiesInput
   create: UserCreateWithoutRecurrentAvailabilitiesInput
   delete: Boolean
   disconnect: Boolean
-  update: UserUpdateWithoutRecurrentAvailabilitiesDataInput
+  update: UserUpdateWithoutRecurrentAvailabilitiesInput
   upsert: UserUpsertWithoutRecurrentAvailabilitiesInput
 }
 
-input UserUpdateWithoutAppointmentsDataInput {
+input UserUpdateWithoutAppointmentsInput {
   address: NullableStringFieldUpdateOperationsInput
   appointmentTypes: AppointmentTypeUpdateManyWithoutUserInput
   availabilityModifiers: AvailabilityModifierUpdateManyWithoutUserInput
@@ -1204,7 +1319,7 @@ input UserUpdateWithoutAppointmentsDataInput {
   websiteUrl: NullableStringFieldUpdateOperationsInput
 }
 
-input UserUpdateWithoutAppointmentTypesDataInput {
+input UserUpdateWithoutAppointmentTypesInput {
   address: NullableStringFieldUpdateOperationsInput
   appointments: AppointmentUpdateManyWithoutUserInput
   availabilityModifiers: AvailabilityModifierUpdateManyWithoutUserInput
@@ -1222,7 +1337,7 @@ input UserUpdateWithoutAppointmentTypesDataInput {
   websiteUrl: NullableStringFieldUpdateOperationsInput
 }
 
-input UserUpdateWithoutAvailabilityModifiersDataInput {
+input UserUpdateWithoutAvailabilityModifiersInput {
   address: NullableStringFieldUpdateOperationsInput
   appointments: AppointmentUpdateManyWithoutUserInput
   appointmentTypes: AppointmentTypeUpdateManyWithoutUserInput
@@ -1240,7 +1355,7 @@ input UserUpdateWithoutAvailabilityModifiersDataInput {
   websiteUrl: NullableStringFieldUpdateOperationsInput
 }
 
-input UserUpdateWithoutCustomersDataInput {
+input UserUpdateWithoutCustomersInput {
   address: NullableStringFieldUpdateOperationsInput
   appointments: AppointmentUpdateManyWithoutUserInput
   appointmentTypes: AppointmentTypeUpdateManyWithoutUserInput
@@ -1258,7 +1373,7 @@ input UserUpdateWithoutCustomersDataInput {
   websiteUrl: NullableStringFieldUpdateOperationsInput
 }
 
-input UserUpdateWithoutRecurrentAvailabilitiesDataInput {
+input UserUpdateWithoutRecurrentAvailabilitiesInput {
   address: NullableStringFieldUpdateOperationsInput
   appointments: AppointmentUpdateManyWithoutUserInput
   appointmentTypes: AppointmentTypeUpdateManyWithoutUserInput
@@ -1277,33 +1392,33 @@ input UserUpdateWithoutRecurrentAvailabilitiesDataInput {
 }
 
 input UserUpdateWithWhereUniqueWithoutCustomersInput {
-  data: UserUpdateWithoutCustomersDataInput!
+  data: UserUpdateWithoutCustomersInput!
   where: UserWhereUniqueInput!
 }
 
 input UserUpsertWithoutAppointmentsInput {
   create: UserCreateWithoutAppointmentsInput!
-  update: UserUpdateWithoutAppointmentsDataInput!
+  update: UserUpdateWithoutAppointmentsInput!
 }
 
 input UserUpsertWithoutAppointmentTypesInput {
   create: UserCreateWithoutAppointmentTypesInput!
-  update: UserUpdateWithoutAppointmentTypesDataInput!
+  update: UserUpdateWithoutAppointmentTypesInput!
 }
 
 input UserUpsertWithoutAvailabilityModifiersInput {
   create: UserCreateWithoutAvailabilityModifiersInput!
-  update: UserUpdateWithoutAvailabilityModifiersDataInput!
+  update: UserUpdateWithoutAvailabilityModifiersInput!
 }
 
 input UserUpsertWithoutRecurrentAvailabilitiesInput {
   create: UserCreateWithoutRecurrentAvailabilitiesInput!
-  update: UserUpdateWithoutRecurrentAvailabilitiesDataInput!
+  update: UserUpdateWithoutRecurrentAvailabilitiesInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutCustomersInput {
   create: UserCreateWithoutCustomersInput!
-  update: UserUpdateWithoutCustomersDataInput!
+  update: UserUpdateWithoutCustomersInput!
   where: UserWhereUniqueInput!
 }
 
