@@ -45,7 +45,7 @@ a {
   }
 
   &:focus {
-    @apply shadow-outline outline-none;
+    @apply outline-none ring;
   }
 }
 
@@ -59,11 +59,11 @@ textarea,
   @apply text-sm text-gray-700 bg-white rounded shadow;
 
   &:focus {
-    @apply shadow-outline outline-none;
+    @apply outline-none ring;
   }
 
   &:focus-within {
-    @apply shadow-outline;
+    @apply ring;
   }
 }
 
@@ -80,7 +80,7 @@ textarea,
   }
 
   &:focus {
-    @apply shadow-outline outline-none;
+    @apply outline-none ring;
   }
 }
 

@@ -91,14 +91,14 @@ const Layout: React.FunctionComponent<Props> = ({
 
             <div className="flex flex-row items-center justify-between flex-grow">
               <Link href="/">
-                <h1 className="tracking-widest cursor-pointer focus:shadow-outline">
+                <h1 className="tracking-widest cursor-pointer focus:ring">
                   {`${currentUser?.firstName} ${currentUser?.lastName}`}
                 </h1>
               </Link>
 
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-gray-800 md:hidden focus:shadow-outline"
+                className="text-gray-800 md:hidden focus:ring"
               >
                 {isOpen ? (
                   <FontAwesomeIcon icon={faTimes} size="lg" />
