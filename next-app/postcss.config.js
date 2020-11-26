@@ -3,6 +3,7 @@ const purgecss = [
   {
     content: [
       './node_modules/@fullcalendar/**/*.{js,jsx,ts,tsx}',
+      './node_modules/react-day-picker/**/*.{js,jsx,ts,tsx}',
       './src/components/**/*.{js,jsx,ts,tsx}',
       './src/pages/**/*.{js,jsx,ts,tsx}',
     ],

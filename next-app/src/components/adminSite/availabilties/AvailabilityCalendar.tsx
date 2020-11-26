@@ -239,11 +239,10 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
 
         return {
           id: v.id.toString(),
-          title: v.id.toString(),
           start: v.start,
           end: !isAllDay ? v.end : undefined,
           allDay: isAllDay,
-          rendering: 'background',
+          display: 'background',
           backgroundColor: v.isExclusive ? 'red' : 'green',
         }
       })}

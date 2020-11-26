@@ -50,7 +50,7 @@ const SelectDateTime: React.FunctionComponent<Props> = ({
   if (recurrentAvailabilitiesQueryResult.loading) return <LoadingOverlay />
   else if (recurrentAvailabilitiesQueryResult.error) {
     return (
-      <p className='error-message'>
+      <p className="error-message">
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
@@ -64,7 +64,7 @@ const SelectDateTime: React.FunctionComponent<Props> = ({
   if (availabilityModifiersQueryResult.loading) return <LoadingOverlay />
   else if (availabilityModifiersQueryResult.error) {
     return (
-      <p className='error-message'>
+      <p className="error-message">
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
@@ -85,7 +85,7 @@ const SelectDateTime: React.FunctionComponent<Props> = ({
     var availabilities: MomentInterval[] = []
     var exclusiveAvailabilities: AvailabilityModifier[] = []
 
-    availabilityModifiers.forEach(v => {
+    availabilityModifiers.forEach((v) => {
       if (moment(v.start).isSame(date, 'day')) {
         if (v.isExclusive) {
           exclusiveAvailabilities.push(v)
@@ -103,7 +103,7 @@ const SelectDateTime: React.FunctionComponent<Props> = ({
 
     var surroundings: IndexedMomentInterval[] = []
 
-    availabilities.forEach(availability => {
+    availabilities.forEach((availability) => {
       const groupedSurroundings = getSurroundingEvents(
         availability,
         exclusiveAvailabilities.map((v, i) => {
@@ -142,7 +142,7 @@ const SelectDateTime: React.FunctionComponent<Props> = ({
       })
     })
 
-    return availabilities.filter(v => !v.start.isSame(v.end))
+    return availabilities.filter((v) => !v.start.isSame(v.end))
   }
 
   const splitAvailabilityInChunks = (
@@ -184,47 +184,58 @@ const SelectDateTime: React.FunctionComponent<Props> = ({
 
   return (
     <>
-      <h4 className='pb-6'>Quand souhaitez-vous planifier ce rendez-vous ?</h4>
+      <h4 className="pb-6">Quand souhaitez-vous planifier ce rendez-vous ?</h4>
 
-      <div className='flex flex-col items-center justify-center md:flex-row'>
-        <div className='flex justify-center w-full'>
+      <div className="flex flex-col items-center justify-center md:flex-row">
+        <div className="flex justify-center w-full">
           <DayPicker
             localeUtils={MomentLocaleUtils}
-            locale='fr'
+            locale="fr"
             fromMonth={new Date()}
             selectedDays={selectedDate}
-            disabledDays={day => getAvailabilities(day).length == 0}
+            disabledDays={(day) => getAvailabilities(day).length == 0}
             onDayClick={(day, { selected }) =>
               selected ? setSelectedDate(undefined) : setSelectedDate(day)
             }
-            className='border rounded-lg'
+            className="border rounded-lg"
           />
         </div>
 
         {selectedDate && (
-          <div className='flex flex-col w-full pr-2 mt-10 md:overflow-y-scroll md:mt-0 md:h-64'>
-            {availabilityChunks.map((v, i) => {
-              const slot = `${v.start.format('hh:mm')} - ${v.end.format(
-                'hh:mm',
-              )}`
+          <div
+            className={
+              'flex flex-col w-full pr-2 mt-10 md:overflow-y-scroll md:mt-0 md:h-64' +
+              (!availabilityChunks.length ? ' md:rounded-lg md:border' : '')
+            }
+          >
+            {availabilityChunks.length ? (
+              availabilityChunks.map((v, i) => {
+                const slot = `${v.start.format('hh:mm')} - ${v.end.format(
+                  'hh:mm',
+                )}`
 
-              return (
-                <div
-                  key={i}
-                  className='p-2 my-2 text-center text-gray-800 border rounded-lg cursor-pointer'
-                  onClick={() =>
-                    selectDateTime(
-                      moment(selectedDate)
-                        .hour(v.start.hours())
-                        .minute(v.start.minutes())
-                        .toDate(),
-                    )
-                  }
-                >
-                  {slot}
-                </div>
-              )
-            })}
+                return (
+                  <div
+                    key={i}
+                    className="p-2 my-2 text-center text-gray-800 border rounded-lg cursor-pointer"
+                    onClick={() =>
+                      selectDateTime(
+                        moment(selectedDate)
+                          .hour(v.start.hours())
+                          .minute(v.start.minutes())
+                          .toDate(),
+                      )
+                    }
+                  >
+                    {slot}
+                  </div>
+                )
+              })
+            ) : (
+              <div className="flex items-center justify-center w-full h-full text-center">
+                <h6>Il n'y a pas de disponibilités à cette date</h6>
+              </div>
+            )}
           </div>
         )}
       </div>

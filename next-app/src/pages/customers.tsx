@@ -80,49 +80,55 @@ const Customers = () => {
     >
       <h5 className="mb-8">Vos contacts</h5>
 
-      <div className="flex-row hidden mb-8 md:flex">
-        <label className="flex-1 text-center">Nom complet</label>
-        <label className="flex-1 text-center">E-mail</label>
-        <label className="flex-1 text-center">Téléphone</label>
-        <label className="flex-1 text-center">Adresse</label>
-      </div>
-
-      {customers.map((customer, i) => (
-        <div key={i}>
-          <div
-            className="flex flex-row items-center break-words cursor-pointer"
-            onClick={() =>
-              !selectedCustomer
-                ? setSelectedCustomer(customer)
-                : setSelectedCustomer(undefined)
-            }
-          >
-            <div className="flex flex-row items-center flex-1 md:justify-center">
-              <Avatar
-                name={`${customer.firstName} ${customer.lastName}`}
-                size="60"
-                round={true}
-                className="mr-6"
-              />
-              <h4 className="text-xl font-semibold">
-                {customer.firstName} {customer.lastName}
-              </h4>
-            </div>
-
-            <p className="flex-1 hidden text-center md:block">
-              {customer.email}
-            </p>
-            <p className="flex-1 hidden text-center md:block">
-              {customer.phone}
-            </p>
-            <p className="flex-1 hidden text-center md:block">
-              {customer.address}
-            </p>
+      {customers.length ? (
+        <>
+          <div className="flex-row hidden mb-8 md:flex">
+            <label className="flex-1 text-center">Nom complet</label>
+            <label className="flex-1 text-center">E-mail</label>
+            <label className="flex-1 text-center">Téléphone</label>
+            <label className="flex-1 text-center">Adresse</label>
           </div>
 
-          {i !== customers.length - 1 && <hr className="my-4 border-b-1" />}
-        </div>
-      ))}
+          {customers.map((customer, i) => (
+            <div key={i}>
+              <div
+                className="flex flex-row items-center break-words cursor-pointer"
+                onClick={() =>
+                  !selectedCustomer
+                    ? setSelectedCustomer(customer)
+                    : setSelectedCustomer(undefined)
+                }
+              >
+                <div className="flex flex-row items-center flex-1 md:justify-center">
+                  <Avatar
+                    name={`${customer.firstName} ${customer.lastName}`}
+                    size="60"
+                    round={true}
+                    className="mr-6"
+                  />
+                  <h4 className="text-xl font-semibold">
+                    {customer.firstName} {customer.lastName}
+                  </h4>
+                </div>
+
+                <p className="flex-1 hidden text-center md:block">
+                  {customer.email}
+                </p>
+                <p className="flex-1 hidden text-center md:block">
+                  {customer.phone}
+                </p>
+                <p className="flex-1 hidden text-center md:block">
+                  {customer.address}
+                </p>
+              </div>
+
+              {i !== customers.length - 1 && <hr className="my-4 border-b-1" />}
+            </div>
+          ))}
+        </>
+      ) : (
+        <h6>Vous n'avez pas encore de contacts</h6>
+      )}
 
       <CustomerModal
         customer={selectedCustomer}
