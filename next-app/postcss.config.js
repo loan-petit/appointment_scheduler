@@ -2,10 +2,11 @@ const purgecss = [
   '@fullhuman/postcss-purgecss',
   {
     content: [
+      './node_modules/@fullcalendar/**/*.{js,jsx,ts,tsx}',
       './src/components/**/*.{js,jsx,ts,tsx}',
       './src/pages/**/*.{js,jsx,ts,tsx}',
     ],
-    defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
+    defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
   },
 ]
 
