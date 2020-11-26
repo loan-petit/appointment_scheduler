@@ -24,7 +24,7 @@ const rules = {
   }),
   isCurrentUser: rule()(async (_parent, args, ctx) => {
     const userId = getUserId(ctx)
-    const user = await ctx.prisma.user.findOne({
+    const user = await ctx.prisma.user.findUnique({
       where: {
         id: args.where.id,
       },

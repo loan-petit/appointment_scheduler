@@ -3,9 +3,9 @@ import { objectType, inputObjectType } from '@nexus/schema'
 export const OAuthTokenInput = inputObjectType({
   name: 'OAuthTokenInput',
   definition (t) {
-    t.string('accessToken', { nullable: false })
+    t.nonNull.string('accessToken')
     t.string('refreshToken')
-    t.string('idToken', { nullable: false })
+    t.nonNull.string('idToken')
   },
 })
 

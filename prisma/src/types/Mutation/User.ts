@@ -1,6 +1,6 @@
 import { compare, hash } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
-import { mutationField, stringArg, intArg } from '@nexus/schema'
+import { mutationField, stringArg, intArg, nonNull } from '@nexus/schema'
 
 import { JWT_SECRET, getUserId } from '../../utils/getUserId'
 import { User } from '@prisma/client'
@@ -11,9 +11,9 @@ import ResolverError from '../../utils/resolverError'
 export const signup = mutationField('signup', {
   type: 'AuthPayload',
   args: {
-    email: stringArg({ nullable: false }),
-    firstName: stringArg({ nullable: false }),
-    lastName: stringArg({ nullable: false }),
+    email: nonNull(stringArg()),
+    firstName: nonNull(stringArg()),
+    lastName: nonNull(stringArg()),
     password: stringArg(),
     oAuthToken: OAuthTokenInput.asArg(),
   },
@@ -33,7 +33,7 @@ export const signup = mutationField('signup', {
 
     // Generate an unique username
     do {
-      user = await ctx.prisma.user.findOne({
+      user = await ctx.prisma.user.findUnique({
         where: { username: username },
       })
       if (user) {
@@ -93,7 +93,7 @@ export const signin = mutationField('signin', {
     var user: User | null = null
 
     if (email && password) {
-      user = await ctx.prisma.user.findOne({
+      user = await ctx.prisma.user.findUnique({
         where: {
           email,
         },
@@ -113,7 +113,7 @@ export const signin = mutationField('signin', {
     } else if (oAuthToken) {
       const tokenPayload = await verifyGoogleIdToken(oAuthToken.idToken)
 
-      user = await ctx.prisma.user.findOne({
+      user = await ctx.prisma.user.findUnique({
         where: {
           googleId: tokenPayload.sub,
         },
@@ -163,7 +163,7 @@ export const updateCurrentUser = mutationField('updateCurrentUser', {
     ctx,
   ) => {
     const userId = getUserId(ctx)
-    const user = await ctx.prisma.user.findOne({
+    const user = await ctx.prisma.user.findUnique({
       where: {
         id: Number(userId),
       },

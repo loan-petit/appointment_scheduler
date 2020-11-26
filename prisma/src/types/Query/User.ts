@@ -9,7 +9,7 @@ export const me = queryField('me', {
   type: 'AuthPayload',
   resolve: async (_parent, _args, ctx) => {
     const userId = getUserId(ctx)
-    const user = await ctx.prisma.user.findOne({
+    const user = await ctx.prisma.user.findUnique({
       where: {
         id: Number(userId),
       },
