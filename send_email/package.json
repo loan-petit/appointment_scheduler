@@ -6,7 +6,7 @@
     "start": "DOTENV_CONFIG_PATH=.env node dist/index",
     "clean": "rm -rf dist",
     "build": "npm -s run clean && tsc",
-    "dev": "DOTENV_CONFIG_PATH=.env ts-node-dev --no-notify --respawn --transpileOnly src/index",
+    "dev": "DOTENV_CONFIG_PATH=.env ts-node-dev --no-notify --respawn --transpile-only src/index",
     "format": "prettier-standard --format"
   },
   "dependencies": {
@@ -15,19 +15,19 @@
     "@types/koa": "^2.11.6",
     "@types/koa__cors": "^3.0.2",
     "@types/koa-router": "^7.4.1",
-    "@types/node": "^14.14.6",
-    "aws-sdk": "^2.781.0",
+    "@types/node": "^14.14.10",
+    "aws-sdk": "^2.804.0",
     "axios": "^0.21.0",
-    "bull": "^3.18.1",
+    "bull": "^3.20.0",
     "dotenv": "^8.2.0",
-    "email-comb": "^3.10.5",
-    "html-crush": "^2.0.9",
+    "email-comb": "^4.0.3",
+    "html-crush": "^3.0.3",
     "juice": "^7.0.0",
     "koa": "^2.13.0",
     "koa-body": "^4.2.0",
-    "koa-router": "^9.4.0",
+    "koa-router": "^10.0.0",
     "node-cache": "^5.1.2",
-    "typescript": "^4.0.5"
+    "typescript": "^4.1.2"
   },
   "devDependencies": {
     "prettier-standard": "^16.4.1",

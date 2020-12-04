@@ -9,7 +9,7 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.services.sendemail.loadbalancer.server.port=3000"
+        - "traefik.http.services.sendemail.loadbalancer.server.port=5000"
         - "traefik.http.routers.sendemail.rule=HostRegexp(`{host:(?:www.)?appointment-scheduler.loanpetit.com}`) && PathPrefix(`/sendEmail`)"
         - "traefik.http.routers.sendemail.entrypoints=backend-services"
         - "traefik.http.routers.sendemail.tls.certresolver=default"
@@ -21,12 +21,10 @@ services:
         max_attempts: 3
 
   redis:
-    image: redis:6.0.5-alpine
+    image: redis:6.0-alpine
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
       - "redis_data:/data"
-    ports:
-      - "6379:6379"
     deploy:
       restart_policy:
         condition: on-failure

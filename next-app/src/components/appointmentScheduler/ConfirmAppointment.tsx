@@ -22,7 +22,6 @@ const UpsertOneCustomerMutation = gql`
     $lastName: String!
     $phone: String
     $address: String
-    $isBlackListed: Boolean
   ) {
     upsertOneCustomer(
       create: {
@@ -31,7 +30,6 @@ const UpsertOneCustomerMutation = gql`
         lastName: $lastName
         phone: $phone
         address: $address
-        isBlackListed: $isBlackListed
         users: { connect: { id: $userId } }
       }
       update: {
@@ -39,7 +37,6 @@ const UpsertOneCustomerMutation = gql`
         lastName: { set: $lastName }
         phone: { set: $phone }
         address: { set: $address }
-        isBlackListed: { set: $isBlackListed }
         users: { connect: { id: $userId } }
       }
       where: { email: $email }
