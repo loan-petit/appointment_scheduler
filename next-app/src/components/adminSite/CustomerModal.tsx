@@ -1,5 +1,6 @@
 import * as React from 'react'
 import gql from 'graphql-tag'
+import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faTimesCircle,
@@ -42,9 +43,10 @@ const CustomerModal: React.FunctionComponent<Props> = ({
 }) => {
   if (!customer) return <div />
 
-  const [selectedAppointment, setSelectedAppointment] = React.useState<
-    Appointment
-  >()
+  const [
+    selectedAppointment,
+    setSelectedAppointment,
+  ] = React.useState<Appointment>()
 
   const appointmentsQueryResult = useQuery(AppointmentsQuery, {
     variables: { customerId: customer.id },
@@ -72,7 +74,7 @@ const CustomerModal: React.FunctionComponent<Props> = ({
       {/* Modal */}
       {!selectedAppointment && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="my-3 bg-white rounded-lg shadow-lg">
+          <div className="my-3 bg-white rounded-lg shadow-lg md:w-1/4">
             <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
               <h4 className="text-xl font-semibold">
                 {customer.firstName} {customer.lastName}
@@ -108,23 +110,33 @@ const CustomerModal: React.FunctionComponent<Props> = ({
                 {customer.address}
               </div>
 
-              <div className="my-4 text-gray-700">
-                <label className="block mb-2">Rendez-vous</label>
-                {appointments.map((appointment, i) => (
-                  <div key={i}>
-                    <div
-                      className="flex flex-row items-center pl-2 break-words cursor-pointer"
-                      onClick={() => setSelectedAppointment(appointment)}
-                    >
-                      <FontAwesomeIcon icon={faAngleRight} className="mr-4" />
-                      <p>{appointment.appointmentType?.name}</p>
-                    </div>
+              <div className="mt-6 mb-4 text-gray-700">
+                <h5 className="block mb-4 text-center">Rendez-vous</h5>
+                <div className="flex flex-col h-64 overflow-y-auto md:h-96">
+                  {appointments.map((appointment, i) => (
+                    <div key={i}>
+                      <div
+                        className="flex flex-row items-center pl-2 break-words cursor-pointer"
+                        onClick={() => setSelectedAppointment(appointment)}
+                      >
+                        <FontAwesomeIcon icon={faAngleRight} className="mr-4" />
+                        <p className="text-gray-700">
+                          <b>
+                            {appointment.appointmentType?.name}
+                            {'  '}
+                          </b>
+                          {moment(appointment.start).format(
+                            '[- Le ]d/MM[ à ]HH:MM',
+                          )}
+                        </p>
+                      </div>
 
-                    {i !== appointments.length - 1 && (
-                      <hr className="my-4 border-b-1" />
-                    )}
-                  </div>
-                ))}
+                      {i !== appointments.length - 1 && (
+                        <hr className="my-4 border-b-1" />
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

@@ -204,7 +204,7 @@ const SelectDateTime: React.FunctionComponent<Props> = ({
         {selectedDate && (
           <div
             className={
-              'flex flex-col w-full pr-2 mt-10 md:overflow-y-scroll md:mt-0 md:h-64' +
+              'flex flex-col w-full pr-2 mt-10 md:overflow-y-auto md:mt-0 md:h-64' +
               (!availabilityChunks.length ? ' md:rounded-lg md:border' : '')
             }
           >

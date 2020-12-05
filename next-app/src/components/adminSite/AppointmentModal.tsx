@@ -25,7 +25,7 @@ const AppointmentModal: React.FunctionComponent<Props> = ({
 
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center">
-        <div className="my-3 bg-white rounded-lg shadow-lg">
+        <div className="m-3 bg-white rounded-lg shadow-lg md:w-1/2">
           <div
             className={
               'flex items-center px-5 py-4 border-b border-gray-200 ' +
