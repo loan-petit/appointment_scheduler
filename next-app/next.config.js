@@ -13,8 +13,10 @@ require('axios')
       rel: 'stylesheet',
     },
   ])
-  .catch((_) =>
-    console.warn("WARNING: The API responsible of sending emails couldn't fetch remote resources."),
+  .catch(_ =>
+    console.warn(
+      "WARNING: The API responsible of sending emails couldn't fetch remote resources.",
+    ),
   )
 
 // for transpiling all ESM @fullcalendar/* packages

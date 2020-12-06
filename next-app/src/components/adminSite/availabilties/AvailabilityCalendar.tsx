@@ -83,7 +83,7 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
   const [upsertOneAvailabilityModifier] = useMutation(
     UpsertOneAvailabilityModifierMutation,
     {
-      update(cache, { data: { upsertOneAvailabilityModifier } }) {
+      update (cache, { data: { upsertOneAvailabilityModifier } }) {
         const { user }: any = cache.readQuery({
           query: AvailabilityModifierOperations.availabilityModifiers,
           variables: { userId: currentUser.id },
@@ -116,7 +116,7 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
   const [deleteOneAvailabilityModifier] = useMutation(
     DeleteOneAvailabilityModifierMutation,
     {
-      update(cache, { data: { deleteOneAvailabilityModifier } }) {
+      update (cache, { data: { deleteOneAvailabilityModifier } }) {
         const { user }: any = cache.readQuery({
           query: AvailabilityModifierOperations.availabilityModifiers,
           variables: { userId: currentUser?.id },
@@ -148,7 +148,7 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
   if (loading) return <LoadingOverlay />
   else if (error) {
     return (
-      <p className="error-message">
+      <p className='error-message'>
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
@@ -157,8 +157,8 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
     data.user.availabilityModifiers
 
   const businessHours: BusinessHour[] = recurrentAvailabilities
-    .filter((v) => v.startTime && v.endTime)
-    .map((v) => {
+    .filter(v => v.startTime && v.endTime)
+    .map(v => {
       if (!v.startTime || !v.endTime) {
         throw Error('RecurrentAvailabilities startTime and endTime must be set')
       }
@@ -189,7 +189,7 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
 
     if (surroundings.equal.length) {
       surroundings.equal.forEach(
-        async (v) =>
+        async v =>
           await deleteOneAvailabilityModifier({
             variables: {
               availabilityModifierId: availabilityModifiers[v.index].id,
@@ -212,7 +212,7 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
 
   return (
     <FullCalendarComponent
-      initialView="timeGridWeek"
+      initialView='timeGridWeek'
       headerToolbar={{
         start: 'prev,next today',
         center: 'title',
@@ -230,11 +230,11 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
           },
         },
       }}
-      stickyHeaderDates="true"
+      stickyHeaderDates='true'
       nowIndicator={true}
       navLinks={true}
       allDaySlot={false}
-      events={availabilityModifiers.map((v) => {
+      events={availabilityModifiers.map(v => {
         const isAllDay = isIntervalAllDay(v.start, v.end)
 
         return {

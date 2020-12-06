@@ -73,82 +73,82 @@ const UpdatePassword = () => {
   return (
     <>
       {/* Current password */}
-      <div className="relative w-full mb-3">
-        <label className="block mb-2">Mot de passe actuel</label>
-        <div className="flex password-input-container">
+      <div className='relative w-full mb-3'>
+        <label className='block mb-2'>Mot de passe actuel</label>
+        <div className='flex password-input-container'>
           <input
             type={isOldPasswordVisible ? 'text' : 'password'}
-            className="w-full px-3 py-3 placeholder-gray-400 shadow-none focus:shadow-none"
-            placeholder="Votre mot de passe"
-            name="oldPassword"
+            className='w-full px-3 py-3 placeholder-gray-400 shadow-none focus:shadow-none'
+            placeholder='Votre mot de passe'
+            name='oldPassword'
             onChange={formHelper.handleInputChange.bind(formHelper)}
             value={formHelper.fieldsInformation.oldPassword.value}
           />
           <button
-            className="px-2 focus:outline-none"
+            className='px-2 focus:outline-none'
             onClick={() => setIsOldPasswordVisible(!isOldPasswordVisible)}
             tabIndex={-1}
           >
             {isOldPasswordVisible ? (
-              <FontAwesomeIcon icon={faEyeSlash} size="lg" />
+              <FontAwesomeIcon icon={faEyeSlash} size='lg' />
             ) : (
-              <FontAwesomeIcon icon={faEye} size="lg" />
+              <FontAwesomeIcon icon={faEye} size='lg' />
             )}
           </button>
         </div>
-        <p className="form-field-error">
+        <p className='form-field-error'>
           {formHelper.fieldsInformation.oldPassword.error}
         </p>
       </div>
 
       {/* New password */}
-      <div className="relative w-full mb-3">
-        <label className="block mb-2">Nouveau mot de passe</label>
-        <div className="flex password-input-container">
+      <div className='relative w-full mb-3'>
+        <label className='block mb-2'>Nouveau mot de passe</label>
+        <div className='flex password-input-container'>
           <input
             type={isNewPasswordVisible ? 'text' : 'password'}
-            className="w-full px-3 py-3 placeholder-gray-400 shadow-none focus:shadow-none"
-            placeholder="Votre nouveau mot de passe"
-            name="newPassword"
+            className='w-full px-3 py-3 placeholder-gray-400 shadow-none focus:shadow-none'
+            placeholder='Votre nouveau mot de passe'
+            name='newPassword'
             onChange={formHelper.handleInputChange.bind(formHelper)}
             value={formHelper.fieldsInformation.newPassword.value}
           />
           <button
-            className="px-2 focus:outline-none"
+            className='px-2 focus:outline-none'
             onClick={() => setIsNewPasswordVisible(!isNewPasswordVisible)}
             tabIndex={-1}
           >
             {isNewPasswordVisible ? (
-              <FontAwesomeIcon icon={faEyeSlash} size="lg" />
+              <FontAwesomeIcon icon={faEyeSlash} size='lg' />
             ) : (
-              <FontAwesomeIcon icon={faEye} size="lg" />
+              <FontAwesomeIcon icon={faEye} size='lg' />
             )}
           </button>
         </div>
-        <p className="form-field-error">
+        <p className='form-field-error'>
           {formHelper.fieldsInformation.newPassword.error}
         </p>
       </div>
 
       {/* Submit to change password */}
-      <div className="mt-6">
+      <div className='mt-6'>
         {(() => {
           if (formHelper.submitStatus.response) {
             return (
-              <p className="pt-0 pb-4 text-sm italic text-green-500">
+              <p className='pt-0 pb-4 text-sm italic text-green-500'>
                 Les informations de votre compte ont bien été mises à jour.
               </p>
             )
           } else if (formHelper.submitStatus.userFriendlyError.length) {
             return (
-              <p className="pt-0 pb-4 form-submit-error">
+              <p className='pt-0 pb-4 form-submit-error'>
                 {formHelper.submitStatus.userFriendlyError}
               </p>
             )
           } else return null
         })()}
         <button
-          className="px-6 py-3 submit-button"
+          className='px-6 py-3 submit-button'
           onClick={formHelper.handleSubmit.bind(formHelper)}
         >
           Valider

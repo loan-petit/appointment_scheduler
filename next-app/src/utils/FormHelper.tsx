@@ -134,6 +134,7 @@ class FormHelper {
         this.submitStatus,
       )
       this.refreshComponent()
+      return this.submitStatus
     }
   }
 }

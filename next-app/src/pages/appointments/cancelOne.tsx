@@ -69,7 +69,7 @@ const CancelOneAppointment = () => {
   const router = useRouter()
   if (!router.query.id) {
     return (
-      <p className='error-message'>
+      <p className="error-message">
         An `id` must be specified in query params.
       </p>
     )
@@ -80,6 +80,7 @@ const CancelOneAppointment = () => {
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
   const [user, setUser] = React.useState<User>()
+  const [appointment, setAppointment] = React.useState<Appointment>()
 
   const userQueryResult = router.query.username
     ? useQuery(UserQuery, { variables: { username: router.query.username } })
@@ -88,21 +89,27 @@ const CancelOneAppointment = () => {
     variables: { appointmentId: Number(router.query.id) },
   })
   const [deleteOneAppointment] = useMutation(DeleteOneAppointmentMutation, {
-    update (cache, { data: { deleteOneAppointment } }) {
+    update(cache, { data: { deleteOneAppointment } }) {
       try {
+        const removeAppointmentInList = (appointments: Appointment[]) => {
+          let removedAppointmentIndex = appointments.findIndex(
+            (e: Appointment) => e.id == deleteOneAppointment.id,
+          )
+          if (removedAppointmentIndex > -1) {
+            appointments.splice(removedAppointmentIndex, 1)
+          }
+          return appointments
+        }
+
+        // Update cache for query in appointments list
         const { userRes }: any = cache.readQuery({
           query: AppointmentOperations.appointments,
           variables: { userId: user?.id },
         })
 
-        const removedAppointmentIndex = userRes.appointments.findIndex(
-          (e: Appointment) => e.id == deleteOneAppointment.id,
-        )
-        if (removedAppointmentIndex > -1) {
-          userRes.appointments.splice(removedAppointmentIndex, 1)
-        }
+        userRes.appointments = removeAppointmentInList(userRes.appointments)
 
-        cache.writeQuery({
+        userRes.cache.writeQuery({
           query: AppointmentOperations.appointments,
           variables: { userId: user?.id },
           data: {
@@ -113,6 +120,31 @@ const CancelOneAppointment = () => {
             },
           },
         })
+
+        // Update cache for query in customer appointments list
+        if (appointment) {
+          console.log('UPDATE APPOINTMENT CACHE')
+          const { customerRes }: any = cache.readQuery({
+            query: AppointmentOperations.appointmentsForCustomer,
+            variables: { customerId: appointment.customer?.id },
+          })
+
+          customerRes.appointments = removeAppointmentInList(
+            customerRes.appointments,
+          )
+
+          cache.writeQuery({
+            query: AppointmentOperations.appointmentsForCustomer,
+            variables: { customerId: appointment.customer?.id },
+            data: {
+              __typename: 'Customer',
+              customer: {
+                ...customerRes,
+                appointments: customerRes.appointments,
+              },
+            },
+          })
+        }
       } catch (e) {}
     },
   })
@@ -233,76 +265,103 @@ const CancelOneAppointment = () => {
   if (appointmentQueryResult.loading) return <LoadingOverlay />
   else if (appointmentQueryResult.error) {
     return (
-      <p className='error-message'>
+      <p className="error-message">
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
   }
-  const appointment: Appointment = appointmentQueryResult.data.appointment
+  if (!appointment) {
+    setAppointment(appointmentQueryResult.data.appointment)
+  }
 
   const body = (
     <>
-      <header className='mb-6'>
+      <header className="mb-6">
         <h5>Annuler un rendez-vous</h5>
       </header>
 
       {/* Message */}
-      <div className='w-full mb-3'>
-        <label className='block mb-2'>Message</label>
+      <div className="w-full mb-3">
+        <label className="block mb-2">Message</label>
         <textarea
           rows={4}
           cols={80}
-          className='w-full px-3 py-3 placeholder-gray-400'
-          placeholder='Votre message'
+          className="w-full px-3 py-3 placeholder-gray-400"
+          placeholder="Votre message"
           onChange={formHelper.handleInputChange.bind(formHelper)}
-          name='message'
+          name="message"
           value={formHelper.fieldsInformation.message.value}
         />
-        <p className='form-field-error'>
+        <p className="form-field-error">
           {formHelper.fieldsInformation.message.error}
         </p>
       </div>
 
       {/* Submit to change information */}
-      <div className='mt-6'>
+      <div className="mt-6">
         {(() => {
           if (formHelper.submitStatus.response) {
             return (
-              <p className='pt-0 pb-4 text-sm italic text-green-500'>
-                Le rendez-vous a bien été annulé.
-              </p>
+              <>
+                <p className="pt-0 pb-4 text-sm italic text-green-500">
+                  Le rendez-vous a bien été annulé.
+                </p>
+                {!router.query.username && (
+                  <button
+                    className="px-6 py-3 submit-button"
+                    onClick={() => router.back()}
+                  >
+                    Retour
+                  </button>
+                )}
+              </>
             )
           } else if (formHelper.submitStatus.userFriendlyError.length) {
             return (
-              <p className='pt-0 pb-4 form-submit-error'>
+              <p className="pt-0 pb-4 form-submit-error">
                 {formHelper.submitStatus.userFriendlyError}
               </p>
             )
           } else return null
         })()}
-        <button
-          className='px-6 py-3 submit-button'
-          onClick={e => {
-            formHelper.handleSubmit.bind(formHelper)(e, {
-              appointment: appointment,
-              user: user,
-              fromCustomer: router.query.username ? true : false,
-            })
-          }}
-        >
-          Valider
-        </button>
+
+        {!formHelper.submitStatus.response && (
+          <div className="flex justify-between">
+            <button
+              className="px-6 py-3 submit-button"
+              onClick={(e) => {
+                formHelper.handleSubmit.bind(formHelper)(e, {
+                  appointment: appointment,
+                  user: user,
+                  fromCustomer: router.query.username ? true : false,
+                })
+              }}
+            >
+              Valider
+            </button>
+            {!router.query.username && (
+              <button
+                className="text-sm font-bold text-right uppercase rounded focus:outline-none focus:ring"
+                onClick={() => {
+                  router.back()
+                }}
+              >
+                Retourner sans annuler
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </>
   )
 
   return router.query.username ? (
-    <div className='flex flex-col items-center p-6 m-4 bg-gray-200 rounded-lg shadow-lg md:mx-auto md:w-1/2'>
+    <div className="flex flex-col items-center p-6 m-4 bg-gray-200 rounded-lg shadow-lg md:mx-auto md:w-1/2">
       {body}
     </div>
   ) : (
     <Layout>
-      <div className='md:w-1/2'>{body}</div>
+      <div className="md:w-1/2">{body}</div>
     </Layout>
   )
 }

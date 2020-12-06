@@ -107,33 +107,33 @@ const Signup: React.FunctionComponent = () => {
   }
 
   return (
-    <div className="absolute flex flex-col justify-center w-full h-full p-4 bg-gray-100">
+    <div className='absolute flex flex-col justify-center w-full h-full p-4 bg-gray-100'>
       {googleUser ? (
         <FillMissingAccountInformation googleUser={googleUser} />
       ) : (
-        <div className="container flex flex-col w-full p-6 mx-auto break-words bg-gray-300 rounded-lg shadow-lg lg:w-5/12 lg:px-10">
+        <div className='container flex flex-col w-full p-6 mx-auto break-words bg-gray-300 rounded-lg shadow-lg lg:w-5/12 lg:px-10'>
           {/* Signup with Google */}
           {!googleAuthError ||
           googleAuthError.error !== 'idpiframe_initialization_failed' ? (
             <>
-              <div className="mb-3 text-center">
+              <div className='mb-3 text-center'>
                 <h6>S'inscrire avec</h6>
               </div>
 
-              <div className="text-center btn-wrapper">
+              <div className='text-center btn-wrapper'>
                 <GoogleLogin
                   clientId={process.env.GOOGLE_CLIENT_ID as string}
-                  render={(renderProps) => (
+                  render={renderProps => (
                     <button
-                      className="inline-flex items-center p-2 text-xs font-bold text-gray-800 bg-white rounded shadow outline-none focus:outline-none hover:shadow-md"
-                      type="button"
+                      className='inline-flex items-center p-2 text-xs font-bold text-gray-800 bg-white rounded shadow outline-none focus:outline-none hover:shadow-md'
+                      type='button'
                       onClick={renderProps.onClick}
                       disabled={renderProps.disabled}
                     >
                       <img
-                        alt="Google"
-                        className="w-5 mr-1"
-                        src="/svg/googleLogo.svg"
+                        alt='Google'
+                        className='w-5 mr-1'
+                        src='/svg/googleLogo.svg'
                       />
                       Google
                     </button>
@@ -143,119 +143,119 @@ const Signup: React.FunctionComponent = () => {
                   cookiePolicy={'single_host_origin'}
                 />
                 {googleAuthError && (
-                  <p className="mt-4 form-submit-error">
+                  <p className='mt-4 form-submit-error'>
                     Une erreur est survenue. Veuillez-réessayer.
                   </p>
                 )}
               </div>
 
-              <hr className="my-6 border-gray-500 border-b-1" />
+              <hr className='my-6 border-gray-500 border-b-1' />
 
-              <div className="mb-3 text-center">
+              <div className='mb-3 text-center'>
                 <h6>Ou avec des identifiants</h6>
               </div>
             </>
           ) : (
-            <div className="mb-3 text-center">
+            <div className='mb-3 text-center'>
               <h5>Enregistrez-vous</h5>
             </div>
           )}
 
           {/* Full Name */}
-          <div className="relative flex flex-row justify-between mb-3">
-            <div className="w-full mr-2">
-              <label className="block mb-2">
-                Prénom <span className="required">*</span>
+          <div className='relative flex flex-row justify-between mb-3'>
+            <div className='w-full mr-2'>
+              <label className='block mb-2'>
+                Prénom <span className='required'>*</span>
               </label>
               <input
-                type="text"
-                className="w-full px-3 py-3 placeholder-gray-400"
-                placeholder="Votre prénom"
+                type='text'
+                className='w-full px-3 py-3 placeholder-gray-400'
+                placeholder='Votre prénom'
                 onChange={formHelper.handleInputChange.bind(formHelper)}
-                name="firstName"
+                name='firstName'
                 value={formHelper.fieldsInformation.firstName.value}
                 autoFocus
               />
-              <p className="form-field-error">
+              <p className='form-field-error'>
                 {formHelper.fieldsInformation.firstName.error}
               </p>
             </div>
-            <div className="w-full ml-2">
-              <label className="block mb-2">
-                Nom <span className="required">*</span>
+            <div className='w-full ml-2'>
+              <label className='block mb-2'>
+                Nom <span className='required'>*</span>
               </label>
               <input
-                type="text"
-                className="w-full px-3 py-3 placeholder-gray-400"
-                placeholder="Votre nom"
+                type='text'
+                className='w-full px-3 py-3 placeholder-gray-400'
+                placeholder='Votre nom'
                 onChange={formHelper.handleInputChange.bind(formHelper)}
-                name="lastName"
+                name='lastName'
                 value={formHelper.fieldsInformation.lastName.value}
               />
-              <p className="form-field-error">
+              <p className='form-field-error'>
                 {formHelper.fieldsInformation.lastName.error}
               </p>
             </div>
           </div>
 
           {/* Email */}
-          <div className="relative w-full mb-3">
-            <label className="block mb-2">
-              E-mail <span className="required">*</span>
+          <div className='relative w-full mb-3'>
+            <label className='block mb-2'>
+              E-mail <span className='required'>*</span>
             </label>
             <input
-              type="email"
-              className="w-full px-3 py-3 placeholder-gray-400"
-              placeholder="Votre e-mail"
+              type='email'
+              className='w-full px-3 py-3 placeholder-gray-400'
+              placeholder='Votre e-mail'
               onChange={formHelper.handleInputChange.bind(formHelper)}
-              name="email"
+              name='email'
               value={formHelper.fieldsInformation.email.value}
             />
-            <p className="form-field-error">
+            <p className='form-field-error'>
               {formHelper.fieldsInformation.email.error}
             </p>
           </div>
 
           {/* Password */}
-          <div className="relative w-full mb-3">
-            <label className="block mb-2">
-              Mot de passe <span className="required">*</span>
+          <div className='relative w-full mb-3'>
+            <label className='block mb-2'>
+              Mot de passe <span className='required'>*</span>
             </label>
-            <div className="flex password-input-container">
+            <div className='flex password-input-container'>
               <input
                 type={isPasswordVisible ? 'text' : 'password'}
-                className="w-full px-3 py-3 placeholder-gray-400 shadow-none focus:shadow-none"
-                placeholder="Votre mot de passe"
-                name="password"
+                className='w-full px-3 py-3 placeholder-gray-400 shadow-none focus:shadow-none'
+                placeholder='Votre mot de passe'
+                name='password'
                 onChange={formHelper.handleInputChange.bind(formHelper)}
                 value={formHelper.fieldsInformation.password.value}
               />
               <button
-                className="px-2 focus:outline-none"
+                className='px-2 focus:outline-none'
                 onClick={() => setIsPasswordVisible(!isPasswordVisible)}
                 tabIndex={-1}
               >
                 {isPasswordVisible ? (
-                  <FontAwesomeIcon icon={faEyeSlash} size="lg" />
+                  <FontAwesomeIcon icon={faEyeSlash} size='lg' />
                 ) : (
-                  <FontAwesomeIcon icon={faEye} size="lg" />
+                  <FontAwesomeIcon icon={faEye} size='lg' />
                 )}
               </button>
             </div>
-            <p className="form-field-error">
+            <p className='form-field-error'>
               {formHelper.fieldsInformation.password.error}
             </p>
           </div>
 
           {/* Submit */}
-          <div className="mt-3 text-center">
+          <div className='mt-3 text-center'>
             {formHelper.submitStatus.userFriendlyError.length ? (
-              <p className="pt-0 pb-4 form-submit-error">
+              <p className='pt-0 pb-4 form-submit-error'>
                 {formHelper.submitStatus.userFriendlyError}
               </p>
             ) : null}
             <button
-              className="px-6 py-3 submit-button"
+              className='px-6 py-3 submit-button'
               onClick={formHelper.handleSubmit.bind(formHelper)}
             >
               Créer mon compte
@@ -265,7 +265,7 @@ const Signup: React.FunctionComponent = () => {
       )}
 
       {/* Signin */}
-      <div className="mt-6 text-lg font-semibold text-center text-gray-800">
+      <div className='mt-6 text-lg font-semibold text-center text-gray-800'>
         <Link
           href={
             '/auth/signin' +
@@ -274,7 +274,7 @@ const Signup: React.FunctionComponent = () => {
               : '')
           }
         >
-          <small className="cursor-pointer">
+          <small className='cursor-pointer'>
             Vous avez déjà un compte ? Connectez-vous.
           </small>
         </Link>

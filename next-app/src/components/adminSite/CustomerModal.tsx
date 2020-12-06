@@ -1,5 +1,4 @@
 import * as React from 'react'
-import gql from 'graphql-tag'
 import moment from 'moment'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -11,26 +10,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 import Customer from '../../models/Customer'
-import Appointment, { AppointmentFragments } from '../../models/Appointment'
-import { AppointmentTypeFragments } from '../../models/AppointmentType'
+import Appointment, { AppointmentOperations } from '../../models/Appointment'
 import { useQuery } from '@apollo/react-hooks'
 import LoadingOverlay from '../shared/LoadingOverlay'
 import AppointmentModal from './AppointmentModal'
-
-const AppointmentsQuery = gql`
-  query AppointmentsQuery($customerId: Int!) {
-    customer(where: { id: $customerId }) {
-      appointments {
-        ...AppointmentFields
-        appointmentType {
-          ...AppointmentTypeFields
-        }
-      }
-    }
-  }
-  ${AppointmentFragments.fields}
-  ${AppointmentTypeFragments.fields}
-`
 
 type Props = {
   customer?: Customer
@@ -48,9 +31,12 @@ const CustomerModal: React.FunctionComponent<Props> = ({
     setSelectedAppointment,
   ] = React.useState<Appointment>()
 
-  const appointmentsQueryResult = useQuery(AppointmentsQuery, {
-    variables: { customerId: customer.id },
-  })
+  const appointmentsQueryResult = useQuery(
+    AppointmentOperations.appointmentsForCustomer,
+    {
+      variables: { customerId: customer.id },
+    },
+  )
 
   // Verify CustomersQuery result
   if (appointmentsQueryResult.loading) return <LoadingOverlay />
@@ -111,7 +97,11 @@ const CustomerModal: React.FunctionComponent<Props> = ({
               </div>
 
               <div className="mt-6 mb-4 text-gray-700">
-                <h5 className="block mb-4 text-center">Rendez-vous</h5>
+                <h5 className="block mb-4 text-center">
+                  {appointments.length
+                    ? 'Rendez-vous'
+                    : "Vous n'avez pas de rendez-vous avec cette personne"}
+                </h5>
                 <div className="flex flex-col h-64 overflow-y-auto md:h-96">
                   {appointments.map((appointment, i) => (
                     <div key={i}>

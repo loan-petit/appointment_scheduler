@@ -44,6 +44,20 @@ export const AppointmentOperations = {
     ${AppointmentTypeFragments.fields}
     ${CustomerFragments.fields}
   `,
+  appointmentsForCustomer: gql`
+    query AppointmentsForCustomerQuery($customerId: Int!) {
+      customer(where: { id: $customerId }) {
+        appointments {
+          ...AppointmentFields
+          appointmentType {
+            ...AppointmentTypeFields
+          }
+        }
+      }
+    }
+    ${AppointmentFragments.fields}
+    ${AppointmentTypeFragments.fields}
+  `,
 }
 
 export default Appointment

@@ -83,7 +83,7 @@ const UpsertOneAppointmentType = () => {
   const [upsertOneAppointmentType] = useMutation(
     UpsertOneAppointmentTypeMutation,
     {
-      update(cache, { data: { upsertOneAppointmentType } }) {
+      update (cache, { data: { upsertOneAppointmentType } }) {
         const { user }: any = cache.readQuery({
           query: AppointmentTypeOperations.appointmentTypes,
           variables: { userId: currentUser?.id },
@@ -148,12 +148,7 @@ const UpsertOneAppointmentType = () => {
 
   const [formHelper] = React.useState(
     new FormHelper({
-      fields: [
-        'name',
-        'description',
-        'duration',
-        'price',
-      ],
+      fields: ['name', 'description', 'duration', 'price'],
       refreshComponent: forceUpdate,
       fieldsValidator: fieldsValidator,
       onSubmit: onSubmit,
@@ -176,7 +171,7 @@ const UpsertOneAppointmentType = () => {
     if (appointmentTypeQueryResult.loading) return <LoadingOverlay />
     else if (appointmentTypeQueryResult.error) {
       return (
-        <p className="error-message">
+        <p className='error-message'>
           Une erreur est survenue. Veuillez-réessayer.
         </p>
       )
@@ -191,86 +186,86 @@ const UpsertOneAppointmentType = () => {
 
   return (
     <Layout>
-      <div className="md:w-1/2">
-        <header className="mb-6">
+      <div className='md:w-1/2'>
+        <header className='mb-6'>
           <h5>Informations de l'événement</h5>
         </header>
 
         {/* Name */}
-        <div className="w-full mb-3">
-          <label className="block mb-2">
-            Nom <span className="required">*</span>
+        <div className='w-full mb-3'>
+          <label className='block mb-2'>
+            Nom <span className='required'>*</span>
           </label>
           <input
-            className="w-full px-3 py-3 placeholder-gray-400"
+            className='w-full px-3 py-3 placeholder-gray-400'
             placeholder="Nom de l'événement"
             onChange={formHelper.handleInputChange.bind(formHelper)}
-            name="name"
+            name='name'
             value={formHelper.fieldsInformation.name.value}
           />
-          <p className="form-field-error">
+          <p className='form-field-error'>
             {formHelper.fieldsInformation.name.error}
           </p>
         </div>
 
         {/* Description */}
-        <div className="w-full mb-3">
-          <label className="block mb-2">Description</label>
+        <div className='w-full mb-3'>
+          <label className='block mb-2'>Description</label>
           <textarea
             rows={4}
             cols={80}
-            className="w-full px-3 py-3 placeholder-gray-400"
+            className='w-full px-3 py-3 placeholder-gray-400'
             placeholder="Description de l'événement"
             onChange={formHelper.handleInputChange.bind(formHelper)}
-            name="description"
+            name='description'
             value={formHelper.fieldsInformation.description.value}
           />
-          <p className="form-field-error">
+          <p className='form-field-error'>
             {formHelper.fieldsInformation.description.error}
           </p>
         </div>
 
         {/* Duration */}
-        <div className="w-full mb-3">
-          <label className="block mb-2">
-            Durée (en minutes) <span className="required">*</span>
+        <div className='w-full mb-3'>
+          <label className='block mb-2'>
+            Durée (en minutes) <span className='required'>*</span>
           </label>
           <input
-            type="number"
-            className="w-full px-3 py-3 placeholder-gray-400"
-            placeholder="Durée"
+            type='number'
+            className='w-full px-3 py-3 placeholder-gray-400'
+            placeholder='Durée'
             onChange={formHelper.handleInputChange.bind(formHelper)}
-            name="duration"
+            name='duration'
             value={formHelper.fieldsInformation.duration.value}
             autoFocus
           />
-          <p className="form-field-error">
+          <p className='form-field-error'>
             {formHelper.fieldsInformation.duration.error}
           </p>
         </div>
 
         {/* Price */}
-        <div className="w-full mb-3">
-          <label className="block mb-2">Prix (en €)</label>
+        <div className='w-full mb-3'>
+          <label className='block mb-2'>Prix (en €)</label>
           <input
-            type="number"
-            className="w-full px-3 py-3 placeholder-gray-400"
-            placeholder="Prix"
+            type='number'
+            className='w-full px-3 py-3 placeholder-gray-400'
+            placeholder='Prix'
             onChange={formHelper.handleInputChange.bind(formHelper)}
-            name="price"
+            name='price'
             value={formHelper.fieldsInformation.price.value}
           />
-          <p className="form-field-error">
+          <p className='form-field-error'>
             {formHelper.fieldsInformation.price.error}
           </p>
         </div>
 
         {/* Submit to change information */}
-        <div className="mt-6">
+        <div className='mt-6'>
           {(() => {
             if (formHelper.submitStatus.response) {
               return (
-                <p className="pt-0 pb-4 text-sm italic text-green-500">
+                <p className='pt-0 pb-4 text-sm italic text-green-500'>
                   {router.query.id
                     ? "L'événement a bien été mis à jour."
                     : "L'événement a bien été créé."}
@@ -278,15 +273,15 @@ const UpsertOneAppointmentType = () => {
               )
             } else if (formHelper.submitStatus.userFriendlyError.length) {
               return (
-                <p className="pt-0 pb-4 form-submit-error">
+                <p className='pt-0 pb-4 form-submit-error'>
                   {formHelper.submitStatus.userFriendlyError}
                 </p>
               )
             } else return null
           })()}
           <button
-            className="px-6 py-3 submit-button"
-            onClick={(e) => {
+            className='px-6 py-3 submit-button'
+            onClick={e => {
               formHelper.handleSubmit.bind(formHelper)(e, {
                 appointmentTypeId: Number(router.query.id) || -1,
                 userId: currentUser?.id,

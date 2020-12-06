@@ -7,7 +7,7 @@ const purgecss = [
       './src/components/**/*.{js,jsx,ts,tsx}',
       './src/pages/**/*.{js,jsx,ts,tsx}',
     ],
-    defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
+    defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
   },
 ]
 

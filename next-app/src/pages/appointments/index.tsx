@@ -51,7 +51,7 @@ const Appointments = () => {
   if (appointmentsQueryResult.loading) return <LoadingOverlay />
   else if (appointmentsQueryResult.error) {
     return (
-      <p className="error-message">
+      <p className='error-message'>
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
@@ -64,7 +64,7 @@ const Appointments = () => {
   return (
     <Layout>
       <FullCalendarComponent
-        initialView="timeGridWeek"
+        initialView='timeGridWeek'
         headerToolbar={{
           start: 'prev,next today',
           center: 'title',
@@ -82,11 +82,11 @@ const Appointments = () => {
             },
           },
         }}
-        stickyHeaderDates="true"
+        stickyHeaderDates='true'
         nowIndicator={true}
         navLinks={true}
         allDaySlot={false}
-        events={appointments.map((v) => {
+        events={appointments.map(v => {
           const isAllDay = isIntervalAllDay(v.start, v.end)
 
           return {
@@ -99,7 +99,7 @@ const Appointments = () => {
         })}
         eventClick={({ event }: EventClickArg) =>
           setSelectedAppointment(
-            appointments.find((v) => event.id == v.id.toString()),
+            appointments.find(v => event.id == v.id.toString()),
           )
         }
       />

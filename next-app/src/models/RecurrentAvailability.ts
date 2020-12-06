@@ -67,9 +67,9 @@ export const RecurrentAvailabilityHelpers = {
   getMissingDays: (recurrentAvailabilities: RecurrentAvailability[]) => {
     const missingDays: Day[] = []
 
-    Object.values(Day).forEach((day) => {
+    Object.values(Day).forEach(day => {
       if (typeof day === 'string') return
-      if (recurrentAvailabilities.findIndex((e) => e.day == Day[day]) === -1) {
+      if (recurrentAvailabilities.findIndex(e => e.day == Day[day]) === -1) {
         missingDays.push(day)
       }
     })
@@ -80,7 +80,7 @@ export const RecurrentAvailabilityHelpers = {
 
     RecurrentAvailabilityHelpers.getMissingDays(
       recurrentAvailabilities,
-    ).forEach((v) => {
+    ).forEach(v => {
       maxId += 1
       recurrentAvailabilities.push({ id: maxId, day: Day[v] })
     })

@@ -17,7 +17,7 @@ let apolloClient = null
  * @param {Object} [config]
  * @param {Boolean} [config.ssr=true]
  */
-export function withApollo(PageComponent, { ssr = true } = {}) {
+export function withApollo (PageComponent, { ssr = true } = {}) {
   const WithApollo = ({ apolloClient, apolloState, ...pageProps }) => {
     const client = apolloClient || initApolloClient(apolloState)
     return (
@@ -40,7 +40,7 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
   }
 
   if (ssr || PageComponent.getInitialProps) {
-    WithApollo.getInitialProps = async (ctx) => {
+    WithApollo.getInitialProps = async ctx => {
       const { AppTree } = ctx
 
       // Initialize ApolloClient, add it to the ctx object so
@@ -107,7 +107,7 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
  * Creates or reuses apollo client in the browser.
  * @param  {Object} initialState
  */
-function initApolloClient(initialState, cookie = '') {
+function initApolloClient (initialState, cookie = '') {
   // Make sure to create a new client for every server-side request so that data
   // isn't shared between connections (which would be bad)
   if (typeof window === 'undefined') {
@@ -126,7 +126,7 @@ function initApolloClient(initialState, cookie = '') {
  * Creates and configures the ApolloClient
  * @param  {Object} [initialState={}]
  */
-function createApolloClient(initialState = {}, cookie = '') {
+function createApolloClient (initialState = {}, cookie = '') {
   const ssrMode = typeof window === 'undefined'
   const cache = new InMemoryCache().restore(initialState)
 
@@ -137,7 +137,7 @@ function createApolloClient(initialState = {}, cookie = '') {
   })
 }
 
-function createIsomorphLink(cookie = '') {
+function createIsomorphLink (cookie = '') {
   const httpLink = new createHttpLink({
     uri: process.env.API_URL,
   })

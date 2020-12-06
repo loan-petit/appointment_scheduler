@@ -35,24 +35,24 @@ const Settings = () => {
   return (
     <Layout>
       <section>
-        <header className="flex items-center mb-8">
+        <header className='flex items-center mb-8'>
           <h5>Vos informations</h5>
         </header>
 
-        <div className="md:w-1/2">
+        <div className='md:w-1/2'>
           <UpdateInformations currentUser={currentUser} />
         </div>
       </section>
 
-      <hr className="my-12 border-b-1" />
+      <hr className='my-12 border-b-1' />
 
       {currentUser.password && (
         <section>
-          <header className="flex items-center mb-8">
+          <header className='flex items-center mb-8'>
             <h5>Changer votre mot de passe</h5>
           </header>
 
-          <div className="md:w-1/2">
+          <div className='md:w-1/2'>
             <UpdatePassword />
           </div>
         </section>
