@@ -1,5 +1,4 @@
 import React from 'react'
-import gql from 'graphql-tag'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { useRouter } from 'next/router'
 
@@ -7,61 +6,10 @@ import { withApollo } from '../../apollo/client'
 import Layout from '../../components/adminSite/Layout'
 import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
 import LoadingOverlay from '../../components/shared/LoadingOverlay'
-import User from '../../models/User'
+import User, { UserOperations } from '../../models/User'
 import AppointmentType, {
-  AppointmentTypeFragments,
   AppointmentTypeOperations,
 } from '../../models/AppointmentType'
-
-const CurrentUserQuery = gql`
-  query CurrentUserQuery {
-    me {
-      user {
-        id
-      }
-    }
-  }
-`
-
-const AppointmentTypeQuery = gql`
-  query AppointmentTypeQuery($appointmentTypeId: Int!) {
-    appointmentType(where: { id: $appointmentTypeId }) {
-      ...AppointmentTypeFields
-    }
-  }
-  ${AppointmentTypeFragments.fields}
-`
-
-const UpsertOneAppointmentTypeMutation = gql`
-  mutation UpsertOneAppointmentTypeMutation(
-    $appointmentTypeId: Int!
-    $name: String!
-    $description: String
-    $duration: Int!
-    $price: Float
-    $userId: Int!
-  ) {
-    upsertOneAppointmentType(
-      create: {
-        name: $name
-        description: $description
-        duration: $duration
-        price: $price
-        user: { connect: { id: $userId } }
-      }
-      update: {
-        name: { set: $name }
-        description: { set: $description }
-        duration: { set: $duration }
-        price: { set: $price }
-      }
-      where: { id: $appointmentTypeId }
-    ) {
-      ...AppointmentTypeFields
-    }
-  }
-  ${AppointmentTypeFragments.fields}
-`
 
 const UpsertOneAppointmentType = () => {
   const router = useRouter()
@@ -75,13 +23,16 @@ const UpsertOneAppointmentType = () => {
     AppointmentType
   >()
 
-  const currentUserQueryResult = useQuery(CurrentUserQuery)
-  const appointmentTypeQueryResult = useQuery(AppointmentTypeQuery, {
-    variables: { appointmentTypeId: Number(router.query.id) },
-    skip: !router.query.id,
-  })
+  const currentUserQueryResult = useQuery(UserOperations.currentUserIdOnly)
+  const appointmentTypeQueryResult = useQuery(
+    AppointmentTypeOperations.appointmentType,
+    {
+      variables: { appointmentTypeId: Number(router.query.id) },
+      skip: !router.query.id,
+    },
+  )
   const [upsertOneAppointmentType] = useMutation(
-    UpsertOneAppointmentTypeMutation,
+    AppointmentTypeOperations.upsertOne,
     {
       update (cache, { data: { upsertOneAppointmentType } }) {
         const { user }: any = cache.readQuery({

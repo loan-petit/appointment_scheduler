@@ -1,5 +1,4 @@
 import * as React from 'react'
-import gql from 'graphql-tag'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faEllipsisH } from '@fortawesome/free-solid-svg-icons'
@@ -7,32 +6,13 @@ import Link from 'next/link'
 import Router from 'next/router'
 
 import LoadingOverlay from '../../components/shared/LoadingOverlay'
-import User from '../../models/User'
+import User, { UserOperations } from '../../models/User'
 import AppointmentType, {
-  AppointmentTypeFragments,
   AppointmentTypeOperations,
 } from '../../models/AppointmentType'
 import { withApollo } from '../../apollo/client'
 import Layout from '../../components/adminSite/Layout'
 import WarningModal from '../../components/shared/WarningModal'
-
-const CurrentUserQuery = gql`
-  query CurrentUserQuery {
-    me {
-      user {
-        id
-      }
-    }
-  }
-`
-const DeleteOneAppointmentTypeMutation = gql`
-  mutation DeleteOneAppointmentTypeMutation($appointmentTypeId: Int!) {
-    deleteOneAppointmentType(where: { id: $appointmentTypeId }) {
-      ...AppointmentTypeFields
-    }
-  }
-  ${AppointmentTypeFragments.fields}
-`
 
 const AppointmentTypes = () => {
   const [currentUser, setCurrentUser] = React.useState<User>()
@@ -46,7 +26,7 @@ const AppointmentTypes = () => {
     setAppointmentTypeToDeleteId,
   ] = React.useState(-1)
 
-  const currentUserQueryResult = useQuery(CurrentUserQuery)
+  const currentUserQueryResult = useQuery(UserOperations.currentUserIdOnly)
   const appointmentTypesQueryResult = useQuery(
     AppointmentTypeOperations.appointmentTypes,
     {
@@ -55,7 +35,7 @@ const AppointmentTypes = () => {
     },
   )
   const [deleteOneAppointmentType] = useMutation(
-    DeleteOneAppointmentTypeMutation,
+    AppointmentTypeOperations.deleteOne,
     {
       update (cache, { data: { deleteOneAppointmentType } }) {
         const { user }: any = cache.readQuery({

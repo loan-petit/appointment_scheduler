@@ -21,8 +21,8 @@ const Signup: React.FunctionComponent = () => {
   const [, updateState] = React.useState<object>()
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
-  const [signup] = useMutation(AuthPayloadOperations.credentialsSignupMutation)
-  const [oAuthSignin] = useMutation(AuthPayloadOperations.oAuthSigninMutation)
+  const [signup] = useMutation(AuthPayloadOperations.credentialsSignup)
+  const [oAuthSignin] = useMutation(AuthPayloadOperations.oAuthSignin)
 
   const [googleUser, setGoogleUser] = React.useState<GoogleLoginResponse>()
   const [googleAuthError, setGoogleAuthError] = React.useState<any>()

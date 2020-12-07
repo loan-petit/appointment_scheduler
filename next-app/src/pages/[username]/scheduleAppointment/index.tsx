@@ -1,12 +1,11 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 import moment from 'moment'
 
 import { withApollo } from '../../../apollo/client'
 import LoadingOverlay from '../../../components/shared/LoadingOverlay'
-import User, { UserFragments } from '../../../models/User'
+import User, { UserOperations } from '../../../models/User'
 import AppointmentType, {
   AppointmentTypeOperations,
 } from '../../../models/AppointmentType'
@@ -14,15 +13,6 @@ import Layout from '../../../components/appointmentScheduler/Layout'
 import SelectAppointmentType from '../../../components/appointmentScheduler/SelectAppointmentType'
 import SelectDateTime from '../../../components/appointmentScheduler/SelectDateTime'
 import ConfirmAppointment from '../../../components/appointmentScheduler/ConfirmAppointment'
-
-const UserQuery = gql`
-  query UserQuery($username: String!) {
-    user(where: { username: $username }) {
-      ...UserFields
-    }
-  }
-  ${UserFragments.fields}
-`
 
 const AppointmentScheduler = () => {
   const router = useRouter()
@@ -33,7 +23,7 @@ const AppointmentScheduler = () => {
   const [selectedDateTime, setSelectedDateTime] = React.useState<Date>()
 
   var [user, setUser] = React.useState<User>()
-  const userQueryResult = useQuery(UserQuery, {
+  const userQueryResult = useQuery(UserOperations.user, {
     variables: {
       username: router.query.username,
     },

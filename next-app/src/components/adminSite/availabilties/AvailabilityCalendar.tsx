@@ -1,5 +1,4 @@
 import React from 'react'
-import gql from 'graphql-tag'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { DateClickArg } from '@fullcalendar/interaction'
 import moment from 'moment'
@@ -7,7 +6,6 @@ import moment from 'moment'
 import LoadingOverlay from '../../shared/LoadingOverlay'
 import User from '../../../models/User'
 import AvailabilityModifier, {
-  AvailabilityModifierFragments,
   AvailabilityModifierOperations,
 } from '../../../models/AvailabilityModifier'
 import RecurrentAvailability from '../../../models/RecurrentAvailability'
@@ -20,45 +18,6 @@ import MomentInterval from '../../../types/MomentInterval'
 import getSurroundingEvents from '../../../utils/getSurroundingEvents'
 import isIntervalAllDay from '../../../utils/isIntervalAllDay'
 import FullCalendarComponent from '../../shared/FullCalendar'
-
-const UpsertOneAvailabilityModifierMutation = gql`
-  mutation UpsertOneAvailabilityModifierMutation(
-    $availabilityModifierId: Int!
-    $start: DateTime!
-    $end: DateTime!
-    $isExclusive: Boolean!
-    $userId: Int!
-  ) {
-    upsertOneAvailabilityModifier(
-      create: {
-        start: $start
-        end: $end
-        isExclusive: $isExclusive
-        user: { connect: { id: $userId } }
-      }
-      update: {
-        start: { set: $start }
-        end: { set: $end }
-        isExclusive: { set: $isExclusive }
-      }
-      where: { id: $availabilityModifierId }
-    ) {
-      ...AvailabilityModifierFields
-    }
-  }
-  ${AvailabilityModifierFragments.fields}
-`
-
-const DeleteOneAvailabilityModifierMutation = gql`
-  mutation DeleteOneAvailabilityModifierMutation(
-    $availabilityModifierId: Int!
-  ) {
-    deleteOneAvailabilityModifier(where: { id: $availabilityModifierId }) {
-      ...AvailabilityModifierFields
-    }
-  }
-  ${AvailabilityModifierFragments.fields}
-`
 
 type Props = {
   currentUser: User
@@ -81,7 +40,7 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
   )
 
   const [upsertOneAvailabilityModifier] = useMutation(
-    UpsertOneAvailabilityModifierMutation,
+    AvailabilityModifierOperations.upsertOne,
     {
       update (cache, { data: { upsertOneAvailabilityModifier } }) {
         const { user }: any = cache.readQuery({
@@ -114,7 +73,7 @@ const AvailabilityCalendar: React.FunctionComponent<Props> = ({
     },
   )
   const [deleteOneAvailabilityModifier] = useMutation(
-    DeleteOneAvailabilityModifierMutation,
+    AvailabilityModifierOperations.deleteOne,
     {
       update (cache, { data: { deleteOneAvailabilityModifier } }) {
         const { user }: any = cache.readQuery({

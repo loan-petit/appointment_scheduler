@@ -4,7 +4,7 @@ import AppointmentType from '../../../models/AppointmentType'
 import User from '../../../models/User'
 import AppointmentDetails from '../AppointmentDetails'
 import Customer from '../../../models/Customer'
-import Appointment from '../../../models/Appointment'
+import Appointment from '../../../models/appointment/Appointment'
 
 type Props = {
   user: User

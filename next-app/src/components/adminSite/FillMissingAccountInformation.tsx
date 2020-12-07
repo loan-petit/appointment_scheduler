@@ -21,7 +21,7 @@ const FillMissingAccountInformation: React.FunctionComponent<Props> = ({
   const [, updateState] = React.useState<object>()
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
-  const [signup] = useMutation(AuthPayloadOperations.oAuthSignupMutation)
+  const [signup] = useMutation(AuthPayloadOperations.oAuthSignup)
 
   const emailRegex = RegExp(
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,

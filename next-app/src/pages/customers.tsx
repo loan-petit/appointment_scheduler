@@ -1,49 +1,22 @@
 import React from 'react'
 import Router from 'next/router'
-import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 import Avatar from 'react-avatar'
 
 import { withApollo } from '../apollo/client'
 import LoadingOverlay from '../components/shared/LoadingOverlay'
-import User from '../models/User'
+import User, { UserOperations } from '../models/User'
 import Layout from '../components/adminSite/Layout'
-import Customer, { CustomerFragments } from '../models/Customer'
-import { AppointmentFragments } from '../models/Appointment'
+import Customer, { CustomerOperations } from '../models/Customer'
 import CustomerModal from '../components/adminSite/CustomerModal'
-
-const CurrentUserQuery = gql`
-  query CurrentUserQuery {
-    me {
-      user {
-        id
-      }
-    }
-  }
-`
-
-const CustomersQuery = gql`
-  query CustomersQuery($userId: Int!) {
-    user(where: { id: $userId }) {
-      customers {
-        ...CustomerFields
-        appointments {
-          ...AppointmentFields
-        }
-      }
-    }
-  }
-  ${CustomerFragments.fields}
-  ${AppointmentFragments.fields}
-`
 
 const Customers = () => {
   const [selectedCustomer, setSelectedCustomer] = React.useState<Customer>()
 
   const [currentUser, setCurrentUser] = React.useState<User>()
 
-  const currentUserQueryResult = useQuery(CurrentUserQuery)
-  const customersQueryResult = useQuery(CustomersQuery, {
+  const currentUserQueryResult = useQuery(UserOperations.currentUserIdOnly)
+  const customersQueryResult = useQuery(CustomerOperations.customers, {
     variables: { userId: currentUser?.id },
     skip: !currentUser,
   })

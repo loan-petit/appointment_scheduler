@@ -2,7 +2,7 @@ import * as React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimesCircle, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 
-import Appointment from '../../models/Appointment'
+import Appointment from '../../models/appointment/Appointment'
 import Router from 'next/router'
 
 type Props = {

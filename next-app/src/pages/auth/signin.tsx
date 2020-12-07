@@ -19,9 +19,9 @@ const Signin = () => {
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
   const [credentialsSignin] = useMutation(
-    AuthPayloadOperations.credentialsSigninMutation,
+    AuthPayloadOperations.credentialsSignin,
   )
-  const [oAuthSignin] = useMutation(AuthPayloadOperations.oAuthSigninMutation)
+  const [oAuthSignin] = useMutation(AuthPayloadOperations.oAuthSignin)
 
   const [googleUser, setGoogleUser] = React.useState<GoogleLoginResponse>()
   const [googleAuthError, setGoogleAuthError] = React.useState<any>()

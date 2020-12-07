@@ -1,28 +1,19 @@
 import React from 'react'
-import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
 
 import FormHelper, { FieldsInformation } from '../../../utils/FormHelper'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
-
-const UpdateCurrentUserPasswordMutation = gql`
-  mutation UpdateCurrentUserPasswordMutation(
-    $oldPassword: String!
-    $newPassword: String!
-  ) {
-    updateCurrentUser(oldPassword: $oldPassword, newPassword: $newPassword) {
-      id
-    }
-  }
-`
+import { UserOperations } from '../../../models/User'
 
 const UpdatePassword = () => {
   // Hook to force component rerender
   const [, updateState] = React.useState<object>()
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
-  const [updateCurrentUser] = useMutation(UpdateCurrentUserPasswordMutation)
+  const [updateCurrentUser] = useMutation(
+    UserOperations.updateCurrentUserPassword,
+  )
 
   const [isOldPasswordVisible, setIsOldPasswordVisible] = React.useState(false)
   const [isNewPasswordVisible, setIsNewPasswordVisible] = React.useState(false)

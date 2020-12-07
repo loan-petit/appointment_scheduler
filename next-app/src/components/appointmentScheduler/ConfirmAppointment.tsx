@@ -1,82 +1,16 @@
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { useMutation } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
 import axios from 'axios'
 
 import User from '../../models/User'
-import AppointmentType, {
-  AppointmentTypeFragments,
-} from '../../models/AppointmentType'
+import AppointmentType from '../../models/AppointmentType'
 import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
-import Customer, { CustomerFragments } from '../../models/Customer'
-import Appointment, { AppointmentFragments } from '../../models/Appointment'
+import Customer, { CustomerOperations } from '../../models/Customer'
+import Appointment from '../../models/appointment/Appointment'
 import AppointmentConfirmationForServiceProvider from '../emails/appointmentConfirmation/forServiceProvider'
 import AppointmentConfirmationForCustomer from '../emails/appointmentConfirmation/forCustomer'
-
-const UpsertOneCustomerMutation = gql`
-  mutation UpsertOneCustomerMutation(
-    $userId: Int!
-    $email: String!
-    $firstName: String!
-    $lastName: String!
-    $phone: String
-    $address: String
-  ) {
-    upsertOneCustomer(
-      create: {
-        email: $email
-        firstName: $firstName
-        lastName: $lastName
-        phone: $phone
-        address: $address
-        users: { connect: { id: $userId } }
-      }
-      update: {
-        firstName: { set: $firstName }
-        lastName: { set: $lastName }
-        phone: { set: $phone }
-        address: { set: $address }
-        users: { connect: { id: $userId } }
-      }
-      where: { email: $email }
-    ) {
-      ...CustomerFields
-    }
-  }
-  ${CustomerFragments.fields}
-`
-
-const CreateOneAppointmentMutation = gql`
-  mutation CreateOneAppointmentMutation(
-    $userId: Int!
-    $customerId: Int!
-    $appointmentTypeId: Int!
-    $start: DateTime!
-    $end: DateTime!
-  ) {
-    createOneAppointment(
-      data: {
-        start: $start
-        end: $end
-        appointmentType: { connect: { id: $appointmentTypeId } }
-        user: { connect: { id: $userId } }
-        customer: { connect: { id: $customerId } }
-      }
-    ) {
-      ...AppointmentFields
-      appointmentType {
-        ...AppointmentTypeFields
-      }
-      customer {
-        ...CustomerFields
-      }
-    }
-  }
-  ${AppointmentFragments.fields}
-  ${AppointmentTypeFragments.fields}
-  ${CustomerFragments.fields}
-`
+import AppointmentOperations from '../../models/appointment/AppointmentOperations'
 
 type Props = {
   user: User
@@ -95,8 +29,8 @@ const ConfirmAppointment: React.FunctionComponent<Props> = ({
   const [, updateState] = React.useState<object>()
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
-  const [upsertOneCustomer] = useMutation(UpsertOneCustomerMutation)
-  const [createOneAppointment] = useMutation(CreateOneAppointmentMutation)
+  const [upsertOneCustomer] = useMutation(CustomerOperations.upsertOne)
+  const [createOneAppointment] = useMutation(AppointmentOperations.createOne)
 
   const emailRegex = RegExp(
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,

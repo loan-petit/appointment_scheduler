@@ -1,19 +1,9 @@
 import * as React from 'react'
-import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 
-import User, { UserFragments } from '../../models/User'
+import User, { UserOperations } from '../../models/User'
 import LoadingOverlay from '../shared/LoadingOverlay'
 import Head from 'next/head'
-
-const UserQuery = gql`
-  query UserQuery($username: String!) {
-    user(where: { username: $username }) {
-      ...UserPublicFields
-    }
-  }
-  ${UserFragments.publicFields}
-`
 
 type Props = {
   user?: User
@@ -26,7 +16,7 @@ const Layout: React.FunctionComponent<Props> = ({
   username,
 }) => {
   if (!user) {
-    const userQueryResult = useQuery(UserQuery, {
+    const userQueryResult = useQuery(UserOperations.userPublicFieldsOnly, {
       variables: {
         username: username,
       },

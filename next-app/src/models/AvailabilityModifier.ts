@@ -33,6 +33,43 @@ export const AvailabilityModifierOperations = {
     }
     ${AvailabilityModifierFragments.fields}
   `,
+  upsertOne: gql`
+    mutation UpsertOneAvailabilityModifierMutation(
+      $availabilityModifierId: Int!
+      $start: DateTime!
+      $end: DateTime!
+      $isExclusive: Boolean!
+      $userId: Int!
+    ) {
+      upsertOneAvailabilityModifier(
+        create: {
+          start: $start
+          end: $end
+          isExclusive: $isExclusive
+          user: { connect: { id: $userId } }
+        }
+        update: {
+          start: { set: $start }
+          end: { set: $end }
+          isExclusive: { set: $isExclusive }
+        }
+        where: { id: $availabilityModifierId }
+      ) {
+        ...AvailabilityModifierFields
+      }
+    }
+    ${AvailabilityModifierFragments.fields}
+  `,
+  deleteOne: gql`
+    mutation DeleteOneAvailabilityModifierMutation(
+      $availabilityModifierId: Int!
+    ) {
+      deleteOneAvailabilityModifier(where: { id: $availabilityModifierId }) {
+        ...AvailabilityModifierFields
+      }
+    }
+    ${AvailabilityModifierFragments.fields}
+  `,
 }
 
 export default AvailabilityModifier

@@ -3,25 +3,12 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Cookies from 'js-cookie'
-import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faTimes, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 
-import User from '../../models/User'
+import User, { UserOperations } from '../../models/User'
 import LoadingOverlay from '../shared/LoadingOverlay'
-
-const CurrentUserQuery = gql`
-  query CurrentUserQuery {
-    me {
-      user {
-        id
-        firstName
-        lastName
-      }
-    }
-  }
-`
 
 type Props = {
   title?: string
@@ -59,7 +46,9 @@ const Layout: React.FunctionComponent<Props> = ({
 
   const [isOpen, setIsOpen] = React.useState(false)
 
-  const { loading, error, data } = useQuery(CurrentUserQuery)
+  const { loading, error, data } = useQuery(
+    UserOperations.currentUserPublicFieldsOnly,
+  )
   if (loading) return <LoadingOverlay />
   if (error) {
     router.push('/auth/signin')

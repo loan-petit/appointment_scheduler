@@ -1,29 +1,18 @@
 import React from 'react'
 import Router from 'next/router'
-import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 
 import { withApollo } from '../apollo/client'
 import LoadingOverlay from '../components/shared/LoadingOverlay'
-import User from '../models/User'
+import User, { UserOperations } from '../models/User'
 import Layout from '../components/adminSite/Layout'
 import RecurrentAvailability, {
   RecurrentAvailabilityOperations,
 } from '../models/RecurrentAvailability'
 import UpsertRecurrentAvailabilities from '../components/adminSite/availabilties/recurrentAvailability/UpsertRecurrentAvailaibilities'
 import AvailabilityCalendar from '../components/adminSite/availabilties/AvailabilityCalendar'
-
-const CurrentUserQuery = gql`
-  query CurrentUserQuery {
-    me {
-      user {
-        id
-      }
-    }
-  }
-`
 
 const Availabilities = () => {
   const [
@@ -37,7 +26,7 @@ const Availabilities = () => {
 
   const [currentUser, setCurrentUser] = React.useState<User>()
 
-  const currentUserQueryResult = useQuery(CurrentUserQuery)
+  const currentUserQueryResult = useQuery(UserOperations.currentUserIdOnly)
   const recurrentAvailabilitiesQueryResult = useQuery(
     RecurrentAvailabilityOperations.recurrentAvailabilities,
     {

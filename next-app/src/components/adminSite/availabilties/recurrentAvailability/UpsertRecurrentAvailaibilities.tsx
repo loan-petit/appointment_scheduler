@@ -1,12 +1,10 @@
 import React from 'react'
-import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import User from '../../../../models/User'
 import RecurrentAvailability, {
-  RecurrentAvailabilityFragments,
   RecurrentAvailabilityHelpers,
   RecurrentAvailabilityOperations,
 } from '../../../../models/RecurrentAvailability'
@@ -15,45 +13,6 @@ import RecurrentAvailabilityTimePicker from './RecurrentAvailabilityFields'
 import getMaxId from '../../../../utils/getMaxId'
 import { SubmitStatus } from '../../../../utils/FormHelper'
 import { convertTimeStringToSeconds } from '../../../../utils/timeStringHelper'
-
-const UpsertOneRecurrentAvailabilityMutation = gql`
-  mutation UpsertOneRecurrentAvailabilityMutation(
-    $recurrentAvailabilityId: Int!
-    $day: Day!
-    $startTime: Int!
-    $endTime: Int!
-    $userId: Int!
-  ) {
-    upsertOneRecurrentAvailability(
-      create: {
-        day: $day
-        startTime: $startTime
-        endTime: $endTime
-        user: { connect: { id: $userId } }
-      }
-      update: {
-        day: { set: $day }
-        startTime: { set: $startTime }
-        endTime: { set: $endTime }
-      }
-      where: { id: $recurrentAvailabilityId }
-    ) {
-      ...RecurrentAvailabilityFields
-    }
-  }
-  ${RecurrentAvailabilityFragments.fields}
-`
-
-const DeleteOneRecurrentAvailabilityMutation = gql`
-  mutation DeleteOneRecurrentAvailabilityMutation(
-    $recurrentAvailabilityId: Int!
-  ) {
-    deleteOneRecurrentAvailability(where: { id: $recurrentAvailabilityId }) {
-      ...RecurrentAvailabilityFields
-    }
-  }
-  ${RecurrentAvailabilityFragments.fields}
-`
 
 type Props = {
   currentUser: User
@@ -78,7 +37,7 @@ const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
   })
 
   const [upsertOneRecurrentAvailability] = useMutation(
-    UpsertOneRecurrentAvailabilityMutation,
+    RecurrentAvailabilityOperations.upsertOne,
     {
       update (cache, { data: { upsertOneRecurrentAvailability } }) {
         const { user }: any = cache.readQuery({
@@ -111,7 +70,7 @@ const UpsertRecurrentAvailabilities: React.FunctionComponent<Props> = ({
     },
   )
   const [deleteOneRecurrentAvailability] = useMutation(
-    DeleteOneRecurrentAvailabilityMutation,
+    RecurrentAvailabilityOperations.deleteOne,
     {
       update (cache, { data: { deleteOneRecurrentAvailability } }) {
         const { user }: any = cache.readQuery({

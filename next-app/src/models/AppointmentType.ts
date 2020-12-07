@@ -25,6 +25,14 @@ export const AppointmentTypeFragments = {
 }
 
 export const AppointmentTypeOperations = {
+  appointmentType: gql`
+    query AppointmentTypeQuery($appointmentTypeId: Int!) {
+      appointmentType(where: { id: $appointmentTypeId }) {
+        ...AppointmentTypeFields
+      }
+    }
+    ${AppointmentTypeFragments.fields}
+  `,
   appointmentTypes: gql`
     query AppointmentTypesQuery($userId: Int!) {
       user(where: { id: $userId }) {
@@ -32,6 +40,44 @@ export const AppointmentTypeOperations = {
         appointmentTypes {
           ...AppointmentTypeFields
         }
+      }
+    }
+    ${AppointmentTypeFragments.fields}
+  `,
+  upsertOne: gql`
+    mutation UpsertOneAppointmentTypeMutation(
+      $appointmentTypeId: Int!
+      $name: String!
+      $description: String
+      $duration: Int!
+      $price: Float
+      $userId: Int!
+    ) {
+      upsertOneAppointmentType(
+        create: {
+          name: $name
+          description: $description
+          duration: $duration
+          price: $price
+          user: { connect: { id: $userId } }
+        }
+        update: {
+          name: { set: $name }
+          description: { set: $description }
+          duration: { set: $duration }
+          price: { set: $price }
+        }
+        where: { id: $appointmentTypeId }
+      ) {
+        ...AppointmentTypeFields
+      }
+    }
+    ${AppointmentTypeFragments.fields}
+  `,
+  deleteOne: gql`
+    mutation DeleteOneAppointmentTypeMutation($appointmentTypeId: Int!) {
+      deleteOneAppointmentType(where: { id: $appointmentTypeId }) {
+        ...AppointmentTypeFields
       }
     }
     ${AppointmentTypeFragments.fields}

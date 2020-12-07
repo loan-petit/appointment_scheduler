@@ -1,6 +1,5 @@
 import React from 'react'
 import Router from 'next/router'
-import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 
 import { withApollo } from '../apollo/client'
@@ -8,21 +7,10 @@ import LoadingOverlay from '../components/shared/LoadingOverlay'
 import Layout from '../components/adminSite/Layout'
 import UpdateInformations from '../components/adminSite/settings/UpdateInformations'
 import UpdatePassword from '../components/adminSite/settings/UpdatePassword'
-import User, { UserFragments } from '../models/User'
-
-const CurrentUserQuery = gql`
-  query CurrentUserQuery {
-    me {
-      user {
-        ...UserFields
-      }
-    }
-  }
-  ${UserFragments.fields}
-`
+import User, { UserOperations } from '../models/User'
 
 const Settings = () => {
-  const { loading, error, data } = useQuery(CurrentUserQuery)
+  const { loading, error, data } = useQuery(UserOperations.currentUser)
 
   // Verify CurrentUserQuery result
   if (loading) return <LoadingOverlay />

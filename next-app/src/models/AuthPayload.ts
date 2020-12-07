@@ -20,7 +20,7 @@ export const AuthPayloadFragments = {
 }
 
 export const AuthPayloadOperations = {
-  credentialsSignupMutation: gql`
+  credentialsSignup: gql`
     mutation CredentialsSignupMutation(
       $firstName: String!
       $lastName: String!
@@ -38,7 +38,7 @@ export const AuthPayloadOperations = {
     }
     ${AuthPayloadFragments.fields}
   `,
-  oAuthSignupMutation: gql`
+  oAuthSignup: gql`
     mutation OAuthSignupMutation(
       $firstName: String!
       $lastName: String!
@@ -56,7 +56,7 @@ export const AuthPayloadOperations = {
     }
     ${AuthPayloadFragments.fields}
   `,
-  credentialsSigninMutation: gql`
+  credentialsSignin: gql`
     mutation CredentialsSigninMutation($email: String!, $password: String!) {
       signin(email: $email, password: $password) {
         ...AuthPayloadFields
@@ -64,7 +64,7 @@ export const AuthPayloadOperations = {
     }
     ${AuthPayloadFragments.fields}
   `,
-  oAuthSigninMutation: gql`
+  oAuthSignin: gql`
     mutation OAuthSigninMutation($oAuthToken: OAuthTokenInput!) {
       signin(oAuthToken: $oAuthToken) {
         ...AuthPayloadFields

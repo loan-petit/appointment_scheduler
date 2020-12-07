@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
-import gql from 'graphql-tag'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { useRouter } from 'next/router'
 import axios from 'axios'
@@ -9,67 +8,17 @@ import { withApollo } from '../../apollo/client'
 import Layout from '../../components/adminSite/Layout'
 import FormHelper, { FieldsInformation } from '../../utils/FormHelper'
 import LoadingOverlay from '../../components/shared/LoadingOverlay'
-import User, { UserFragments } from '../../models/User'
-import Appointment, {
-  AppointmentFragments,
-  AppointmentOperations,
-} from '../../models/Appointment'
+import User, { UserOperations } from '../../models/User'
+import Appointment from '../../models/appointment/Appointment'
 import AppointmentCancellationForServiceProvider from '../../components/emails/cancellation/forServiceProvider'
 import AppointmentCancellationForCustomer from '../../components/emails/cancellation/forCustomer'
-import { AppointmentTypeFragments } from '../../models/AppointmentType'
-import { CustomerFragments } from '../../models/Customer'
-
-const UserQuery = gql`
-  query UserQuery($username: String!) {
-    user(where: { username: $username }) {
-      ...UserFields
-    }
-  }
-  ${UserFragments.fields}
-`
-
-const CurrentUserQuery = gql`
-  query CurrentUserQuery {
-    me {
-      user {
-        ...UserPublicFields
-      }
-    }
-  }
-  ${UserFragments.publicFields}
-`
-
-const AppointmentQuery = gql`
-  query AppointmentQuery($appointmentId: Int!) {
-    appointment(where: { id: $appointmentId }) {
-      ...AppointmentFields
-      appointmentType {
-        ...AppointmentTypeFields
-      }
-      customer {
-        ...CustomerFields
-      }
-    }
-  }
-  ${AppointmentFragments.fields}
-  ${AppointmentTypeFragments.fields}
-  ${CustomerFragments.fields}
-`
-
-const DeleteOneAppointmentMutation = gql`
-  mutation DeleteOneAppointmentMutation($appointmentId: Int!) {
-    deleteOneAppointment(where: { id: $appointmentId }) {
-      ...AppointmentFields
-    }
-  }
-  ${AppointmentFragments.fields}
-`
+import AppointmentOperations from '../../models/appointment/AppointmentOperations'
 
 const CancelOneAppointment = () => {
   const router = useRouter()
   if (!router.query.id) {
     return (
-      <p className="error-message">
+      <p className='error-message'>
         An `id` must be specified in query params.
       </p>
     )
@@ -83,13 +32,15 @@ const CancelOneAppointment = () => {
   const [appointment, setAppointment] = React.useState<Appointment>()
 
   const userQueryResult = router.query.username
-    ? useQuery(UserQuery, { variables: { username: router.query.username } })
-    : useQuery(CurrentUserQuery)
-  const appointmentQueryResult = useQuery(AppointmentQuery, {
+    ? useQuery(UserOperations.user, {
+        variables: { username: router.query.username },
+      })
+    : useQuery(UserOperations.currentUserPublicFieldsOnly)
+  const appointmentQueryResult = useQuery(AppointmentOperations.appointment, {
     variables: { appointmentId: Number(router.query.id) },
   })
-  const [deleteOneAppointment] = useMutation(DeleteOneAppointmentMutation, {
-    update(cache, { data: { deleteOneAppointment } }) {
+  const [deleteOneAppointment] = useMutation(AppointmentOperations.deleteOne, {
+    update (cache, { data: { deleteOneAppointment } }) {
       try {
         const removeAppointmentInList = (appointments: Appointment[]) => {
           let removedAppointmentIndex = appointments.findIndex(
@@ -265,7 +216,7 @@ const CancelOneAppointment = () => {
   if (appointmentQueryResult.loading) return <LoadingOverlay />
   else if (appointmentQueryResult.error) {
     return (
-      <p className="error-message">
+      <p className='error-message'>
         Une erreur est survenue. Veuillez-réessayer.
       </p>
     )
@@ -276,39 +227,39 @@ const CancelOneAppointment = () => {
 
   const body = (
     <>
-      <header className="mb-6">
+      <header className='mb-6'>
         <h5>Annuler un rendez-vous</h5>
       </header>
 
       {/* Message */}
-      <div className="w-full mb-3">
-        <label className="block mb-2">Message</label>
+      <div className='w-full mb-3'>
+        <label className='block mb-2'>Message</label>
         <textarea
           rows={4}
           cols={80}
-          className="w-full px-3 py-3 placeholder-gray-400"
-          placeholder="Votre message"
+          className='w-full px-3 py-3 placeholder-gray-400'
+          placeholder='Votre message'
           onChange={formHelper.handleInputChange.bind(formHelper)}
-          name="message"
+          name='message'
           value={formHelper.fieldsInformation.message.value}
         />
-        <p className="form-field-error">
+        <p className='form-field-error'>
           {formHelper.fieldsInformation.message.error}
         </p>
       </div>
 
       {/* Submit to change information */}
-      <div className="mt-6">
+      <div className='mt-6'>
         {(() => {
           if (formHelper.submitStatus.response) {
             return (
               <>
-                <p className="pt-0 pb-4 text-sm italic text-green-500">
+                <p className='pt-0 pb-4 text-sm italic text-green-500'>
                   Le rendez-vous a bien été annulé.
                 </p>
                 {!router.query.username && (
                   <button
-                    className="px-6 py-3 submit-button"
+                    className='px-6 py-3 submit-button'
                     onClick={() => router.back()}
                   >
                     Retour
@@ -318,7 +269,7 @@ const CancelOneAppointment = () => {
             )
           } else if (formHelper.submitStatus.userFriendlyError.length) {
             return (
-              <p className="pt-0 pb-4 form-submit-error">
+              <p className='pt-0 pb-4 form-submit-error'>
                 {formHelper.submitStatus.userFriendlyError}
               </p>
             )
@@ -326,10 +277,10 @@ const CancelOneAppointment = () => {
         })()}
 
         {!formHelper.submitStatus.response && (
-          <div className="flex justify-between">
+          <div className='flex justify-between'>
             <button
-              className="px-6 py-3 submit-button"
-              onClick={(e) => {
+              className='px-6 py-3 submit-button'
+              onClick={e => {
                 formHelper.handleSubmit.bind(formHelper)(e, {
                   appointment: appointment,
                   user: user,
@@ -341,7 +292,7 @@ const CancelOneAppointment = () => {
             </button>
             {!router.query.username && (
               <button
-                className="text-sm font-bold text-right uppercase rounded focus:outline-none focus:ring"
+                className='text-sm font-bold text-right uppercase rounded focus:outline-none focus:ring'
                 onClick={() => {
                   router.back()
                 }}
@@ -356,12 +307,12 @@ const CancelOneAppointment = () => {
   )
 
   return router.query.username ? (
-    <div className="flex flex-col items-center p-6 m-4 bg-gray-200 rounded-lg shadow-lg md:mx-auto md:w-1/2">
+    <div className='flex flex-col items-center p-6 m-4 bg-gray-200 rounded-lg shadow-lg md:mx-auto md:w-1/2'>
       {body}
     </div>
   ) : (
     <Layout>
-      <div className="md:w-1/2">{body}</div>
+      <div className='md:w-1/2'>{body}</div>
     </Layout>
   )
 }

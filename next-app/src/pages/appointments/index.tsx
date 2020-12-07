@@ -1,27 +1,17 @@
 import React from 'react'
 import Router from 'next/router'
-import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 import { EventClickArg } from '@fullcalendar/react'
 
-import Appointment, { AppointmentOperations } from '../../models/Appointment'
-import User from '../../models/User'
+import Appointment from '../../models/appointment/Appointment'
+import User, { UserOperations } from '../../models/User'
 import LoadingOverlay from '../../components/shared/LoadingOverlay'
 import isIntervalAllDay from '../../utils/isIntervalAllDay'
 import { withApollo } from '../../apollo/client'
 import Layout from '../../components/adminSite/Layout'
 import AppointmentModal from '../../components/adminSite/AppointmentModal'
 import FullCalendarComponent from '../../components/shared/FullCalendar'
-
-const CurrentUserQuery = gql`
-  query CurrentUserQuery {
-    me {
-      user {
-        id
-      }
-    }
-  }
-`
+import AppointmentOperations from '../../models/appointment/AppointmentOperations'
 
 const Appointments = () => {
   const [selectedAppointment, setSelectedAppointment] = React.useState<
@@ -30,7 +20,7 @@ const Appointments = () => {
 
   const [currentUser, setCurrentUser] = React.useState<User>()
 
-  const currentUserQueryResult = useQuery(CurrentUserQuery)
+  const currentUserQueryResult = useQuery(UserOperations.currentUserIdOnly)
   const appointmentsQueryResult = useQuery(AppointmentOperations.appointments, {
     variables: { userId: currentUser?.id },
     skip: !currentUser,

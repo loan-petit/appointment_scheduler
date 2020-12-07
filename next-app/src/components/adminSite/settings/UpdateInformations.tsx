@@ -1,32 +1,8 @@
 import React from 'react'
-import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
 
 import FormHelper, { FieldsInformation } from '../../../utils/FormHelper'
-import User, { UserFragments } from '../../../models/User'
-
-const UpdateCurrentUserMutation = gql`
-  mutation UpdateCurrentUserMutation(
-    $email: String
-    $firstName: String
-    $lastName: String
-    $websiteUrl: String
-    $address: String
-    $minScheduleNotice: Int
-  ) {
-    updateCurrentUser(
-      email: $email
-      firstName: $firstName
-      lastName: $lastName
-      websiteUrl: $websiteUrl
-      address: $address
-      minScheduleNotice: $minScheduleNotice
-    ) {
-      ...UserFields
-    }
-  }
-  ${UserFragments.fields}
-`
+import User, { UserOperations } from '../../../models/User'
 
 type Props = {
   currentUser: User
@@ -39,7 +15,7 @@ const UpdateInformations: React.FunctionComponent<Props> = ({
   const [, updateState] = React.useState<object>()
   const forceUpdate = React.useCallback(() => updateState({}), [])
 
-  const [updateCurrentUser] = useMutation(UpdateCurrentUserMutation)
+  const [updateCurrentUser] = useMutation(UserOperations.updateCurrentUser)
 
   const emailRegex = RegExp(
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,

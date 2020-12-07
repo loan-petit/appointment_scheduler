@@ -44,6 +44,43 @@ export const RecurrentAvailabilityOperations = {
     }
     ${RecurrentAvailabilityFragments.fields}
   `,
+  upsertOne: gql`
+    mutation UpsertOneRecurrentAvailabilityMutation(
+      $recurrentAvailabilityId: Int!
+      $day: Day!
+      $startTime: Int!
+      $endTime: Int!
+      $userId: Int!
+    ) {
+      upsertOneRecurrentAvailability(
+        create: {
+          day: $day
+          startTime: $startTime
+          endTime: $endTime
+          user: { connect: { id: $userId } }
+        }
+        update: {
+          day: { set: $day }
+          startTime: { set: $startTime }
+          endTime: { set: $endTime }
+        }
+        where: { id: $recurrentAvailabilityId }
+      ) {
+        ...RecurrentAvailabilityFields
+      }
+    }
+    ${RecurrentAvailabilityFragments.fields}
+  `,
+  deleteOne: gql`
+    mutation DeleteOneRecurrentAvailabilityMutation(
+      $recurrentAvailabilityId: Int!
+    ) {
+      deleteOneRecurrentAvailability(where: { id: $recurrentAvailabilityId }) {
+        ...RecurrentAvailabilityFields
+      }
+    }
+    ${RecurrentAvailabilityFragments.fields}
+  `,
 }
 
 export const RecurrentAvailabilityHelpers = {
