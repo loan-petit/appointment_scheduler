@@ -44,7 +44,6 @@ if [ ${#POSITIONAL[@]} -eq 0 ]; then
   POSITIONAL=(
     "next_app"
     "prisma"
-    "send_email"
   )
 fi
 
@@ -64,11 +63,6 @@ for service in "${POSITIONAL[@]}"; do
       --secret id=JWT_SECRET,src=$SECRETS_DIR/JWT_SECRET.txt \
       --secret id=GOOGLE_CLIENT_ID,src=$SECRETS_DIR/GOOGLE_CLIENT_ID.txt \
       $SOURCE_DIR/../prisma
-  fi
-
-  if [ "$service" == "send_email" ]; then
-    # Build Docker image for 'sendmail' service.
-    docker build $NO_CACHE --tag petitloan/appointment_scheduler:send_email $SOURCE_DIR/../send_email
   fi
 done
 

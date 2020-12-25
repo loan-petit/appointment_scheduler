@@ -13,9 +13,7 @@ When the deployment is finished, the following services should be running on the
 - **Traefik cloud native router** (named *traefik*): Based on traefik:v2.2
 - **Next.js app** (named *next_app*): Based on petitloan/appointment_scheduler:next_app
 - **Prisma API based on GraphQL** (named *prisma*): Based on petitloan/appointment_scheduler:prisma
-- **API to send email via AWS SES** (named *send_email*): Based on petitloan/appointment_scheduler:send_email
 - **PostgreSQL database** (named *postgres*): Based on postgres:12-alpine
-- **Redis DB used to queue emails** (named *redis*): Based on redis:6.0-alpine
 
 ## Contact me
 

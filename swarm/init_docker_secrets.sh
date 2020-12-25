@@ -9,8 +9,6 @@ function usage() {
   echo "  --remote-destination    Remote server destination in user@host format"
   echo "  -u, --traefik-user      Username for secured authentication to Traefik dashboard"
   echo "  -p, --traefik-password  Password for secured authentication to Traefik dashboard"
-  echo "  --aws-access-key-id     AWS access key ID"
-  echo "  --aws-secret-access-key AWS secret access key"
   echo "  --google-client-id      Google client ID"
   echo
   echo "Each secret is written in plain text in './.secrets' folder. This folder is untracked for security concerns."
@@ -44,14 +42,6 @@ while [[ $# -gt 0 ]]; do
     ;;
   -p | --traefik-password)
     TRAEFIK_PASSWORD="$2"
-    shift 2
-    ;;
-  --aws-access-key-id)
-    AWS_ACCESS_KEY_ID="$2"
-    shift 2
-    ;;
-  --aws-secret-access-key)
-    AWS_SECRET_ACCESS_KEY="$2"
     shift 2
     ;;
   --google-client-id)
@@ -91,18 +81,6 @@ if [ ${TRAEFIK_USER+x} ] && [ ${TRAEFIK_PASSWORD+x} ]; then
   secret_value="$(htpasswd -nb $TRAEFIK_USER $TRAEFIK_PASSWORD)"
   echo $secret_value >$SOURCE_DIR/.secrets/TRAEFIK_USERS.txt
   echo $secret_value | docker $DOCKER_HOST_LIST secret create TRAEFIK_USERS -
-fi
-
-# Generate secrets to store AWS credentials
-if [ ${AWS_ACCESS_KEY_ID+x} ] && [ ${AWS_SECRET_ACCESS_KEY+x} ]; then
-  remove_secret AWS_ACCESS_KEY_ID
-  remove_secret AWS_SECRET_ACCESS_KEY
-
-  echo -n $AWS_ACCESS_KEY_ID >$SOURCE_DIR/.secrets/AWS_ACCESS_KEY_ID.txt
-  echo -n $AWS_ACCESS_KEY_ID | docker $DOCKER_HOST_LIST secret create AWS_ACCESS_KEY_ID -
-
-  echo -n $AWS_SECRET_ACCESS_KEY >$SOURCE_DIR/.secrets/AWS_SECRET_ACCESS_KEY.txt
-  echo -n $AWS_SECRET_ACCESS_KEY | docker $DOCKER_HOST_LIST secret create AWS_SECRET_ACCESS_KEY -
 fi
 
 # Generate secrets to store GCP credentials

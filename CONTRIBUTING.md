@@ -137,7 +137,6 @@ The following is the list of supported scopes:
 
 * **next-app**
 * **prisma**
-* **send-email**
 * **swarm**
 
 ### Subject
