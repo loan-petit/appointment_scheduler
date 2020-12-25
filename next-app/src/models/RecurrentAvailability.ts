@@ -104,9 +104,9 @@ export const RecurrentAvailabilityHelpers = {
   getMissingDays: (recurrentAvailabilities: RecurrentAvailability[]) => {
     const missingDays: Day[] = []
 
-    Object.values(Day).forEach(day => {
+    Object.values(Day).forEach((day) => {
       if (typeof day === 'string') return
-      if (recurrentAvailabilities.findIndex(e => e.day == Day[day]) === -1) {
+      if (recurrentAvailabilities.findIndex((e) => e.day == Day[day]) === -1) {
         missingDays.push(day)
       }
     })
@@ -117,14 +117,14 @@ export const RecurrentAvailabilityHelpers = {
 
     RecurrentAvailabilityHelpers.getMissingDays(
       recurrentAvailabilities,
-    ).forEach(v => {
+    ).forEach((v) => {
       maxId += 1
       recurrentAvailabilities.push({ id: maxId, day: Day[v] })
     })
     return recurrentAvailabilities
   },
-  groupByDay: (recurrentAvailabilities: RecurrentAvailability[]) =>
-    recurrentAvailabilities.reduce(
+  groupByDay: (recurrentAvailabilities: RecurrentAvailability[]) => {
+    const grouped = recurrentAvailabilities.reduce(
       (obj: RecurrentAvailabilitiesGroupedByDay, v: RecurrentAvailability) => {
         const dayIndex: number = Object.values(Day).indexOf(v.day)
         if (dayIndex == -1) return obj
@@ -135,7 +135,14 @@ export const RecurrentAvailabilityHelpers = {
         return obj
       },
       {},
-    ),
+    )
+
+    Object.values(Day).forEach((day) => {
+      if (typeof day === 'string') return
+      grouped[day]?.sort((a, b) => (a.startTime ?? 0) - (b.startTime ?? 0))
+    })
+    return grouped
+  },
 }
 
 export default RecurrentAvailability
