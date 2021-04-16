@@ -1,7 +1,5 @@
 # Appointment Scheduler
 
-This website is available online at <https://www.appointment-scheduler.loanpetit.com/>, check it out.
-
 ## Application deployment
 
 Thanks to GitHub Actions, the deployment process is fully automatized.
